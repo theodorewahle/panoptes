@@ -21,9 +21,9 @@ our "MVP"/prototype will have:
 - a fully functioning Flask + PostgreSQL server to serve video files
 
 4. What are going to be your stretch goals? List at least one goal for this term and one for the next.
-  
-— buy hardware
-- figure out how to live-stream from external hardware
+
+- set up IoT hardware
+- figure out how to live-stream from external cameras
 - set up 24/7 live video streaming and recording from these cameras
 - enhanced suite of Computer Vision features
 - user accounts
