@@ -1,6 +1,6 @@
 With your group, please agree on the following:
 
-1. Who is going to look at which platforms, get a rough task distribution
+1. **Who is going to look at which platforms, get a rough task distribution**
 
 - Teddy --> Streaming (HTTP Live Streaming (HLS))
 - James --> Computer Vision (OpenCV)
@@ -8,11 +8,11 @@ With your group, please agree on the following:
 - Jack -->. Frontend (React)
 - Dylan --> TBD! (he has COVID)
 
-2. When are you going to get together. You have to agree on a time to get together outside of the regularly scheduled classes. If you cannot agree on a time with the entire group, I will tell you to use the A hour (as no one is taking classes during the A hour).
+2. **When are you going to get together. You have to agree on a time to get together outside of the regularly scheduled classes.**
    
 We will meet during class times.
 
-3. What is going to be your top priority? What is the single demonstration that you could do that would mean your project is a success. That will be your goal for March 1st.
+3. **What is going to be your top priority? What is the single demonstration that you could do that would mean your project is a success. That will be your goal for March 1st.**
     
 our "MVP"/prototype will have:
 - streaming of static video files from server to client
@@ -20,19 +20,22 @@ our "MVP"/prototype will have:
 - a React-based video browsing client
 - a fully functioning Flask + PostgreSQL server to serve video files
 
-4. What are going to be your stretch goals? List at least one goal for this term and one for the next.
+4. **What are going to be your stretch goals? List at least one goal for this term and one for the next.**
 
+This term:
 - set up IoT hardware
 - figure out how to live-stream from external cameras
 - set up 24/7 live video streaming and recording from these cameras
+
+Next term:
 - enhanced suite of Computer Vision features
 - user accounts
 
-5. What git project will you be using (github.com is required, I will be looking at your pushes to determine individual grades) and what git-workflow will you be using (feature branches (good idea), separate sub-repos (usually a bad idea), or a single developer branch? Continuous integration testing (good idea), a test-before-commit policy (bad idea), or a compile-before-commit policy (good idea)?)
+5. **What git project will you be using (github.com is required, I will be looking at your pushes to determine individual grades) and what git-workflow will you be using (feature branches (good idea), separate sub-repos (usually a bad idea), or a single developer branch? Continuous integration testing (good idea), a test-before-commit policy (bad idea), or a compile-before-commit policy (good idea)?)**
     
-You are on it --> https://github.com/theodorewahle/panoptes
+This is the repo!
 
-6. What is the license of your project? (you don't have to write open source software, you can also license the software to just your team members, but whatever you choose must be explicit)
+6. **What is the license of your project? (you don't have to write open source software, you can also license the software to just your team members, but whatever you choose must be explicit)**
 
 MIT License
 
