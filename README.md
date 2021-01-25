@@ -1,3 +1,3 @@
 # panoptes
 
-# What is the project?
+# Video streaming platform.
