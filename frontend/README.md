@@ -9,6 +9,7 @@ Bootstrapped with [Create React App](https://github.com/facebook/create-react-ap
 ### TODO
 
 - Deploy to [Heroku](https://www.heroku.com/)
+- Rough UI outline of basic functionality
 - Build a video player? Some libraries...
   - [video-react](https://video-react.js.org/)
   - [react-player](https://www.npmjs.com/package/react-player)
