@@ -1,6 +1,4 @@
-# panoptes
-
-# This is our security video platform!
+# panoptes: the highly-searchable security video service
 
 Right now, we have:
 
