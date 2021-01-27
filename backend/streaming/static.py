@@ -6,7 +6,10 @@ lock = threading.Lock()  # lock handles multiple tabs
 
 def generate_static():
     global lock
-    static_video_dir = 'static_videos/'
+    static_video_dir = 'backend/static_videos/'
+
+    if not os.path.exists(static_video_dir):
+        os.makedirs(static_video_dir)
 
     for filename in os.listdir(static_video_dir):  # loops through all videos in static_video_dir
         print(filename)
