@@ -3,7 +3,7 @@ from flask import Flask, Response, render_template
 from streaming.live_streaming import generate
 from streaming.static import generate_static
 
-app = Flask(__name__)
+application = Flask(__name__)
 
 @app.route('/stream', methods = ['GET'])
 def stream():
@@ -22,4 +22,4 @@ if __name__ == '__main__':
    port = 8000
    debug = False
    options = None
-   app.run(host, port, debug, options)
+   application.run(host, port, debug, options)
