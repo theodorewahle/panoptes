@@ -8,15 +8,15 @@ from streaming.static import generate_static
 # DETECTED BY AWS ELASTIC BEANSTALK
 application = Flask(__name__)
 
-@app.route('/stream', methods = ['GET'])
+@application.route('/stream', methods = ['GET'])
 def stream():
     return Response(generate(), mimetype = "multipart/x-mixed-replace; boundary=frame")
 
-@app.route('/static', methods = ['GET'])
+@application.route('/static', methods = ['GET'])
 def static_stream():
     return Response(generate_static(), mimetype="multipart/x-mixed-replace; boundary=frame")
 
-@app.route('/')
+@application.route('/')
 def index():
     return render_template('index.html')
 
