@@ -3,6 +3,9 @@ from flask import Flask, Response, render_template
 from streaming.live_streaming import generate
 from streaming.static import generate_static
 
+# DO NOT CHANGE THIS NAME
+# IT MUST BE NAMED "application" IN ORDER TO BE 
+# DETECTED BY AWS ELASTIC BEANSTALK
 application = Flask(__name__)
 
 @app.route('/stream', methods = ['GET'])
