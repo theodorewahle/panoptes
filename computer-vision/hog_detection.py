@@ -42,12 +42,3 @@ class HOGDetectionModel():
 
         # convert to numpy array to draw the boxes
         return np.array([[x, y, x + w, y + h] for (x, y, w, h) in boxes])
-
-
-hog_detect = HOGDetectionModel()
-
-for frame in hog_detect.detect('kramer_walking.mp4'):
-    cv.imshow("frame", frame)
-    cv.waitKey(30)
-
-cv.destroyAllWindows()
