@@ -11,10 +11,19 @@ class HOGDetectionModel():
         # use prebuilt person detector
         self.hog.setSVMDetector(cv.HOGDescriptor_getDefaultPeopleDetector())
 
+        fourcc = cv.VideoWriter_fourcc(*'MP4V')
+        self.out = cv.VideoWriter('output.mp4',fourcc, 60, (1080,1080))
+
+    def __del__(self):
+        #self.out.release()
+        cv.destroyAllWindows()
+
+
     def detect(self, filepath):
 
         # open video
-        video = cv.VideoCapture(filepath)
+        #video = cv.VideoCapture(filepath)
+        video = cv.VideoCapture(0)
 
         while True:
 
@@ -29,8 +38,17 @@ class HOGDetectionModel():
 
                 # display the detected boxes in the colour picture
                 cv.rectangle(frame, (xA, yA), (xB, yB), (0, 255, 0), 2)
+            
+            # out.write(frame)
+            # cv.imshow('Frame', frame)
+            #yield frame
+            ret, buffer = cv.imencode('.jpg', frame)
+            frame = buffer.tobytes()
+            yield (b'--frame\r\n'
+                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
 
-            yield frame
+        video.release()
+
 
     # helper function for placing boxes around people
     def find_boxes(self, frame):

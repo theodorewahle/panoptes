@@ -2,6 +2,7 @@ from flask import Flask, Response, render_template
 
 from streaming.live_streaming import generate
 from streaming.static import generate_static
+from computer_vision.hog_detection import HOGDetectionModel
 
 # DO NOT CHANGE THIS NAME
 # IT MUST BE NAMED "application" IN ORDER TO BE 
@@ -15,6 +16,11 @@ def stream():
 @application.route('/static', methods = ['GET'])
 def static_stream():
     return Response(generate_static(), mimetype="multipart/x-mixed-replace; boundary=frame")
+
+@application.route('/vision', methods = ['GET'])
+def cv_stream():
+    detector = HOGDetectionModel()
+    return Response(detector.detect("./usain_bolt.mp4"), mimetype="multipart/x-mixed-replace; boundary=frame")
 
 @application.route('/')
 def index():
