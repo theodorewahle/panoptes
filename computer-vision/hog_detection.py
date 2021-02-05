@@ -18,11 +18,13 @@ class HOGDetectionModel():
 
         while True:
 
+            # get frame
             ret, frame = video.read()
 
             if frame is None:
                 break
 
+            # iterate through bounding boxes
             for (xA, yA, xB, yB) in self.find_boxes(frame):
 
                 # display the detected boxes in the colour picture
