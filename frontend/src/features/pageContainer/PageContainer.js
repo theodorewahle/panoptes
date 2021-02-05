@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { openSocket, closeSocket } from './pageContainerSlice';
+import Video from '../video/Video';
 
 // This component doubles as a socketWrapper
 const PageContainer = () => {
@@ -13,7 +14,7 @@ const PageContainer = () => {
   });
   return (
     <div>
-      <div></div>
+      <Video />
     </div>
   );
 };
