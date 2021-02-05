@@ -6,6 +6,10 @@ Bootstrapped with [Create React App](https://github.com/facebook/create-react-ap
 
 `yarn start` to run locally.
 
+### Wireframe
+
+[Figma wireframe](https://www.figma.com/file/zwLgHEGFp7gkeKQ7k8zTEx/Panoptes-Wireframe?node-id=0%3A1)
+
 ### TODO
 
 - Deploy to [Heroku](https://www.heroku.com/)
