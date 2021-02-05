@@ -41,5 +41,7 @@ export const {
 
 export const selectStreamStatus = (state) => state.video.streamStatus;
 export const selectObjectSet = (state) => state.video.objectSet;
+export const selectStreams = (state) => state.video.streams;
+export const selectRecentIncidents = (state) => state.video.recentIncidents;
 
 export default videoSlice.reducer;
