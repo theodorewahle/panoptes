@@ -13,12 +13,13 @@ const Video = (props) => {
     videoHeight = ENV.VIDEO_MAIN_HEIGHT;
   }
   return (
-    <div className={styles.videoPlayer}>
+    <div className={styles.videoPlayer} style={{ marginRight: 16, marginLeft: 16}}>
       <ReactPlayer
-        url="https://www.youtube.com/watch?v=IcWTPFnqOLo"
+        url="http://127.0.0.1:8000/static"
         width={videoWidth}
         height={videoHeight}
       />
+      <img src="http://127.0.0.1:8000/vision" width="100%"></img>
     </div>
   );
 };
