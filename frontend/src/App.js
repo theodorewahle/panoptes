@@ -1,11 +1,11 @@
 import React from 'react';
-import Video from './features/video/Video';
+import PageContainer from '../src/features/pageContainer/PageContainer';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <Video />
+    <div>
+      <PageContainer />
     </div>
   );
 }
