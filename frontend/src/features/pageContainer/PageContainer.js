@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setRecentIncidents, setStreams } from '../video/videoSlice';
 import { openSocket, closeSocket, selectPage } from './pageContainerSlice';
@@ -10,6 +10,7 @@ import ENV from '../../env';
 import styles from './PageContainer.module.scss';
 
 const PageHeader = () => {
+  const [search, setSearch] = useState('');
   return (
     <div className={styles.header}>
       <div className={styles.headerContent}>
@@ -18,11 +19,11 @@ const PageHeader = () => {
           <div className={styles.searchBar}>
             <TextField
               id="outlined-basic"
-              label="Search"
+              label="Search Today's Incidents..."
               variant="outlined"
-              value="test"
+              value={search}
               fullWidth={true}
-              onChange={(e) => console.log(e)}
+              onChange={(e) => setSearch(e)}
             />
             <Button
               type="submit"
@@ -31,7 +32,7 @@ const PageHeader = () => {
               disabled={true} // TODO
               // fullWidth={true}
             >
-              Search today's incidents...
+              Go
             </Button>
           </div>
         </form>
