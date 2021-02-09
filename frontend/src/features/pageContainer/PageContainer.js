@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { setRecentIncidents, setStreams } from '../video/videoSlice';
 import { openSocket, closeSocket, selectPage } from './pageContainerSlice';
 import Video from '../video/Video';
 import { TextField, Button } from '@material-ui/core';
+import LandingPage from './pages/LandingPage';
+import { initStreams, initRecentIncidents } from '../video/data';
 import ENV from '../../env';
 import styles from './PageContainer.module.scss';
 
@@ -28,7 +31,7 @@ const PageHeader = () => {
               disabled={true} // TODO
               // fullWidth={true}
             >
-              Search
+              Search today's incidents...
             </Button>
           </div>
         </form>
@@ -43,6 +46,8 @@ const PageContainer = () => {
   const page = useSelector(selectPage);
   useEffect(() => {
     dispatch(openSocket());
+    dispatch(setStreams(initStreams));
+    dispatch(setRecentIncidents(initRecentIncidents));
     return () => {
       dispatch(closeSocket());
     };
@@ -50,7 +55,7 @@ const PageContainer = () => {
   let display = null;
   // TODO holding off linking up to router incase server-side rendering changes this
   if (page === ENV.PAGE_LANDING) {
-    display = null;
+    display = <LandingPage />;
   } else if (page === ENV.PAGE_SEARCH_RESULTS) {
     display = null;
   } else if (page === ENV.PAGE_SEARCH_RESULTS_NONE) {
