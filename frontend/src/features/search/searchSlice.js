@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import ENV from '../../env';
 
-export const videoSlice = createSlice({
-  name: 'video',
+export const searchSlice = createSlice({
+  name: 'search',
   initialState: {
     streamStatus: ENV.STATUS_STREAM_IDLE,
   },
@@ -13,8 +13,8 @@ export const videoSlice = createSlice({
   },
 });
 
-export const { setStreamStatus } = videoSlice.actions;
+export const { setStreamStatus } = searchSlice.actions;
 
 export const selectStreamStatus = (state) => state.video.streamStatus;
 
-export default videoSlice.reducer;
+export default searchSlice.reducer;
