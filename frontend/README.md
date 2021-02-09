@@ -15,8 +15,8 @@ Bootstrapped with [Create React App](https://github.com/facebook/create-react-ap
 - Deploy to [Heroku](https://www.heroku.com/)
 - Rough UI outline of basic functionality
 - Build a video player? Some libraries...
+  - [react-player](https://www.npmjs.com/package/react-player) (currently using this)
   - [video-react](https://video-react.js.org/)
-  - [react-player](https://www.npmjs.com/package/react-player)
   - [shake-player](https://www.npmjs.com/package/shaka-player)
   - [video.js](https://www.npmjs.com/package/video.js)
   - ...
