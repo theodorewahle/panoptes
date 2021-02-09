@@ -1,6 +1,7 @@
 {
   "name": "weather-hack",
   "version": "0.1.0",
+  "license": "MIT License",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.11.3",
