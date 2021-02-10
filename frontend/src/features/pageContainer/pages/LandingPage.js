@@ -11,7 +11,7 @@ const LandingPage = () => {
   return (
     <div>
       <div className={styles.containerVideoStreams}>
-        <div className={styles.titleVideoStreams}></div>
+        <div className={styles.titleVideoStreams}>Video Streams</div>
         <VideoThumbnails
           videos={streams}
           width={ENV.VIDEO_STREAMS_WIDTH}
@@ -19,7 +19,7 @@ const LandingPage = () => {
         />
       </div>
       <div className={styles.containerRecentIncidents}>
-        <div className={styles.titleRecentIncidents}></div>
+        <div className={styles.titleRecentIncidents}>Recent Incidents</div>
         <VideoThumbnails
           videos={recentIncidents}
           width={ENV.VIDEO_THUMBNAIL_WIDTH}
