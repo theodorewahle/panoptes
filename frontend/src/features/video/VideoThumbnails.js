@@ -14,14 +14,18 @@ const VideoThumbnails = (props) => {
     console.error('"videos" param in VideoThumbnails must be an array');
     return null;
   }
+  let i = 0;
   const thumbnails = videos.map((video) => {
+    i++;
     return (
-      <Video
-        width={width}
-        height={height}
-        url={video.url}
-        title={video.title}
-      />
+      <div key={i}>
+        <Video
+          width={width}
+          height={height}
+          url={video.url}
+          title={video.title}
+        />
+      </div>
     );
   });
   return <div className={styles.videoThumbnails}>{thumbnails}</div>;
