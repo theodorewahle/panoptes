@@ -8,10 +8,16 @@
 
 .videoThumbnails {
   display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  padding: 30px;
 }
 
 .video {
+  padding: 20px;
 }
 
 .title {
+  padding-top: 5px;
+  text-align: center;
 }
