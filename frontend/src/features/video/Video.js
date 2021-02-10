@@ -15,7 +15,7 @@ const Video = (props) => {
     displayTitle = 'No Title';
   }
   return (
-    <div className={styles.videoPlayer}>
+    <div className={styles.video}>
       <ReactPlayer url={url} width={width} height={height} />
       <div className={styles.title}>{displayTitle}</div>
     </div>
