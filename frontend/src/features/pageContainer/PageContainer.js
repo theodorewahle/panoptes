@@ -1,7 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setRecentIncidents, setStreams } from '../video/videoSlice';
-import { openSocket, closeSocket, selectPage } from './pageContainerSlice';
+import {
+  openSocket,
+  closeSocket,
+  selectPage,
+  selectSearchInput,
+  setSearchInput,
+} from './pageContainerSlice';
 import Video from '../video/Video';
 import { TextField, Button } from '@material-ui/core';
 import LandingPage from './pages/LandingPage';
@@ -10,7 +16,8 @@ import ENV from '../../env';
 import styles from './PageContainer.module.scss';
 
 const PageHeader = () => {
-  const [search, setSearch] = useState('');
+  const dispatch = useDispatch();
+  const searchInput = useSelector(selectSearchInput);
   return (
     <div className={styles.header}>
       <div className={styles.headerContent}>
@@ -21,9 +28,9 @@ const PageHeader = () => {
               id="outlined-basic"
               label="Search Today's Incidents..."
               variant="outlined"
-              value={search}
+              value={searchInput}
               fullWidth={true}
-              onChange={(e) => setSearch(e)}
+              onChange={(e) => dispatch(setSearchInput(e))}
             />
             <Button
               type="submit"

@@ -2,9 +2,9 @@
 
 ### React
 
-Bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
-
-`yarn start` to run locally.
+- Bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+- [Node](https://nodejs.org/en/) version 10 or greater
+- `yarn start` to run locally.
 
 ### Wireframe
 
@@ -29,5 +29,5 @@ Bootstrapped with [Create React App](https://github.com/facebook/create-react-ap
 - Make sure every page collapses cleanly all the way to mobile version
 - Deploy
   - [Heroku](https://www.heroku.com/)?
-  - Server front-end [with flask](https://stackoverflow.com/questions/44209978/serving-a-front-end-created-with-create-react-app-with-flask)?
+  - Serve front-end [with flask](https://stackoverflow.com/questions/44209978/serving-a-front-end-created-with-create-react-app-with-flask)?
 - ...
