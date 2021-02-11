@@ -18,7 +18,7 @@ Histogram of oriented gradients (HOG) is a technique used to identify objects. T
 ## Tests in this Subdirectory
 For convenience, all tests in this subdirectory are run in Jupyter notebooks. Although the current tests run quickly, future ones might be slower and require the ability to run code blocks one at a time.
 
-It is recommended that tests are run in their own Python virtual environment. Required packages are specified in `requirements.txt`. 
+It is recommended that tests are run in their own Python virtual environment. Required packages are specified in `requirements.txt` in the Computer Vision directory. 
 
 To create a virtual environment run `python3 -m venv path/to/venv`. Activate the virtual environment by running the appropriate script in `venv/Scripts/`. For Windows Powershell, the script is `Activate.ps1`. Then install the appropriate packages by running `pip install -r requirements.txt`. This should install all the packages you need to run the Jupyter notebooks. To open them, run `jupyter notebook` in the directory containing the notebook files.
 
@@ -29,9 +29,3 @@ This test shows a basic implementation of background subtraction to detect motio
 
 ### PeopleDetectionTest.ipynb
 This test shows a basic implementation of the HOG descriptor class using the built-in people detector model. Two videos are analyzed in the example to show the effectiveness of the built-in model. The first, although featuring multiple people, is ineffective because the people are not fully in frame. The provided model does better when it can see the entire human frame, as evidenced by the second video. The second video also has its flaws though. It shows people running, and the built-in model appears to do better with people who are standing straight up or walking.
-
-## TODO
-
- - Train our own HOG detector for vehicle identification and look into creating a better model for people detection as well.
- - Fine-tune motion detector to cut out noise.
-
