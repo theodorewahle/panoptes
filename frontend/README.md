@@ -27,6 +27,7 @@
   - [video.js](https://www.npmjs.com/package/video.js)
   - ...
 - Make sure every page collapses cleanly all the way to mobile version
+- Knock out TODOs sprinkled in code (code cleanup)
 - Deploy
   - [Heroku](https://www.heroku.com/)?
   - Serve front-end [with flask](https://stackoverflow.com/questions/44209978/serving-a-front-end-created-with-create-react-app-with-flask)?

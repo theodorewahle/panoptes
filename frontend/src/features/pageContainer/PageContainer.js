@@ -18,30 +18,33 @@ import styles from './PageContainer.module.scss';
 const PageHeader = () => {
   const dispatch = useDispatch();
   const searchInput = useSelector(selectSearchInput);
+  console.log(`searchInput: ${searchInput}`);
+  const onSearch = (e) => {
+    e.preventDefault();
+    console.log('TODO: processed server-side or client-side?');
+    dispatch(setSearchInput('TODO'));
+  };
   return (
     <div className={styles.header}>
       <div className={styles.headerContent}>
         <div className={styles.headerText}>Panoptes</div>
-        <form>
-          <div className={styles.searchBar}>
-            <TextField
-              id="outlined-basic"
-              label="Search Today's Incidents..."
-              variant="outlined"
-              value={searchInput}
-              fullWidth={true}
-              onChange={(e) => dispatch(setSearchInput(e))}
-            />
-            <Button
-              type="submit"
-              variant="outlined"
-              size="large"
-              disabled={true} // TODO
-              // fullWidth={true}
-            >
-              Go
-            </Button>
-          </div>
+        <form className={styles.searchBar} onSubmit={(e) => onSearch(e)}>
+          <TextField
+            id="outlined-basic"
+            label="Search Today's Incidents..."
+            variant="outlined"
+            value={searchInput}
+            fullWidth={true}
+            onChange={(e) => dispatch(setSearchInput(e.target.value))}
+          />
+          <Button
+            type="submit"
+            variant="outlined"
+            size="large"
+            disabled={searchInput.length > 0 ? false : true} // TODO
+          >
+            Go
+          </Button>
         </form>
       </div>
     </div>

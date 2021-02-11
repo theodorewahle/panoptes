@@ -8,6 +8,7 @@ export const pageContainerSlice = createSlice({
     user: 'panoptes',
     page: ENV.PAGE_LANDING,
     searchInput: '',
+    searchCurrent: '',
   },
   reducers: {
     setUser: (state, action) => {
@@ -18,6 +19,9 @@ export const pageContainerSlice = createSlice({
     },
     setSearchInput: (state, action) => {
       state.searchInput = action.payload;
+    },
+    setSearchCurrent: (state, action) => {
+      state.searchCurrent = action.payload;
     },
     openSocket: (state) => {
       // handled in middleware/socket.js
@@ -35,12 +39,14 @@ export const {
   setUser,
   setPage,
   setSearchInput,
+  setSearchCurrent,
   openSocket,
   closeSocket,
 } = pageContainerSlice.actions;
 
 export const selectUser = (state) => state.pageContainer.user;
 export const selectPage = (state) => state.pageContainer.page;
-export const selectSearchInput = (state) => state.searchInput;
+export const selectSearchInput = (state) => state.pageContainer.searchInput;
+export const selectSearchCurrent = (state) => state.pageContainer.searchCurrent;
 
 export default pageContainerSlice.reducer;
