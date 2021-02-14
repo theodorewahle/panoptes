@@ -8,6 +8,7 @@ export const videoSlice = createSlice({
     objectSet: [],
     streams: [],
     recentIncidents: [],
+    searchResults: [],
   },
   reducers: {
     setStreamStatus: (state, action) => {
@@ -28,6 +29,9 @@ export const videoSlice = createSlice({
     setRecentIncidents: (state, action) => {
       state.recentIncidents = action.payload;
     },
+    setSearchResults: (state, action) => {
+      state.searchResults = action.payload;
+    },
   },
 });
 
@@ -37,11 +41,13 @@ export const {
   setObjectSet,
   setStreams,
   setRecentIncidents,
+  setSearchResults,
 } = videoSlice.actions;
 
 export const selectStreamStatus = (state) => state.video.streamStatus;
 export const selectObjectSet = (state) => state.video.objectSet;
 export const selectStreams = (state) => state.video.streams;
 export const selectRecentIncidents = (state) => state.video.recentIncidents;
+export const selectSearchResults = (state) => state.video.searchResults;
 
 export default videoSlice.reducer;

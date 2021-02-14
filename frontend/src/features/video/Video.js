@@ -1,24 +1,23 @@
 import React from 'react';
 import ReactPlayer from 'react-player';
 import styles from './Video.module.scss';
-import ENV from '../../env';
 
 const Video = (props) => {
-  const { width, height } = props;
-  let videoWidth, videoHeight;
+  const { width, height, title, url } = props;
   // TODO: have prop be option of size in text then convert
   //       to dimensions here
-  if (width == null || height == null) {
-    videoWidth = ENV.VIDEO_MAIN_WIDTH;
-    videoHeight = ENV.VIDEO_MAIN_HEIGHT;
+  if (width == null || height == null || url == null) {
+    console.error('"width", "height", & "url" params in Video cannot be null');
+    return null;
+  }
+  let displayTitle = title;
+  if (displayTitle == null) {
+    displayTitle = 'No Title';
   }
   return (
-    <div className={styles.videoPlayer}>
-      <ReactPlayer
-        url="https://www.youtube.com/watch?v=IcWTPFnqOLo"
-        width={videoWidth}
-        height={videoHeight}
-      />
+    <div className={styles.video} style={{ width, height }}>
+      <ReactPlayer url={url} width={width} height={height} />
+      <div className={styles.title}>{displayTitle}</div>
     </div>
   );
 };

@@ -6,8 +6,18 @@
   height: 400px;
 }
 
-.videoPlayer {
+.videoThumbnails {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  // padding: 30px;
 }
 
-.videoThumbnails {
+.video {
+  padding: 20px;
+}
+
+.title {
+  padding-top: 5px;
+  text-align: center;
 }
