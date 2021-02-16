@@ -13,7 +13,7 @@ metadata = Base.metadata
 class Camera(Base):
     __tablename__ = 'cameras'
 
-    camera_id = Column(Integer, primary_key=True, unique=True)
+    camera_id = Column(Integer, primary_key=True, unique=True, autoincrement=True)
     url = Column(String(100), unique=True)
 
 
@@ -34,7 +34,7 @@ class Incident(Base):
 class ObjectSet(Base):
     __tablename__ = 'object_sets'
 
-    object_set_id = Column(Integer, primary_key=True, unique=True)
+    object_set_id = Column(Integer, primary_key=True, unique=True, autoincrement=True)
     name = Column(String(45), nullable=False, unique=True)
 
 
@@ -42,7 +42,7 @@ class ObjectSet(Base):
 class Object(Base):
     __tablename__ = 'objects'
 
-    object_id = Column(Integer, primary_key=True, unique=True)
+    object_id = Column(Integer, primary_key=True, unique=True, autoincrement=True)
     name = Column(String(45), nullable=False, unique=True)
     object_set_id = Column(ForeignKey('object_sets.object_set_id', ondelete='CASCADE', onupdate='CASCADE'), index=True)
 
@@ -53,7 +53,7 @@ class Object(Base):
 class Video(Base):
     __tablename__ = 'videos'
 
-    video_id = Column(Integer, primary_key=True, unique=True)
+    video_id = Column(Integer, primary_key=True, unique=True, autoincrement=True)
     file_path = Column(String(100), nullable=False, unique=True)
     camera_id = Column(ForeignKey('cameras.camera_id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False, index=True)
 
