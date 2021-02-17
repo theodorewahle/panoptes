@@ -1,13 +1,17 @@
-from flask import Flask, Response, render_template
+from flask import Flask, Response, render_template, jsonify, request
 
 from streaming.live_streaming import generate
 from streaming.static import generate_static
 from computer_vision.hog_detection import HOGDetectionModel
+from database.database import DatabaseHelper
+from utils.utils import *
 
 # DO NOT CHANGE THIS NAME
 # IT MUST BE NAMED "application" IN ORDER TO BE 
 # DETECTED BY AWS ELASTIC BEANSTALK
 application = Flask(__name__)
+
+db_helper = DatabaseHelper(application)  # initialize database helper
 
 @application.route('/stream', methods = ['GET'])
 def stream():
@@ -29,6 +33,11 @@ def index():
 @application.route('/ping')
 def ping():
     return "pong"
+
+@application.route('/api/cameras', methods=['GET'])
+def api_cameras():
+    return list_to_json(db_helper.get_all_cameras())
+
 
 if __name__ == '__main__':
    host = "127.0.0.1"

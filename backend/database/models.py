@@ -17,7 +17,6 @@ class Camera(Base):
     url = Column(String(100), unique=True)
 
 
-
 class Incident(Base):
     __tablename__ = 'incidents'
 
