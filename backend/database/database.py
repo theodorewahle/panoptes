@@ -1,3 +1,9 @@
+"""
+database.py
+
+Contains definition for DatabaseHelper for helper methods for sqlAlchemy connection between flask and sql server
+"""
+
 from . import models
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
@@ -13,19 +19,14 @@ class DatabaseHelper():
     def __init__(self, app):
 
         # attempt to create schema if it doesn't exist
-        engine = create_engine('mysql://root:password@localhost')
+        engine = create_engine(app.config['SQL_URL'])
         try:
-            engine.execute(CreateSchema(SCHEMA_NAME))
+            engine.execute(CreateSchema(app.config['SCHEMA_NAME']))
         except:
-            print(SCHEMA_NAME + " already exists.")
-
-        # set up flask app config options, will be moved to config file eventually
-        self.app = app;
-        self.app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:password@localhost/' + SCHEMA_NAME
-        self.app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+            print(app.config['SCHEMA_NAME'] + " already exists.")
         
         # set up database and create tables
-        self.db = SQLAlchemy(self.app, model_class=models.Base)
+        self.db = SQLAlchemy(app, model_class=models.Base)
         self.db.create_all()
 
     def list_tables(self):

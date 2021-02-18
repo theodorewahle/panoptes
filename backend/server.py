@@ -10,12 +10,12 @@ from utils.utils import *
 # IT MUST BE NAMED "application" IN ORDER TO BE 
 # DETECTED BY AWS ELASTIC BEANSTALK
 application = Flask(__name__)
-
+application.config.from_object('config')  # configure flask server
 db_helper = DatabaseHelper(application)  # initialize database helper
 
 @application.route('/stream', methods = ['GET'])
 def stream():
-    return Response(generate(), mimetype = "multipart/x-mixed-replace; boundary=frame")
+    return Response(generate(), mimetype="multipart/x-mixed-replace; boundary=frame")
 
 @application.route('/static', methods = ['GET'])
 def static_stream():

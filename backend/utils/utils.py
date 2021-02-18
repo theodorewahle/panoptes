@@ -3,9 +3,6 @@ utils.py
 
 Contains definitions for utils functions:
     list_to_json: takes row data in list from database
-
-
-Date created: 2/16/2021
 """
 
 from flask import *
