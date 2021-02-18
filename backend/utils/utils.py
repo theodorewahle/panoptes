@@ -9,6 +9,10 @@ Date created: 2/16/2021
 """
 
 from flask import *
+from json import dumps
+
+def result_proxy_to_json(result):
+    return dumps([{column: value for column, value in rowproxy.items()} for rowproxy in result])
 
 def list_to_json(rows):
     rows_to_return = []

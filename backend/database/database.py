@@ -2,7 +2,7 @@ from . import models
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.schema import CreateSchema
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 
 # shema name, should be moved to config eventually
 SCHEMA_NAME = 'panoptes'
@@ -41,9 +41,7 @@ class DatabaseHelper():
     def get_all_incidents(self):
         return self.db.session.query(models.Incident).all()
 
-        
-#database_helper = DatabaseHelper(Flask(__name__))
-#database_helper.add_camera('www.some.url.com')
-#print(database_helper.list_tables())
-#for camera in database_helper.get_all_cameras():
-    #print(str(camera.camera_id) + " " + camera.url)
+    def get_incidents_by_camera_id(self, camera_id):
+        sql = text("SELECT video_id, start_time, end_time, object_id FROM cameras NATURAL JOIN videos NATURAL JOIN incidents WHERE camera_id = :camera_id")
+        return self.db.engine.execute(sql, {'camera_id': camera_id}).fetchall()
+
