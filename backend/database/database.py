@@ -42,6 +42,6 @@ class DatabaseHelper():
         return self.db.session.query(models.Incident).all()
 
     def get_incidents_by_camera_id(self, camera_id):
-        sql = text("SELECT video_id, start_time, end_time, object_id FROM cameras NATURAL JOIN videos NATURAL JOIN incidents WHERE camera_id = :camera_id")
-        return self.db.engine.execute(sql, {'camera_id': camera_id}).fetchall()
+        SQL = text("SELECT incidents.* FROM cameras NATURAL JOIN videos NATURAL JOIN incidents WHERE camera_id = :camera_id")
+        return self.db.engine.execute(SQL, {'camera_id': camera_id}).fetchall()
 
