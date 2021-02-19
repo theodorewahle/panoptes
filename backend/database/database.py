@@ -7,10 +7,11 @@ Contains definition for DatabaseHelper for helper methods for sqlAlchemy connect
 import sqlalchemy
 from sqlalchemy.sql.functions import mode
 from . import models
-from flask import Flask
+from flask import Flask, abort
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.schema import CreateSchema
 from sqlalchemy import create_engine, text
+from sqlalchemy.exc import SQLAlchemyError
 
 
 class DatabaseHelper():
@@ -37,17 +38,22 @@ class DatabaseHelper():
             self.db.session.add(camera)
             self.db.session.commit()
             return camera
-        except sqlalchemy.exc.IntegrityError:
-            return None
+        except SQLAlchemyError as e:
+            self.db.session.rollback()
+            return e
 
     def get_all_videos(self):
         return self.db.session.query(models.Video).all()
 
     def add_video(self, file_path, camera_id):
         video = models.Video(file_path=file_path, camera_id=camera_id)
-        self.db.session.add(video)
-        self.db.session.commit()
-        return video
+        try:
+            self.db.session.add(video)
+            self.db.session.commit()
+            return video
+        except SQLAlchemyError as e:
+            self.db.session.rollback()
+            return e
 
     def get_all_incidents(self):
         return self.db.session.query(models.Incident).all()
@@ -61,24 +67,36 @@ class DatabaseHelper():
 
     def add_incident(self, start_time, end_time, object_id, video_id):
         incident = models.Video(start_time=start_time, end_time=end_time, object_id=object_id, video_id=video_id)
-        self.db.session.add(incident)
-        self.db.session.commit()
-        return incident
+        try:
+            self.db.session.add(incident)
+            self.db.session.commit()
+            return incident
+        except SQLAlchemyError as e:
+            self.db.session.rollback()
+            return e
 
     def get_all_objects(self):
         return self.db.session.query(models.Object).all()
 
     def add_object(self, name, object_set_id):
         object = models.Object(name=name, object_set_id=object_set_id)
-        self.db.session.add(object)
-        self.db.session.commit()
-        return object
+        try:
+            self.db.session.add(object)
+            self.db.session.commit()
+            return object
+        except SQLAlchemyError as e:
+            self.db.session.rollback()
+            return e
 
     def get_all_object_sets(self):
         return self.db.session.query(models.ObjectSet).all()
 
     def add_object_set(self, name):
         object_set = models.ObjectSet(name=name)
-        self.db.session.add(object_set)
-        self.db.session.commit()
-        return object_set
+        try:
+            self.db.session.add(object_set)
+            self.db.session.commit()
+            return object_set
+        except SQLAlchemyError as e:
+            self.db.session.rollback()
+            return e
