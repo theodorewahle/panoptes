@@ -61,6 +61,44 @@ def incidents():
     else:
         return jsonify_result(db_helper.get_all_incidents())
 
+@application.route('/api/object_set', methods=['GET', 'POST'])
+def object_set():
+    if request.method == 'GET':
+        return jsonify_result(db_helper.get_all_object_sets())
+    elif request.method == 'POST':
+        if check_body(request, 'name'):
+            name = request.get_json()['name']
+            response = unwrap_db_result(db_helper.add_object_set(name))
+            response.status_code = 201;
+            return response
+        abort(400)
+
+@application.route('/api/object', methods=['GET', 'POST'])
+def objects():
+    if request.method == 'GET':
+        return jsonify_result(db_helper.get_all_objects())
+    elif request.method == 'POST':
+        if check_body(request, 'name', 'object_set_id'):
+            name = request.get_json()['name']
+            object_set_id = request.get_json()['object_set_id']
+            response = unwrap_db_result(db_helper.add_object(name, object_set_id))
+            response.status_code = 201;
+            return response
+        abort(400)
+
+@application.route('/api/videos', methods=['GET', 'POST'])
+def videos():
+    if request.method == 'GET':
+        return jsonify_result(db_helper.get_all_videos())
+    elif request.method == 'POST':
+        if check_body(request, 'file_path', 'camera_id'):
+            file_path = request.get_json()['file_path']
+            camera_id = request.get_json()['camera_id']
+            response = unwrap_db_result(db_helper.add_video(file_path, camera_id))
+            response.status_code = 201;
+            return response
+        abort(400)
+
 
 if __name__ == '__main__':
     host = "127.0.0.1"
