@@ -1,9 +1,16 @@
+import threading
+
 from flask import Flask, Response, render_template, send_from_directory
 
 from streaming.live_streaming import generate
 from streaming.static import generate_static
+from streaming.rtsp import RTSPStreamer
+
 from computer_vision.hog_detection import HOGDetectionModel
 from incidents.ftp import fetch_todays_incidents
+
+rtsp_config = { "rtsp_url" : "rtsp://admin:admin@172.24.28.36/11" }
+streamer = RTSPStreamer(rtsp_config)
 
 # DO NOT CHANGE THIS NAME
 # IT MUST BE NAMED "application" IN ORDER TO BE 
@@ -38,8 +45,12 @@ def send_static_file(path):
 
 if __name__ == '__main__':
     # Fetch the latest incidents from the camera's FTP server
-    fetch_todays_incidents()
-    
+    fetch_incidents_thread = threading.Thread(target=fetch_todays_incidents)
+    rtsp_stream_proxy_server_thread = threading.Thread(target=streamer.launch_proxy_stream)
+
+    fetch_incidents_thread.start()
+    rtsp_stream_proxy_server_thread.start()
+
     host = "127.0.0.1"
     port = 8000
     debug = False
