@@ -18,7 +18,7 @@ const VideoThumbnails = (props) => {
   const thumbnails = videos.map((video) => {
     i++;
     return (
-      <div key={i}>
+      <div key={i} onClick={() => props.onSelect(video)}>
         <Video
           width={width}
           height={height}
