@@ -2,23 +2,25 @@
 utils.py
 
 Contains definitions for utils functions:
-    list_to_json: takes row data in list from database
+    jsonify_result: takes row data in list (or as single row) from database and returns flask Response
+    check_body: takes a request and checks it for the given body parameter keys
 """
 
-from flask import *
-from json import dumps
+from flask import jsonify
+from flask.helpers import make_response
 
-def result_proxy_to_json(result):
-    return dumps([{column: value for column, value in rowproxy.items()} for rowproxy in result])
+def jsonify_result(results):
+    if type(results) == list:
+        return jsonify(list(map(lambda result: result.serialize(), results)))
+    else:
+        return jsonify(results.serialize())
 
-def list_to_json(rows):
-    rows_to_return = []
-    for row in rows:
-        rows_to_return.append(row_to_dict(row))
-    return jsonify(rows_to_return)
 
-def row_to_dict(row):
-    dict = {}
-    for col in row.__table__.columns:
-        dict[col.name] = getattr(row, col.name)
-    return dict
+def check_body(request, *keys):
+    if request.get_json() is None:
+        return False
+    for key in keys:
+        if key not in request.get_json():
+            return False
+
+    return True

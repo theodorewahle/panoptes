@@ -4,17 +4,15 @@ database.py
 Contains definition for DatabaseHelper for helper methods for sqlAlchemy connection between flask and sql server
 """
 
+from sqlalchemy.sql.functions import mode
 from . import models
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.schema import CreateSchema
 from sqlalchemy import create_engine, text
 
-# shema name, should be moved to config eventually
-SCHEMA_NAME = 'panoptes'
 
 class DatabaseHelper():
-
 
     def __init__(self, app):
 
@@ -24,17 +22,16 @@ class DatabaseHelper():
             engine.execute(CreateSchema(app.config['SCHEMA_NAME']))
         except:
             print(app.config['SCHEMA_NAME'] + " already exists.")
-        
+
         # set up database and create tables
         self.db = SQLAlchemy(app, model_class=models.Base)
         self.db.create_all()
 
-    def list_tables(self):
-        return self.db.engine.table_names()
-
     def add_camera(self, url):
-        self.db.session.add(models.Camera(url=url))
+        camera = models.Camera(url=url)
+        self.db.session.add(camera)
         self.db.session.commit()
+        return camera
 
     def get_all_cameras(self):
         return self.db.session.query(models.Camera).all()
@@ -43,6 +40,8 @@ class DatabaseHelper():
         return self.db.session.query(models.Incident).all()
 
     def get_incidents_by_camera_id(self, camera_id):
-        SQL = text("SELECT incidents.* FROM cameras NATURAL JOIN videos NATURAL JOIN incidents WHERE camera_id = :camera_id")
-        return self.db.engine.execute(SQL, {'camera_id': camera_id}).fetchall()
-
+        return self.db.session.query(models.Incident) \
+            .join(models.Video) \
+                .join(models.Camera) \
+                    .filter(models.Camera.camera_id == camera_id) \
+                        .all()
