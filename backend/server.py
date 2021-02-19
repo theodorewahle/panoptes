@@ -1,5 +1,4 @@
 from flask import Flask, Response, render_template, request, abort
-from sqlalchemy.exc import SQLAlchemyError
 
 from streaming.live_streaming import generate
 from streaming.static import generate_static
@@ -48,8 +47,7 @@ def cameras():
     elif request.method == 'POST':
         if check_body(request, 'url'):
             url = request.get_json()['url']
-            camera = unwrap_db_result(db_helper.add_camera(url))
-            response = jsonify_result(camera)
+            response = unwrap_db_result(db_helper.add_camera(url))
             response.status_code = 201;
             return response
         abort(400)

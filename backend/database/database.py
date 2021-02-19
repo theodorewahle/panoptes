@@ -4,13 +4,10 @@ database.py
 Contains definition for DatabaseHelper for helper methods for sqlAlchemy connection between flask and sql server
 """
 
-import sqlalchemy
-from sqlalchemy.sql.functions import mode
 from . import models
-from flask import Flask, abort
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.schema import CreateSchema
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine
 from sqlalchemy.exc import SQLAlchemyError
 
 

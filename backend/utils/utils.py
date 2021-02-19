@@ -8,7 +8,6 @@ Contains definitions for utils functions:
 """
 
 from flask import jsonify
-from flask.helpers import make_response
 from sqlalchemy.exc import SQLAlchemyError
 from werkzeug.exceptions import abort
 
@@ -25,10 +24,9 @@ def check_body(request, *keys):
     for key in keys:
         if key not in request.get_json():
             return False
-
     return True
 
 def unwrap_db_result(result):
     if isinstance(result, SQLAlchemyError):
         abort(400, result)
-    return result
+    return jsonify_result(result)
