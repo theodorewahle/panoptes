@@ -45,4 +45,4 @@ def fetch_todays_incidents():
                 print(full_file_path)
                 if not os.path.exists(full_file_path):
                     sftp.get(file_name, full_file_path)
-                    convert_video(today_as_string + file_name)
+                    convert_video(today_as_string + "/" + file_name)
