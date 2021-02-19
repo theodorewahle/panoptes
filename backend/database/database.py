@@ -4,6 +4,7 @@ database.py
 Contains definition for DatabaseHelper for helper methods for sqlAlchemy connection between flask and sql server
 """
 
+import sqlalchemy
 from sqlalchemy.sql.functions import mode
 from . import models
 from flask import Flask
@@ -32,9 +33,12 @@ class DatabaseHelper():
 
     def add_camera(self, url):
         camera = models.Camera(url=url)
-        self.db.session.add(camera)
-        self.db.session.commit()
-        return camera
+        try:
+            self.db.session.add(camera)
+            self.db.session.commit()
+            return camera
+        except sqlalchemy.exc.IntegrityError:
+            return None
 
     def get_all_videos(self):
         return self.db.session.query(models.Video).all()

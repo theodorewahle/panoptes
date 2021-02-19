@@ -46,9 +46,13 @@ def cameras():
         return jsonify_result(db_helper.get_all_cameras())
     elif request.method == 'POST':
         if check_body(request, 'url'):
-            response = jsonify_result(db_helper.add_camera(request.get_json()['url']))
-            response.status_code = 201;
-            return response
+            camera = db_helper.add_camera(request.get_json()['url'])
+            if camera is not None:
+                response = jsonify_result(camera)
+                response.status_code = 201;
+                return response
+            else:
+                abort(400)
         else:
             abort(400)
 
