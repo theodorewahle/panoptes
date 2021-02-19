@@ -31,7 +31,6 @@ const Video = (props) => {
       <img src={url} width={width} height={height}/>
       )}
         <div className={styles.title}>{displayTitle}</div>
-      <video src={url}></video>
     </div>
     </Link>
   );
