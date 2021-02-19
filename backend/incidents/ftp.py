@@ -41,8 +41,8 @@ def fetch_todays_incidents():
             all_files = [(attr.filename, attr.st_atime) for attr in sftp.listdir_attr()]
 
             for file_name, file_timestamp in all_files:
-                full_file_path = raw_incidents + "/" + file_name
+                full_file_path = raw_incidents + file_name
                 print(full_file_path)
                 if not os.path.exists(full_file_path):
                     sftp.get(file_name, full_file_path)
-                    convert_video(today_as_string + "/" + file_name)
+                    convert_video(today_as_string + file_name)
