@@ -6,12 +6,13 @@ export const initStreams = [
     // ...,
   },
   {
-    title: 'Brooks Falls',
-    url: 'https://www.youtube.com/watch?v=IcWTPFnqOLo',
+    title: 'Alpha Chi Alpha Parking Lot',
+    url: 'http://admin:admin@172.24.28.36/tmpfs/auto.jpg',
   },
   {
     title: 'Random Scenery',
     url: 'https://www.youtube.com/watch?v=hZSPmqAddzs',
+
   },
 ];
 

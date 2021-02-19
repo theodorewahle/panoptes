@@ -14,10 +14,19 @@ const Video = (props) => {
   if (displayTitle == null) {
     displayTitle = 'No Title';
   }
+
+  const isThumbnail = url.includes('.jpg')
+
   return (
     <div className={styles.video} style={{ width, height }}>
-      <ReactPlayer url={url} width={width} height={height} />
+      {isThumbnail === false && (
+        <ReactPlayer url={url} width={width} height={height} />
+      )}
+      {isThumbnail === true && (
+      <img src={url} width={width} height={height}/>
+      )}
       <div className={styles.title}>{displayTitle}</div>
+      <video src={url}></video>
     </div>
   );
 };
