@@ -7,7 +7,7 @@ export const initStreams = [
   },
   {
     title: 'Brooks Falls',
-    url: 'https://www.youtube.com/watch?v=IcWTPFnqOLo',
+    url: 'http://127.0.0.1:8000/stream',
   },
   {
     title: 'Random Scenery',
