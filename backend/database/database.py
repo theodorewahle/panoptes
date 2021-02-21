@@ -44,6 +44,13 @@ class DatabaseHelper():
             self.db.session.rollback()
             return e
 
+    def delete_camera(self, camera_id=None, url=None):
+        if camera_id is not None:
+            self.db.session.query(models.Camera).filter(models.Camera.camera_id == camera_id).delete()
+        elif url is not None:
+            self.db.session.query(models.Camera).filter(models.Camera.url == url).delete()
+        self.db.session.commit()
+
     def get_video(self, video_id=None, file_path=None, camera_id=None):
         if video_id is not None:
             return self.db.session.query(models.Video).filter(models.Video.video_id == video_id).all()
@@ -62,6 +69,15 @@ class DatabaseHelper():
         except SQLAlchemyError as e:
             self.db.session.rollback()
             return e
+
+    def delete_video(self, video_id=None, file_path=None, camera_id=None):
+        if video_id is not None:
+            self.db.session.query(models.Video).filter(models.Video.video_id == video_id).delete()
+        elif file_path is not None:
+            self.db.session.query(models.Video).filter(models.Video.file_path == file_path).delete()
+        elif camera_id is not None:
+            self.db.session.query(models.Video).filter(models.Video.camera_id == camera_id).delete()
+        self.db.session.commit()
 
     def get_incident(self, object_id=None, video_id=None):
         if object_id is not None and video_id is not None:
@@ -90,6 +106,22 @@ class DatabaseHelper():
             self.db.session.rollback()
             return e
 
+    def delete_incident(self, start_time=None, end_time=None, object_id=None, video_id=None):
+        if start_time is not None and end_time is not None and object_id is not None and video_id is not None:
+            self.db.session.query(models.Incident) \
+                .filter(models.Incident.object_id == object_id, \
+                    models.Incident.video_id == video_id, \
+                        models.Incident.start_time == start_time, \
+                            models.Incident.end_time == end_time).delete()
+        elif object_id is not None and video_id is not None:
+            self.db.session.query(models.Incident) \
+                .filter(models.Incident.object_id == object_id, models.Incident.video_id == video_id).delete()
+        elif object_id is not None:
+            self.db.session.query(models.Incident).filter(models.Incident.object_id == object_id).delete()
+        elif video_id is not None:
+            self.db.session.query(models.Incident).filter(models.Incident.video_id == video_id).delete()
+        self.db.session.commit()
+
     def get_object(self, object_id=None, name=None, object_set_id=None):
         if object_id is not None:
             return self.db.session.query(models.Object).filter(models.Object.object_id == object_id).all()
@@ -109,6 +141,15 @@ class DatabaseHelper():
             self.db.session.rollback()
             return e
 
+    def delete_object(self, object_id=None, name=None, object_set_id=None):
+        if object_id is not None:
+            self.db.session.query(models.Object).filter(models.Object.object_id == object_id).delete()
+        elif name is not None:
+            self.db.session.query(models.Object).filter(models.Object.name == name).delete()
+        elif object_set_id is not None:
+            self.db.session.query(models.Object).filter(models.Object.object_set_id == object_set_id).delete()
+        self.db.session.commit()
+
     def get_object_set(self, object_set_id=None, name=None):
         if object_set_id is not None:
             return self.db.session.query(models.ObjectSet).filter(models.ObjectSet.object_set_id == object_set_id).all()
@@ -125,3 +166,10 @@ class DatabaseHelper():
         except SQLAlchemyError as e:
             self.db.session.rollback()
             return e
+
+    def delete_object_set(self, object_set_id=None, name=None):
+        if object_set_id is not None:
+            self.db.session.query(models.ObjectSet).filter(models.ObjectSet.object_set_id == object_set_id).delete()
+        elif name is not None:
+            self.db.session.query(models.ObjectSet).filter(models.ObjectSet.name == name).delete()
+        self.db.session.query(models.ObjectSet).commit()
