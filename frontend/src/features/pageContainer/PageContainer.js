@@ -10,10 +10,19 @@ import {
 } from './pageContainerSlice';
 import Video from '../video/Video';
 import { TextField, Button } from '@material-ui/core';
+
 import LandingPage from './pages/LandingPage';
+import LiveStreamPage from './pages/LiveStreamPage';
+
 import { initStreams, initRecentIncidents } from '../video/data';
 import ENV from '../../env';
 import styles from './PageContainer.module.scss';
+
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from 'react-router-dom';
 
 const PageHeader = () => {
   const dispatch = useDispatch();
@@ -30,17 +39,17 @@ const PageHeader = () => {
         <div className={styles.headerText}>Panoptes</div>
         <form className={styles.searchBar} onSubmit={(e) => onSearch(e)}>
           <TextField
-            id="outlined-basic"
+            id='outlined-basic'
             label="Search Today's Incidents..."
-            variant="outlined"
+            variant='outlined'
             value={searchInput}
             fullWidth={true}
             onChange={(e) => dispatch(setSearchInput(e.target.value))}
           />
           <Button
-            type="submit"
-            variant="outlined"
-            size="large"
+            type='submit'
+            variant='outlined'
+            size='large'
             disabled={searchInput.length > 0 ? false : true} // TODO
           >
             Go
@@ -63,6 +72,7 @@ const PageContainer = () => {
       dispatch(closeSocket());
     };
   });
+  
   let display = null;
   // TODO holding off linking up to router incase server-side rendering changes this
   if (page === ENV.PAGE_LANDING) {
@@ -75,16 +85,28 @@ const PageContainer = () => {
     display = null;
   } else if (page === ENV.PAGE_LIVE_STREAM) {
     display = null;
-  } else if (page === ENV.PAGE_LIVE_STREAM) {
-    display = null;
   } else if (page === ENV.PAGE_OBJECT_SET) {
     display = null;
   }
+  console.log(display)
+
   return (
     <div className={styles.PageContainer}>
       <PageHeader />
       <Video />
-      {display}
+      
+      <Router>
+      <div>
+        <Switch>
+          <Route path='/cameras/alpha_chi_parking_lot'>
+            <LiveStreamPage />
+          </Route>
+          <Route path='/'>
+            <LandingPage />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
     </div>
   );
 };

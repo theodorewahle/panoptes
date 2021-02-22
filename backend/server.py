@@ -1,18 +1,25 @@
-from flask import Flask, Response, render_template, request, abort
+import threading
+
+from flask import Flask, Response, render_template, send_from_directory, request, abort
 
 from streaming.live_streaming import generate
 from streaming.static import generate_static
+from streaming.rtsp import RTSPStreamer
+
 from computer_vision.hog_detection import HOGDetectionModel
 from database.database import DatabaseHelper
 from utils.utils import *
+from incidents.ftp import fetch_todays_incidents
+
+rtsp_config = { "rtsp_url" : "rtsp://admin:admin@172.24.28.36/11" }
+streamer = RTSPStreamer(rtsp_config)
 
 # DO NOT CHANGE THIS NAME
 # IT MUST BE NAMED "application" IN ORDER TO BE
 # DETECTED BY AWS ELASTIC BEANSTALK
-application = Flask(__name__)
+application = Flask(__name__, static_url_path='')
 application.config.from_object('config')  # configure flask server
 db_helper = DatabaseHelper(application)  # initialize database helper
-
 
 @application.route('/stream', methods=['GET'])
 def stream():
@@ -99,8 +106,19 @@ def videos():
             return response
         abort(400)
 
+@application.route('/incident/<path:path>')
+def send_static_file(path):
+    # Example: http://127.0.0.1:8000/incident/20210218/A210218_003304_003318.mp4
+    return send_from_directory('incidents/converted', path)
 
 if __name__ == '__main__':
+    # Fetch the latest incidents from the camera's FTP server
+    fetch_incidents_thread = threading.Thread(target=fetch_todays_incidents)
+    rtsp_stream_proxy_server_thread = threading.Thread(target=streamer.launch_proxy_stream)
+
+    fetch_incidents_thread.start()
+    rtsp_stream_proxy_server_thread.start()
+
     host = "127.0.0.1"
     port = 8000
     debug = False
