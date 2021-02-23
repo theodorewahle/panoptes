@@ -13,8 +13,10 @@ from sqlalchemy.exc import SQLAlchemyError
 
 class DatabaseHelper():
 
-    def __init__(self, app):
+    def __init__(self):
+        self.db = SQLAlchemy(model_class=models.Base)
 
+    def initialize(self, app):
         # attempt to create schema if it doesn't exist
         engine = create_engine(app.config['SQL_URL'])
         try:
@@ -23,8 +25,9 @@ class DatabaseHelper():
             print(app.config['SCHEMA_NAME'] + " already exists.")
 
         # set up database and create tables
-        self.db = SQLAlchemy(app, model_class=models.Base)
-        self.db.create_all()
+        self.db.init_app(app)
+        with app.app_context():
+            self.db.create_all()
 
     def get_camera(self, camera_id=None, url=None):
         if camera_id is not None:
