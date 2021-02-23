@@ -52,7 +52,7 @@ def send_static_file(path):
 
 
 # register blueprint and dbhelper for api
-application.register_blueprint(api)
+application.register_blueprint(api, url_prefix='/api')
 db_helper.initialize(application)
 
 if __name__ == '__main__':

@@ -8,7 +8,7 @@ db_helper = DatabaseHelper()
 api = Blueprint('api', __name__)
 
 
-@api.route('/api/cameras', methods=['GET', 'POST'])
+@api.route('/cameras', methods=['GET', 'POST'])
 def cameras():
     if request.method == 'GET':
         return jsonify_result(db_helper.get_camera())
@@ -21,7 +21,7 @@ def cameras():
         abort(400)
 
 
-@api.route('/api/incidents', methods=['GET'])
+@api.route('/incidents', methods=['GET'])
 def incidents():
     camera_id = request.args.get('camera_id')
     if camera_id is not None:
@@ -30,7 +30,7 @@ def incidents():
         return jsonify_result(db_helper.get_incident())
 
 
-@api.route('/api/object_set', methods=['GET', 'POST'])
+@api.route('/object_set', methods=['GET', 'POST'])
 def object_set():
     if request.method == 'GET':
         return jsonify_result(db_helper.get_object_set())
@@ -43,7 +43,7 @@ def object_set():
         abort(400)
 
 
-@api.route('/api/object', methods=['GET', 'POST'])
+@api.route('/object', methods=['GET', 'POST'])
 def objects():
     if request.method == 'GET':
         return jsonify_result(db_helper.get_object())
@@ -58,7 +58,7 @@ def objects():
         abort(400)
 
 
-@api.route('/api/videos', methods=['GET', 'POST'])
+@api.route('/videos', methods=['GET', 'POST'])
 def videos():
     if request.method == 'GET':
         return jsonify_result(db_helper.get_video())
