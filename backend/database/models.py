@@ -11,8 +11,7 @@ metadata = Base.metadata
 class Camera(Base):
     __tablename__ = 'cameras'
 
-    camera_id = Column(Integer, primary_key=True,
-                       unique=True, autoincrement=True)
+    camera_id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
     url = Column(String(100), unique=True)
 
     def serialize(self):
@@ -23,12 +22,13 @@ class Camera(Base):
 class Incident(Base):
     __tablename__ = 'incidents'
 
-    start_time = Column(Integer, primary_key=True, nullable=False)
-    end_time = Column(Integer, primary_key=True, nullable=False)
+    incident_id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
+    start_time = Column(Integer, nullable=False)
+    end_time = Column(Integer, nullable=False)
     object_id = Column(ForeignKey('objects.object_id', ondelete='CASCADE',
-                                  onupdate='CASCADE'), primary_key=True, nullable=False, index=True)
+                                  onupdate='CASCADE'), nullable=False, index=True)
     video_id = Column(ForeignKey('videos.video_id', ondelete='CASCADE',
-                                 onupdate='CASCADE'), primary_key=True, nullable=False, index=True)
+                                 onupdate='CASCADE'), nullable=False, index=True)
 
     object = relationship(
         'Object', primaryjoin='Incident.object_id == Object.object_id', backref='incidents')
@@ -45,8 +45,7 @@ class Incident(Base):
 class ObjectSet(Base):
     __tablename__ = 'object_sets'
 
-    object_set_id = Column(Integer, primary_key=True,
-                           unique=True, autoincrement=True)
+    object_set_id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
     name = Column(String(45), nullable=False, unique=True)
 
     def serialize(self):
@@ -57,8 +56,7 @@ class ObjectSet(Base):
 class Object(Base):
     __tablename__ = 'objects'
 
-    object_id = Column(Integer, primary_key=True,
-                       unique=True, autoincrement=True)
+    object_id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
     name = Column(String(45), nullable=False, unique=True)
     object_set_id = Column(ForeignKey(
         'object_sets.object_set_id', ondelete='CASCADE', onupdate='CASCADE'), index=True)
@@ -76,7 +74,7 @@ class Video(Base):
     __tablename__ = 'videos'
 
     video_id = Column(Integer, primary_key=True,
-                      unique=True, autoincrement=True)
+                      nullable=False, autoincrement=True)
     file_path = Column(String(100), nullable=False, unique=True)
     camera_id = Column(ForeignKey('cameras.camera_id', ondelete='CASCADE',
                                   onupdate='CASCADE'), nullable=False, index=True)
