@@ -10,7 +10,6 @@ except:
     print("localconfig file not found, see localconfig-example.py")
 
 from localconfig import LOCAL_SQL_URL
-
 SQL_URL = LOCAL_SQL_URL
 SCHEMA_NAME = 'panoptes'
 SQLALCHEMY_DATABASE_URI = SQL_URL + '/' + SCHEMA_NAME
