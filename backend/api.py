@@ -2,8 +2,11 @@ from flask import Blueprint, request, abort
 from utils.utils import *
 from database.database import DatabaseHelper
 
+
+# globals used by main server for this blueprint
 db_helper = DatabaseHelper()
 api = Blueprint('api', __name__)
+
 
 @api.route('/api/cameras', methods=['GET', 'POST'])
 def cameras():
@@ -13,7 +16,7 @@ def cameras():
         if check_body(request, 'url'):
             url = request.get_json()['url']
             response = unwrap_db_result(db_helper.add_camera(url))
-            response.status_code = 201;
+            response.status_code = 201
             return response
         abort(400)
 
@@ -26,6 +29,7 @@ def incidents():
     else:
         return jsonify_result(db_helper.get_incident())
 
+
 @api.route('/api/object_set', methods=['GET', 'POST'])
 def object_set():
     if request.method == 'GET':
@@ -34,9 +38,10 @@ def object_set():
         if check_body(request, 'name'):
             name = request.get_json()['name']
             response = unwrap_db_result(db_helper.add_object_set(name))
-            response.status_code = 201;
+            response.status_code = 201
             return response
         abort(400)
+
 
 @api.route('/api/object', methods=['GET', 'POST'])
 def objects():
@@ -46,10 +51,12 @@ def objects():
         if check_body(request, 'name', 'object_set_id'):
             name = request.get_json()['name']
             object_set_id = request.get_json()['object_set_id']
-            response = unwrap_db_result(db_helper.add_object(name, object_set_id))
-            response.status_code = 201;
+            response = unwrap_db_result(
+                db_helper.add_object(name, object_set_id))
+            response.status_code = 201
             return response
         abort(400)
+
 
 @api.route('/api/videos', methods=['GET', 'POST'])
 def videos():
@@ -59,7 +66,8 @@ def videos():
         if check_body(request, 'file_path', 'camera_id'):
             file_path = request.get_json()['file_path']
             camera_id = request.get_json()['camera_id']
-            response = unwrap_db_result(db_helper.add_video(file_path, camera_id))
-            response.status_code = 201;
+            response = unwrap_db_result(
+                db_helper.add_video(file_path, camera_id))
+            response.status_code = 201
             return response
         abort(400)

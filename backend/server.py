@@ -51,6 +51,7 @@ def send_static_file(path):
     return send_from_directory('incidents/converted', path)
 
 
+# register blueprint and dbhelper for api
 application.register_blueprint(api)
 db_helper.initialize(application)
 
