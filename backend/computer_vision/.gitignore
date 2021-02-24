@@ -2,3 +2,4 @@ venv/
 .pylintrc
 .vscode/
 *.pt
+.ipynb_checkpoints/

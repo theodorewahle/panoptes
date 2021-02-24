@@ -2,7 +2,7 @@ env/*
 *__pycache__*
 *.zip
 .DS_Store
-
 frontend/.eslintcache
+backend/localconfig.py
 */incidents/raw/*
 */incidents/converted/*

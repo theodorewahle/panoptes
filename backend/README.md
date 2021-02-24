@@ -1,29 +1,44 @@
 # Backend
 
-Uses flask and openCV to stream video for Panoptes backend
+## Contents:
+1. Application list/usage
+2. Setup
+3. Running
 
-# Flask
+## Application list/usage
+Server: Flask
+Video Streaming: RTSP
+Motion Detection/CV: openCV and Yolov5
+Database: mySQL
 
-Flask is a lightweight WSGI web application framework. It is designed to make getting started quick and easy, with the ability to scale up to complex applications. It began as a simple wrapper around Werkzeug and Jinja and has become one of the most popular Python web application frameworks.
-Flask is being used in conjunction with openCV to run the Panoptes backend where video is being streamed.
+## Setup
+Must have libvlc.dll from VCL video player installed, see https://www.videolan.org/vlc/
 
-# Livestream/static stream
-Current functionality involves demonstration of video streaming capabilities on flask server at server.py, shows both 
-livestream from local webcam and streaming videos from a video directory /static_videos
+Must have local sql instance running, see https://dev.mysql.com/downloads/, download and install
+mysql shell and start an instance, note the password for the sql server.
 
-# Running
+Must have python3 and pip3 installed
 
-Must have flask and python installed, to run first export flask application (export FLASK_APP=server.py) and then
-run the application (flask run). 
+Other modules found in requirements.txt.
+Run from backend:
 
 ```
-$ cd panoptes/backend
-$ pip3 install -r requirements.txt
-$ python3 server.py
+pip3 install -r requirements.txt
 ```
- 
- Go to http://127.0.0.1:5000 in a browser to see application running locally
+
+##Running
+
+The local config needs to be set up in a file named localconfig.py. 
+Once a local sql instance is running, see the localconfig-example.py
+to configure the sql URL and the authorization tokens. tokens can be set up as one wishes but SQL
+url must be 'mysql://username:password@host'
+
+Now, backend can be run by calling
+```
+python3 server.py
+```
+
+Go to http://127.0.0.1:5000 in a browser to see application running locally
  
 # TODO
 
-Connect to webcam hardware
