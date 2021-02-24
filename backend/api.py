@@ -8,7 +8,7 @@ db_helper = DatabaseHelper()
 api = Blueprint('api', __name__)
 
 
-@api.route('/cameras', methods=['GET', 'POST'])
+@api.route('/camera', methods=['GET', 'POST'])
 def cameras():
     if request.method == 'GET':
         return jsonify_result(db_helper.get_camera())
@@ -21,7 +21,7 @@ def cameras():
         abort(400)
 
 
-@api.route('/incidents', methods=['GET'])
+@api.route('/incident', methods=['GET'])
 def incidents():
     camera_id = request.args.get('camera_id')
     if camera_id is not None:
@@ -58,7 +58,7 @@ def objects():
         abort(400)
 
 
-@api.route('/videos', methods=['GET', 'POST'])
+@api.route('/video', methods=['GET', 'POST'])
 def videos():
     if request.method == 'GET':
         return jsonify_result(db_helper.get_video())
