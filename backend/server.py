@@ -10,14 +10,12 @@ from computer_vision.hog_detection import HOGDetectionModel
 from incidents.ftp import fetch_todays_incidents
 from api import api, db_helper
 
-rtsp_config = { "rtsp_url" : "rtsp://admin:admin@172.24.28.36/11" }
-streamer = RTSPStreamer(rtsp_config)
-
 # DO NOT CHANGE THIS NAME
 # IT MUST BE NAMED "application" IN ORDER TO BE
 # DETECTED BY AWS ELASTIC BEANSTALK
 application = Flask(__name__, static_url_path='')
 application.config.from_object('config')  # configure flask server
+streamer = RTSPStreamer(application.config['RTSP'])
 
 @application.route('/stream', methods=['GET'])
 def stream():

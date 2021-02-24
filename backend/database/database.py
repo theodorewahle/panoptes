@@ -1,9 +1,10 @@
 """
 database.py
 
-Contains definition for DatabaseHelper for helper methods for sqlAlchemy connection between flask and sql server
-"""
+Contains definition for DatabaseHelper for helper methods for sqlAlchemy connection between flask and sql server for
+endpoints to request from sqlserver.
 
+"""
 from . import models
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.schema import CreateSchema
@@ -11,8 +12,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.exc import SQLAlchemyError
 
 
-class DatabaseHelper():
-
+class DatabaseHelper:
+    # Init/Initialization:
     def __init__(self):
         self.db = SQLAlchemy(model_class=models.Base)
 
@@ -29,6 +30,8 @@ class DatabaseHelper():
         with app.app_context():
             self.db.create_all()
 
+    # CRUD database helper methods called by server endpoints (Camera, Video, Incident, Object, Object Set)
+    # Camera CRUD:
     def get_camera(self, camera_id=None, url=None):
         if camera_id is not None:
             return self.db.session.query(models.Camera).filter(models.Camera.camera_id == camera_id).all()
@@ -66,6 +69,7 @@ class DatabaseHelper():
                 models.Camera.url == url).delete()
         self.db.session.commit()
 
+    # Video CRUD:
     def get_video(self, video_id=None, file_path=None, camera_id=None):
         if video_id is not None:
             return self.db.session.query(models.Video).filter(models.Video.video_id == video_id).all()
@@ -111,6 +115,7 @@ class DatabaseHelper():
                 models.Video.camera_id == camera_id).delete()
         self.db.session.commit()
 
+    # Incident CRUD:
     def get_incident(self, incident_id=None, object_id=None, video_id=None):
         if incident_id is not None:
             return self.db.session.query(models.Incident) \
@@ -179,6 +184,7 @@ class DatabaseHelper():
                 models.Incident.video_id == video_id).delete()
         self.db.session.commit()
 
+    # Object CRUD:
     def get_object(self, object_id=None, name=None, object_set_id=None):
         if object_id is not None:
             return self.db.session.query(models.Object).filter(models.Object.object_id == object_id).all()
@@ -224,6 +230,7 @@ class DatabaseHelper():
                 models.Object.object_set_id == object_set_id).delete()
         self.db.session.commit()
 
+    # Object set CRUD:
     def get_object_set(self, object_set_id=None, name=None):
         if object_set_id is not None:
             return self.db.session.query(models.ObjectSet).filter(models.ObjectSet.object_set_id == object_set_id).all()
