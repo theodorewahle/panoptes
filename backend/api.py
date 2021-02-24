@@ -3,7 +3,7 @@ api.py
 
 Blueprint for api for backend connection to db, actualized by flask server in server.py
 """
-from flask import Blueprint, request, abort
+from flask import Blueprint, request, abort, current_app
 from utils.utils import *
 from database.database import DatabaseHelper
 from flask_httpauth import HTTPTokenAuth
@@ -15,12 +15,11 @@ api = Blueprint('api', __name__)
 
 
 # Token authorization vars and function
-api.config.from_object('config')
 auth = HTTPTokenAuth(scheme='Bearer')
 @auth.verify_token
 def verify_token(token):
-    if token in api.config['TOKENS']:
-        return api.config['TOKENS'][token]
+    if token in current_app.config['TOKENS']:
+        return current_app.config['TOKENS'][token]
 
 
 # Endpoints for sql tables: cameras, incidents, object set, objects, and videos
