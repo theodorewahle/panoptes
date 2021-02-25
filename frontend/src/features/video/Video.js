@@ -2,11 +2,10 @@ import React from 'react';
 import ReactPlayer from 'react-player';
 import styles from './Video.module.scss';
 
-import {
-  Link
-} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Video = (props) => {
+  // TODO: redundancy
   const { width, height, title, url } = props;
   // TODO: have prop be option of size in text then convert
   //       to dimensions here
@@ -19,19 +18,23 @@ const Video = (props) => {
     displayTitle = 'No Title';
   }
 
-  const isThumbnail = url.includes('.jpg')
+  const isThumbnail = url.includes('.jpg');
 
   return (
-    <Link to='/cameras/alpha_chi_parking_lot'>
-    <div className={styles.video} style={{ width, height }} onClick={() => console.log('yo')}>
-      {isThumbnail === false && (
-        <ReactPlayer url={url} width={width} height={height} />
-      )}
-      {isThumbnail === true && (
-      <img src={url} width={width} height={height}/>
-      )}
+    <Link to="/cameras/alpha_chi_parking_lot">
+      <div
+        onClick={console.log('click')}
+        className={styles.video}
+        style={{ width, height }}
+      >
+        {isThumbnail === false && (
+          <ReactPlayer url={url} width={width} height={height} />
+        )}
+        {isThumbnail === true && (
+          <img src={url} alt="" width={width} height={height} />
+        )}
         <div className={styles.title}>{displayTitle}</div>
-    </div>
+      </div>
     </Link>
   );
 };

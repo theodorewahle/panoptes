@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { initRecentIncidents } from '../video/data';
 import ENV from '../../env';
 
 export const videoSlice = createSlice({
@@ -7,7 +8,8 @@ export const videoSlice = createSlice({
     streamStatus: ENV.STATUS_STREAM_IDLE,
     objectSet: [],
     streams: [],
-    recentIncidents: [],
+    recentIncidents: initRecentIncidents,
+    curIncidentIndex: 0,
     searchResults: [],
   },
   reducers: {
@@ -29,6 +31,9 @@ export const videoSlice = createSlice({
     setRecentIncidents: (state, action) => {
       state.recentIncidents = action.payload;
     },
+    setCurIncidentIndex: (state, action) => {
+      state.curIncidentIndex = action.payload;
+    },
     setSearchResults: (state, action) => {
       state.searchResults = action.payload;
     },
@@ -41,6 +46,7 @@ export const {
   setObjectSet,
   setStreams,
   setRecentIncidents,
+  setCurIncidentIndex,
   setSearchResults,
 } = videoSlice.actions;
 
@@ -48,6 +54,7 @@ export const selectStreamStatus = (state) => state.video.streamStatus;
 export const selectObjectSet = (state) => state.video.objectSet;
 export const selectStreams = (state) => state.video.streams;
 export const selectRecentIncidents = (state) => state.video.recentIncidents;
+export const selectCurIncidentIndex = (state) => state.video.curIncidentIndex;
 export const selectSearchResults = (state) => state.video.searchResults;
 
 export default videoSlice.reducer;
