@@ -22,7 +22,28 @@ def verify_token(token):
         return current_app.config['TOKENS'][token]
 
 
-# Endpoints for sql tables: cameras, incidents, object set, objects, and videos
+# CAMERAS
+# 
+# GET:
+#   /cameras 
+#       @returns: all cameras
+#   /cameras/id
+#       @returns: camera with specified id
+#
+# POST:
+#   /cameras
+#       @body: url:[url]
+#       @returns: camera created (or error)
+#
+# PUT:
+#   /cameras/id
+#       @body: url:[url]
+#       @returns: updated camera
+#
+# DELETE:
+#   /cameras/id
+#       @returns: nothing or error
+#
 @api.route('/cameras', methods=['GET', 'POST'])
 @auth.login_required
 def cameras():
@@ -36,7 +57,16 @@ def cameras():
             return response
         abort(400)
 
-
+# INCIDENTS
+# 
+# GET:
+#   /incidents 
+#       @returns: all incidents
+#   /incidents/id
+#       @returns: incident with specified id
+#   /incidents?camera_id
+#       @returns: all incidents related to specified camera id
+#
 @api.route('/incidents', methods=['GET'])
 @auth.login_required
 def incidents():
