@@ -2,9 +2,10 @@
 
 Progress So Far:
 
-1. A **backend server** that streams video (click ![HERE](https://github.com/theodorewahle/panoptes/blob/main/backend/README.md) for more info, including how to run)
-2. A **frontend webapp** that is deployed on heroku, and it will eventually stream video from the backend (see documentation ![HERE](https://github.com/theodorewahle/panoptes/blob/main/frontend/README.md))
-3. Some functionality with **computer vision**, which we've started to implement (![HERE](https://github.com/theodorewahle/panoptes/blob/main/computer-vision/COMPUTER_VISION.md) is the readme for that)
+1. A **backend server** using flask that handles video streams(click ![HERE](https://github.com/theodorewahle/panoptes/blob/main/backend/README.md) for more info, including how to run)
+2. A **sql database** for organizing data from cameras and computer vision. (see backend README)
+3. A **frontend webapp** that is deployed on heroku that streams video from the backend(see documentation ![HERE](https://github.com/theodorewahle/panoptes/blob/main/frontend/README.md))
+4. functionality with **computer vision**, using OpenCV to identify motion and Yolov5 for Object Identification (![HERE](https://github.com/theodorewahle/panoptes/blob/main/computer-vision/COMPUTER_VISION.md) is the readme for that)
 
 # General Info
 
