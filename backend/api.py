@@ -212,6 +212,35 @@ def objects(object_id):
         return jsonify_result(db_helper.delete_object(object_id))
 
 
+# VIDEOS
+# 
+# GET:
+#   /videos
+#       @success: 200
+#       @returns: {all videos}
+#   /videos/{id}
+#       @success: 200
+#       @returns: {video with id}
+#
+# POST:
+#   /videos
+#       @body: {file_path:[video file path]} & {camera_id:[camera id]}
+#       @success: 200
+#       @error: 400
+#       @returns: {video created} | {error}
+#
+# PUT:
+#   /videos/{id}
+#       @body: {file_path:[video file path]} | {camera_id:[camera id]}
+#       @success: 200
+#       @error: 400
+#       @returns: {updated camera} | {error}
+#
+# DELETE:
+#   /videos/{id}
+#       @success: 204
+#       @returns: {nothing}
+#
 @api.route('/videos', methods=['GET', 'POST'])
 @auth.login_required
 def videos():
@@ -226,3 +255,33 @@ def videos():
             response.status_code = 201
             return response
         abort(400)
+
+
+@api.route('/videos/<video_id>', methods=['GET', 'PUT', 'DELETE'])
+@auth.login_required
+def videos(video_id):
+    if request.method == 'GET':
+        return jsonify_result(db_helper.get_video(video_id=video_id))
+    elif request.method == 'PUT':
+        if check_body(request, 'file_path', 'camera_id'):
+            file_path = request.get_json()['file_path']
+            camera_id = request.get_json()['camera_id']
+            response = unwrap_db_result(
+                db_helper.update_video(video_id, file_path=file_path, camera_id=camera_id))
+            response.status_code = 200
+            return response
+        if check_body(request, 'file_path'):
+            file_path = request.get_json()['file_path']
+            response = unwrap_db_result(
+                db_helper.update_video(video_id, file_path=file_path))
+            response.status_code = 200
+            return response
+        if check_body(request, 'camera_id'):
+            camera_id = request.get_json()['camera_id']
+            response = unwrap_db_result(
+                db_helper.update_video(video_id, camera_id=camera_id))
+            response.status_code = 200
+            return response
+        abort(400)
+    elif request.method == 'DELETE':
+        return jsonify_result(db_helper.delete_video(video_id))
