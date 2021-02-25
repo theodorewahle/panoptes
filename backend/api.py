@@ -42,7 +42,8 @@ def verify_token(token):
 #
 # DELETE:
 #   /cameras/id
-#       @returns: nothing or error
+#       @returns: nothing
+#           @success: 204
 #
 @api.route('/cameras', methods=['GET', 'POST'])
 @auth.login_required
@@ -53,9 +54,34 @@ def cameras():
         if check_body(request, 'url'):
             url = request.get_json()['url']
             response = unwrap_db_result(db_helper.add_camera(url))
-            response.status_code = 201
+            response.status_code = 200
             return response
         abort(400)
+    elif request.method == 'DELETE':
+        if check_body(request, 'url'):
+            url = request.get_json()['url']
+            response = jsonify_result(db_helper.delete_camera(url=url))
+            response.status_code = 204
+            return response
+
+@api.route('/cameras/<camera_id>', methods=['GET', 'PUT', 'DELETE'])
+@auth.login_required
+def cameras(camera_id):
+    if request.method == 'GET':
+        return jsonify_result(db_helper.get_camera(camera_id=camera_id))
+    elif request.method == 'PUT':
+        if check_body(request, 'url'):
+            url = request.get_json()['url']
+            response = unwrap_db_result(db_helper.update_camera(url, camera_id))
+            response.status_code = 201
+            return unwrap_db_result(db_helper.update_camera(url, camera_id))
+        abort(400)
+    elif request.method == 'DELETE':
+        response = unwrap_db_result(db_helper.delete_camera(camera_id=camera_id))
+        response.status_code = 204
+        return response
+
+
 
 # INCIDENTS
 # 
@@ -67,16 +93,99 @@ def cameras():
 #   /incidents?camera_id
 #       @returns: all incidents related to specified camera id
 #
-@api.route('/incidents', methods=['GET'])
+@api.route('/incidents', methods=['GET','POST','DELETE'])
 @auth.login_required
 def incidents():
     camera_id = request.args.get('camera_id')
     if camera_id is not None:
         return jsonify_result(db_helper.get_incidents_by_camera_id(camera_id))
-    else:
-        return jsonify_result(db_helper.get_incident())
+    elif request.method == 'GET':
+        if check_body(request, 'object_id', 'video_id'):
+            object_id = request.get_json()['object_id']
+            video_id = request.get_json()['video_id']
+            response = unwrap_db_result(db_helper.get_incident(object_id=object_id, video_id=video_id))
+            response.status_code = 200
+            return response
+        elif check_body(request, 'object_id'):
+            object_id = request.get_json()['object_id']
+            response = unwrap_db_result(db_helper.get_incident(object_id=object_id))
+            response.status_code = 200
+            return response
+        elif check_body(request, 'video_id'):
+            video_id = request.get_json()['video_id']
+            response = unwrap_db_result(db_helper.get_incident(video_id=video_id))
+            response.status_code = 200
+            return response
+        else:
+            return jsonify_result(db_helper.get_incident())
+    elif request.method == 'POST':
+        if check_body(request, 'start_time', 'end_time', 'object_id', 'video_id'):
+            start_time = request.get_json()['start_time']
+            end_time = request.get_json()['end_time']
+            object_id = request.get_json()['object_id']
+            video_id = request.get_json()['video_id']
+            response = unwrap_db_result(db_helper.add_incident(start_time=start_time, end_time=end_time,
+                                                               object_id=object_id, video_id=video_id))
+            response.status_code = 200
+            return response
+        abort(400)
+    elif request.method == 'DELETE':
+        object_id, video_id = None
+        if check_body(request, 'object_id'):
+            object_id = request.get_json()['object_id']
+        if check_body(request, 'video_id'):
+            video_id = request.get_json()['video_id']
+        response = unwrap_db_result(db_helper.delete_incident(object_id=object_id,
+                                                              video_id=video_id))
+        response.status_code = 204
+        return response
 
-
+@api.route('/incidents/<incident_id>', methods=['GET', 'PUT', 'DELETE'])
+@auth.login_required
+def incidents(incident_id):
+    if request.method == 'GET':
+        if check_body(request, 'object_id', 'video_id'):
+            object_id = request.get_json()['object_id']
+            video_id = request.get_json()['video_id']
+            response = unwrap_db_result(db_helper.get_incident(object_id=object_id, video_id=video_id))
+            response.status_code = 200
+            return response
+        elif check_body(request, 'object_id'):
+            object_id = request.get_json()['object_id']
+            response = unwrap_db_result(db_helper.get_incident(object_id=object_id))
+            response.status_code = 200
+            return response
+        elif check_body(request, 'video_id'):
+            video_id = request.get_json()['video_id']
+            response = unwrap_db_result(db_helper.get_incident(video_id=video_id))
+            response.status_code = 200
+            return response
+        return jsonify_result(db_helper.get_incident(incident_id=incident_id))
+    elif request.method == 'PUT':
+        object_id, video_id, start_time, end_time = None
+        if check_body(request, 'object_id'):
+            object_id = request.get_json()['object_id']
+        if check_body(request, 'video_id'):
+            video_id = request.get_json()['video_id']
+        if check_body(request, 'start_time'):
+            start_time = request.get_json()['start_time']
+        if check_body(request, 'end_time'):
+            end_time = request.get_json()['end_time']
+        response = unwrap_db_result(db_helper.get_incident(incident_id=incident_id, object_id=object_id,
+                                                           video_id=video_id, start_time=start_time,
+                                                           end_time=end_time))
+        response.status_code = 200
+        return response
+    elif request.method == 'DELETE':
+        object_id, video_id = None
+        if check_body(request, 'object_id'):
+            object_id = request.get_json()['object_id']
+        if check_body(request, 'video_id'):
+            video_id = request.get_json()['video_id']
+        response = unwrap_db_result(db_helper.delete_incident(incident_id=incident_id, object_id=object_id,
+                                                              video_id=video_id))
+        response.status_code = 204
+        return response
 @api.route('/object_sets', methods=['GET', 'POST'])
 @auth.login_required
 def object_sets():
