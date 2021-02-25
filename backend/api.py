@@ -186,6 +186,36 @@ def incidents(incident_id):
                                                               video_id=video_id))
         response.status_code = 204
         return response
+
+# OBJECT SETS
+# 
+# GET:
+#   /object_sets
+#       @success: 200
+#       @returns: {all object sets}
+#   /object_sets/{id}
+#       @success: 200
+#       @returns: {object set with id}
+#
+# POST:
+#   /object_sets
+#       @body: {name:[object set name]}
+#       @success: 200
+#       @error: 400
+#       @returns: {object set created} | {error}
+#
+# PUT:
+#   /object_sets/{id}
+#       @body: {name:[object name]}
+#       @success: 200
+#       @error: 400
+#       @returns: {updated object set} | {error}
+#
+# DELETE:
+#   /object_sets/{id}
+#       @success: 204
+#       @returns: {nothing}
+#
 @api.route('/object_sets', methods=['GET', 'POST'])
 @auth.login_required
 def object_sets():
@@ -200,7 +230,53 @@ def object_sets():
         abort(400)
 
 
-@api.route('/object', methods=['GET', 'POST'])
+@api.route('/object_sets/<object_set_id>', methods=['GET', 'PUT', 'DELETE'])
+@auth.login_required
+def objects(object_set_id):
+    if request.method == 'GET':
+        return jsonify_result(db_helper.get_object_set(object_set_id=object_set_id))
+    elif request.method == 'PUT':
+        if check_body(request, 'name'):
+            name = request.get_json()['name']
+            response = unwrap_db_result(
+                db_helper.update_object(object_set_id, name=name))
+            response.status_code = 200
+            return response
+        abort(400)
+    elif request.method == 'DELETE':
+        return jsonify_result(db_helper.delete_object_set(object_set_id))
+
+
+# OBJECTS
+# 
+# GET:
+#   /objects
+#       @success: 200
+#       @returns: {all objects}
+#   /objects/{id}
+#       @success: 200
+#       @returns: {object with id}
+#
+# POST:
+#   /objects
+#       @body: {name:[object name]} & {object_set_id:[object set id]}
+#       @success: 200
+#       @error: 400
+#       @returns: {object created} | {error}
+#
+# PUT:
+#   /objects/{id}
+#       @body: {name:[object name]} | {object_set_id:[object set id]}
+#       @success: 200
+#       @error: 400
+#       @returns: {updated object} | {error}
+#
+# DELETE:
+#   /objects/{id}
+#       @success: 204
+#       @returns: {nothing}
+#
+@api.route('/objects', methods=['GET', 'POST'])
 @auth.login_required
 def objects():
     if request.method == 'GET':
@@ -211,11 +287,70 @@ def objects():
             object_set_id = request.get_json()['object_set_id']
             response = unwrap_db_result(
                 db_helper.add_object(name, object_set_id))
-            response.status_code = 201
+            response.status_code = 200
             return response
         abort(400)
 
 
+@api.route('/objects/<object_id>', methods=['GET', 'PUT', 'DELETE'])
+@auth.login_required
+def objects(object_id):
+    if request.method == 'GET':
+        return jsonify_result(db_helper.get_object(object_id=object_id))
+    elif request.method == 'PUT':
+        if check_body(request, 'name', 'object_set_id'):
+            name = request.get_json()['name']
+            object_set_id = request.get_json()['object_set_id']
+            response = unwrap_db_result(
+                db_helper.update_object(object_id, name=name, object_set_id=object_set_id))
+            response.status_code = 200
+            return response
+        if check_body(request, 'name'):
+            name = request.get_json()['name']
+            response = unwrap_db_result(
+                db_helper.update_object(object_id, name=name))
+            response.status_code = 200
+            return response
+        if check_body(request, 'object_set_id'):
+            object_set_id = request.get_json()['object_set_id']
+            response = unwrap_db_result(
+                db_helper.update_object(object_id, object_set_id=object_set_id))
+            response.status_code = 200
+            return response
+        abort(400)
+    elif request.method == 'DELETE':
+        return jsonify_result(db_helper.delete_object(object_id))
+
+
+# VIDEOS
+# 
+# GET:
+#   /videos
+#       @success: 200
+#       @returns: {all videos}
+#   /videos/{id}
+#       @success: 200
+#       @returns: {video with id}
+#
+# POST:
+#   /videos
+#       @body: {file_path:[video file path]} & {camera_id:[camera id]}
+#       @success: 200
+#       @error: 400
+#       @returns: {video created} | {error}
+#
+# PUT:
+#   /videos/{id}
+#       @body: {file_path:[video file path]} | {camera_id:[camera id]}
+#       @success: 200
+#       @error: 400
+#       @returns: {updated camera} | {error}
+#
+# DELETE:
+#   /videos/{id}
+#       @success: 204
+#       @returns: {nothing}
+#
 @api.route('/videos', methods=['GET', 'POST'])
 @auth.login_required
 def videos():
@@ -230,3 +365,33 @@ def videos():
             response.status_code = 201
             return response
         abort(400)
+
+
+@api.route('/videos/<video_id>', methods=['GET', 'PUT', 'DELETE'])
+@auth.login_required
+def videos(video_id):
+    if request.method == 'GET':
+        return jsonify_result(db_helper.get_video(video_id=video_id))
+    elif request.method == 'PUT':
+        if check_body(request, 'file_path', 'camera_id'):
+            file_path = request.get_json()['file_path']
+            camera_id = request.get_json()['camera_id']
+            response = unwrap_db_result(
+                db_helper.update_video(video_id, file_path=file_path, camera_id=camera_id))
+            response.status_code = 200
+            return response
+        if check_body(request, 'file_path'):
+            file_path = request.get_json()['file_path']
+            response = unwrap_db_result(
+                db_helper.update_video(video_id, file_path=file_path))
+            response.status_code = 200
+            return response
+        if check_body(request, 'camera_id'):
+            camera_id = request.get_json()['camera_id']
+            response = unwrap_db_result(
+                db_helper.update_video(video_id, camera_id=camera_id))
+            response.status_code = 200
+            return response
+        abort(400)
+    elif request.method == 'DELETE':
+        return jsonify_result(db_helper.delete_video(video_id))
