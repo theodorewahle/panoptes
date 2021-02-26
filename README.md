@@ -50,3 +50,5 @@ This is the repo!
 
 MIT License
 
+# Attributions
+Eye icon: https://www.flaticon.com/authors/gregor-cresnar
