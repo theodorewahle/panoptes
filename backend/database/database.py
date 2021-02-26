@@ -32,15 +32,17 @@ class DatabaseHelper:
 
     # CRUD database helper methods called by server endpoints (Camera, Video, Incident, Object, Object Set)
     # Camera CRUD:
-    def get_camera(self, camera_id=None, url=None):
+    def get_camera(self, camera_id=None, title=None, url=None):
         if camera_id is not None:
             return self.db.session.query(models.Camera).filter(models.Camera.camera_id == camera_id).order_by(models.Camera.camera_id.asc()).all()
         elif url is not None:
             return self.db.session.query(models.Camera).filter(models.Camera.url == url).order_by(models.Camera.camera_id.asc()).all()
+        elif title is not None:
+            return self.db.session.query(models.Camera).filter(models.Camera.title == title).order_by(models.Camera.camera_id.asc()).all()
         return self.db.session.query(models.Camera).order_by(models.Camera.camera_id.asc()).all()
 
-    def add_camera(self, url):
-        camera = models.Camera(url=url)
+    def add_camera(self, title, url):
+        camera = models.Camera(title=title, url=url)
         try:
             self.db.session.add(camera)
             self.db.session.commit()
@@ -49,7 +51,7 @@ class DatabaseHelper:
             self.db.session.rollback()
             return e
 
-    def update_camera(self, camera_id, url):
+    def update_camera(self, camera_id, title=None, url=None):
         camera = self.db.session.query(models.Camera).filter(
             models.Camera.camera_id == camera_id).first()
 
@@ -57,17 +59,23 @@ class DatabaseHelper:
             return camera
 
         try:
-            camera.url = url
+            if title is not None:
+                camera.title = title
+            if url is not None:
+                camera.url = url
             self.db.session.commit()
             return camera
         except SQLAlchemyError as e:
             self.db.session.rollback()
             return e
 
-    def delete_camera(self, camera_id=None, url=None):
+    def delete_camera(self, camera_id=None, title=None, url=None):
         if camera_id is not None:
             self.db.session.query(models.Camera).filter(
                 models.Camera.camera_id == camera_id).delete()
+        elif title is not None:
+            self.db.session.query(models.Camera).filter(
+                models.Camera.title == title).delete()
         elif url is not None:
             self.db.session.query(models.Camera).filter(
                 models.Camera.url == url).delete()

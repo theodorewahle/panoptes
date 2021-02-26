@@ -34,14 +34,14 @@ def verify_token(token):
 #
 # POST:
 #   /cameras
-#       @body: {url:[url]}
+#       @body: {url:[url]} & {title:[title]}
 #       @success: 201
 #       @error: 400
 #       @returns: {camera created} | {error}
 #
 # PUT:
 #   /cameras/{id}
-#       @body: {url:[url]}
+#       @body: {url:[url]} | {title:[title]}
 #       @success: 200
 #       @error: 400
 #       @returns: {updated camera} | {error}
@@ -57,9 +57,9 @@ def cameras():
     if request.method == 'GET':
         return jsonify_result(db_helper.get_camera())
     elif request.method == 'POST':
-        body = unwrap_body(request, 'url')
-        if body is not None:
-            response = unwrap_db_result(db_helper.add_camera(body.get('url')))
+        body = unwrap_body(request, 'url', 'title')
+        if check_body(request, 'url', 'title'):
+            response = unwrap_db_result(db_helper.add_camera(body.get('title'), body.get('url')))
             response.status_code = 201
             return response
         abort(400)
@@ -71,9 +71,9 @@ def cameras_id(camera_id):
     if request.method == 'GET':
         return jsonify_result(db_helper.get_camera(camera_id=camera_id))
     elif request.method == 'PUT':
-        body = unwrap_body(request, 'url')
+        body = unwrap_body(request, 'url', 'title')
         if body is not None:
-            return unwrap_db_result(db_helper.update_camera(camera_id, body.get('url')))
+            return unwrap_db_result(db_helper.update_camera(camera_id, title=body.get('title'), url=body.get('url')))
         abort(400)
     elif request.method == 'DELETE':
         db_helper.delete_camera(camera_id=camera_id)
@@ -130,7 +130,7 @@ def incidents():
         else:
             return jsonify_result(db_helper.get_incident(object_id=body.get('object_id'), video_id=body.get('video_id')))
     elif request.method == 'POST':
-        if body is not None:
+        if check_body(request, 'object_id', 'video_id', 'start_time', 'end_time'):
             response = unwrap_db_result(db_helper.add_incident(start_time=body.get('start_time'), end_time=body.get('end_time'),
                                                                object_id=body.get('object_id'), video_id=body.get('video_id')))
             response.status_code = 201
@@ -199,7 +199,7 @@ def object_sets():
         return jsonify_result(db_helper.get_object_set())
     elif request.method == 'POST':
         body = unwrap_body(request, 'name')
-        if body is not None:
+        if check_body(request, 'name'):
             response = unwrap_db_result(db_helper.add_object_set(body.get('name')))
             response.status_code = 201
             return response
@@ -260,7 +260,7 @@ def objects():
         return jsonify_result(db_helper.get_object())
     elif request.method == 'POST':
         body = unwrap_body(request, 'name', 'object_set_id')
-        if body is not None:
+        if check_body(request, 'name', 'object_set_id'):
             response = unwrap_db_result(
                 db_helper.add_object(body.get('name'), body.get('object_set_id')))
             response.status_code = 201
@@ -320,7 +320,7 @@ def videos():
         return jsonify_result(db_helper.get_video())
     elif request.method == 'POST':
         body = unwrap_body(request, 'file_path', 'camera_id')
-        if body is not None:
+        if check_body(request, 'file_path', 'camera_id'):
             response = unwrap_db_result(
                 db_helper.add_video(body.get('file_path'), body.get('camera_id')))
             response.status_code = 201
