@@ -12,6 +12,7 @@ const CONSTANTS = {
   API_OBJECT_SETS: '/object_sets',
   API_OBJECTS: '/objects',
   API_VIDEOS: '/videos',
+  SECRET_TOKEN_STORED_IN_A_NOT_SO_SECRET_LOCATION: 'secret-token-1',
 
   SOCKET_IO_ENDPOINT_DEV: 'http://localhost:3000',
   SOCKET_IO_ENDPOINT_PROD: 'TODO',

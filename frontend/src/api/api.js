@@ -14,6 +14,10 @@ import {
 import axios from 'axios';
 import ENV from '../env';
 
+axios.defaults.headers.common = {
+  Authorization: `Bearer ${ENV.SECRET_TOKEN_STORED_IN_A_NOT_SO_SECRET_LOCATION}`,
+};
+
 // TODO: fetch USER data (not all)
 export const fetchCameras = () => {
   const endpoint = `${ENV.API_ENDPOINT}${ENV.API_CAMERAS}`;
