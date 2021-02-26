@@ -36,7 +36,8 @@ class Incident(Base):
         'Video', primaryjoin='Incident.video_id == Video.video_id', backref='incidents')
 
     def serialize(self):
-        return {'start_time': self.start_time, 
+        return {'incident_id': self.incident_id,
+        'start_time': self.start_time,
         'end_time': self.end_time,
         'object_id': self.object_id,
         'video_id': self.video_id}
