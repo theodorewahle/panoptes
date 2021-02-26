@@ -22,7 +22,7 @@ import { initStreams, initRecentIncidents } from '../video/data';
 import ENV from '../../env';
 import styles from './PageContainer.module.scss';
 
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+// import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 const PageHeader = () => {
   const dispatch = useDispatch();
@@ -77,7 +77,7 @@ const PageContainer = () => {
   let display = null;
   // TODO holding off linking up to router incase server-side rendering changes this
   if (page === ENV.PAGE_LANDING) {
-    display = <LandingPage />;
+    display = <LandingPage mainDataModel={mainDataModel} />;
   } else if (page === ENV.PAGE_SEARCH_RESULTS) {
     display = null;
   } else if (page === ENV.PAGE_SEARCH_RESULTS_NONE) {
@@ -85,7 +85,7 @@ const PageContainer = () => {
   } else if (page === ENV.PAGE_INCIDENT_VIEWER) {
     display = null;
   } else if (page === ENV.PAGE_LIVE_STREAM) {
-    display = null;
+    display = <LiveStreamPage mainDataModel={mainDataModel} />;
   } else if (page === ENV.PAGE_OBJECT_SET) {
     display = null;
   }
@@ -95,21 +95,22 @@ const PageContainer = () => {
     <div className={styles.PageContainer}>
       <PageHeader />
       <Video />
-
-      <Router>
-        <div>
-          <Switch>
-            <Route path="/cameras/alpha_chi_parking_lot">
-              <LiveStreamPage mainDataModel={mainDataModel} />
-            </Route>
-            <Route path="/">
-              <LandingPage mainDataModel={mainDataModel} />
-            </Route>
-          </Switch>
-        </div>
-      </Router>
+      {display}
     </div>
   );
 };
 
 export default PageContainer;
+
+// {/* <Router>
+// <div>
+//   <Switch>
+//     <Route path="/">
+//       <LandingPage mainDataModel={mainDataModel} />
+//     </Route>
+//     <Route path="/cameras/alpha_chi_parking_lot">
+//       <LiveStreamPage mainDataModel={mainDataModel} />
+//     </Route>
+//   </Switch>
+// </div>
+// </Router> */}
