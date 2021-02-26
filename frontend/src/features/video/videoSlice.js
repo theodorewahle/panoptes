@@ -1,15 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { initRecentIncidents, objectSets } from '../video/data';
+import { initRecentIncidents, mainDataModel, objectSets } from '../video/data';
 import ENV from '../../env';
 
 export const videoSlice = createSlice({
   name: 'video',
   initialState: {
-    cameras: [],
-    incidents: [],
-    objectSets: objectSets, // [{name, object_set_id, objects=[name, ...]}, ...]
+    cameras: [], // [{ title, url }, ...]
+    incidents: [], // [{ }]
+    objectSets: objectSets, // [{ name, object_set_id, objects=[name, ...] }, ...]
     objects: [], // not using
     videos: [],
+    mainDataModel: mainDataModel,
 
     statusCameras: ENV.STATUS_IDLE,
     statusIncidents: ENV.STATUS_IDLE,
@@ -47,6 +48,9 @@ export const videoSlice = createSlice({
       });
     },
     setVideos: (state, action) => {
+      state.videos = action.payload;
+    },
+    setMainDataModel: (state, action) => {
       state.videos = action.payload;
     },
 
@@ -99,6 +103,7 @@ export const {
   setObjectSets,
   setObjects,
   setVideos,
+  setMainDataModel,
 
   setStatusCameras,
   setStatusIncidents,
@@ -120,6 +125,7 @@ export const selectIncidents = (state) => state.video.incidents;
 export const selectObjectSets = (state) => state.video.objectSets;
 export const selectObjects = (state) => state.video.objects;
 export const selectVideos = (state) => state.video.videos;
+export const selectMainDataModel = (state) => state.mainDataModel;
 
 export const selectStatusCameras = (state) => state.video.statusCameras;
 export const selectStatusIncidents = (state) => state.video.statusIncidents;

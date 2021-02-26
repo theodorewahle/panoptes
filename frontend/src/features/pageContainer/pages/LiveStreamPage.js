@@ -5,14 +5,18 @@ import {
   selectRecentIncidents,
   selectCurIncidentIndex,
 } from '../../video/videoSlice';
+
 import VideoThumbnails from '../../video/VideoThumbnails';
-import styles from './LiveStreamPage.module.scss';
-import ENV from '../../../env';
 import ReactPlayer from 'react-player';
+
+import ENV from '../../../env';
+import styles from './LiveStreamPage.module.scss';
 
 const LiveStreamPage = () => {
   const recentIncidents = useSelector(selectRecentIncidents);
   const curIncidentIndex = useSelector(selectCurIncidentIndex);
+  // TODO: display objects being tracked (currently no link to cameras in backend)
+  // TODO: add object set button/form/modal
   return (
     <div>
       <div className={styles.containerLiveStream}>

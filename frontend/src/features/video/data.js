@@ -72,6 +72,59 @@ export const initRecentIncidents = [
   },
 ];
 
+// placeholder until 'title' or 'name' is added to GET /cameras
+export const mainDataModel = [
+  {
+    title: 'Beautiful Nature',
+    url: 'https://www.youtube.com/watch?v=P7d1H83IcjE',
+    camera_id: '0',
+    // ...,
+  },
+  {
+    title: 'Alpha Chi Alpha Parking Lot',
+    url: 'http://admin:admin@172.24.28.36/tmpfs/auto.jpg',
+    camera_id: '1',
+    incidents: [
+      {
+        url: 'http://127.0.0.1:8000/incident/demo/demo1.mp4',
+        startTime: '8:01PM',
+        endTime: '8:02PM',
+        objectsIdentified: ['Fan', 'Light', 'JT'],
+      },
+      {
+        url: 'http://127.0.0.1:8000/incident/demo/demo2.mp4',
+        startTime: '9:01PM',
+        endTime: '9:02PM',
+        objectsIdentified: ['Windows', 'Computer'],
+      },
+      {
+        url: 'http://127.0.0.1:8000/incident/demo/demo3.mp4',
+        startTime: '10:35PM',
+        endTime: '10:36PM',
+        objectsIdentified: ['Fan', 'Light', 'JT', 'Charles'],
+      },
+      {
+        url: 'http://127.0.0.1:8000/incident/demo/demo4.mp4',
+        startTime: '12:42PM',
+        endTime: '12:43PM',
+        objectsIdentified: ['Fan', 'Light', 'JT'],
+      },
+      {
+        url: 'http://127.0.0.1:8000/incident/demo/demo5.mp4',
+        startTime: '1:52am',
+        endTime: '1:52am',
+        objectsIdentified: ['Fan', 'Light', 'JT'],
+      },
+    ],
+    objectSets: 'SEE BELOW', // unsure if objectSets correlate with camera_ids
+  },
+  {
+    title: 'Random Scenery',
+    url: 'https://www.youtube.com/watch?v=hZSPmqAddzs',
+    camera_id: '2',
+  },
+];
+
 // placeholder until GET /objects & GET /object_sets is merged
 export const objectSets = [
   {
