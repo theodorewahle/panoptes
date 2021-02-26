@@ -71,3 +71,17 @@ export const initRecentIncidents = [
     type: 'video/mp4',
   },
 ];
+
+// placeholder until GET /objects & GET /object_sets is merged
+export const objectSets = [
+  {
+    name: 'Vehicles',
+    object_set_id: 'NO REASON TO DISPLAY THIS',
+    objects: ['Red Truck', 'Blue Car', 'Green Car', 'Pink Car'],
+  },
+  {
+    name: 'Kitchen Appliances',
+    object_set_id: 'NO REASON TO DISPLAY THIS',
+    objects: ['Knife', 'Fork', 'Spoon', 'Plates', 'Bowls'],
+  },
+];

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { initRecentIncidents } from '../video/data';
+import { initRecentIncidents, objectSets } from '../video/data';
 import ENV from '../../env';
 
 export const videoSlice = createSlice({
@@ -7,8 +7,8 @@ export const videoSlice = createSlice({
   initialState: {
     cameras: [],
     incidents: [],
-    objectSets: [],
-    objects: [],
+    objectSets: objectSets, // [{name, object_set_id, objects=[name, ...]}, ...]
+    objects: [], // not using
     videos: [],
 
     statusCameras: ENV.STATUS_IDLE,
@@ -34,8 +34,17 @@ export const videoSlice = createSlice({
     setObjectSets: (state, action) => {
       state.objectSets = action.payload;
     },
-    setObjects: (state, action) => {
-      state.objects = action.payload;
+    addObjectSet: (state, action) => {
+      const { setName } = action.payload;
+      state.objectSets.push({ setName, objects: [] });
+    },
+    addObjectToSet: (state, action) => {
+      const { setName, objectName } = action.payload;
+      state.objectSets.forEach((objectSet) => {
+        if (objectSet.name === setName) {
+          objectSet.objects.push(objectName);
+        }
+      });
     },
     setVideos: (state, action) => {
       state.videos = action.payload;

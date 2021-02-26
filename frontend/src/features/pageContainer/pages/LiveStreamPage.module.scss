@@ -1,9 +1,9 @@
 .titleVideoStreams {
-    padding-left: 64px;
-    font-weight: bold;
-    font-size: 16px;
-  }
-  
+  padding-left: 64px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
 .titleRecentIncidents {
   padding-left: 64px;
   font-weight: bold;
@@ -12,7 +12,7 @@
 
 .containerVideoStreams {
   padding: 32px;
-  background-color: yellow
+  background-color: yellow;
 }
 
 .containerRecentIncidents {
@@ -29,15 +29,15 @@
   align-items: center;
 }
 
-.containerVideo {
-  padding-top: 48px;
-  padding-left: 128px;
-}
-
+// .containerVideo {
+//   padding-top: 48px;
+//   padding-left: 128px;
+// }
 
 .containerStreamData {
   padding: 16px;
   padding-top: 0;
   margin-right: 32px;
   height: 405px;
-  width: 784px;}
+  width: 784px;
+}
