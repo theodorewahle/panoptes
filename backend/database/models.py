@@ -12,10 +12,12 @@ class Camera(Base):
     __tablename__ = 'cameras'
 
     camera_id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
+    title = Column(String(100), unique=True)
     url = Column(String(100), unique=True)
 
     def serialize(self):
-        return {'camera_id': self.camera_id, 
+        return {'camera_id': self.camera_id,
+        'title': self.title, 
         'url': self.url}
 
 

@@ -18,8 +18,15 @@ def jsonify_result(results):
     # check if results are a list or not
     if type(results) == list:
 
-        # jsonify each element of result
-        return jsonify(list(map(lambda result: result.serialize(), results)))
+        # check if list of tuples
+        if all(isinstance(model_object, tuple) for model_object in results):
+            serialized_result = []
+            for model_objects in results:
+                serialized_result.append(list(map(lambda model_object: model_object.serialize(), model_objects)))
+            return jsonify(serialized_result)
+        else:
+            # jsonify each element of result
+            return jsonify(list(map(lambda result: result.serialize(), results)))
     else:
         return jsonify(results.serialize())
 

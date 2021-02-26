@@ -66,7 +66,8 @@ def ping():
     return "pong"
 
 
-@application.route('/incident/<path:path>')
-def send_static_file(path):
+@application.route('/incident/<video_id>')
+def send_static_file(video_id):
     # Example: http://127.0.0.1:8000/incident/20210218/A210218_003304_003318.mp4
-    return send_from_directory('incidents/converted', path)
+    result = db_helper.get_video(video_id=video_id)
+    return send_from_directory('incidents/converted', result.file_path)
