@@ -13,6 +13,7 @@ import {
   selectPage,
   selectSearchInput,
   setSearchInput,
+  setPage,
 } from './pageContainerSlice';
 import Video from '../video/Video';
 import { TextField, Button } from '@material-ui/core';
@@ -36,10 +37,16 @@ const PageHeader = () => {
     console.log('TODO: processed server-side or client-side?');
     dispatch(setSearchInput('TODO'));
   };
+  // TODO: CSS hover cursor over title
   return (
     <div className={styles.header}>
       <div className={styles.headerContent}>
-        <div className={styles.headerText}>Panoptes</div>
+        <div
+          className={styles.headerText}
+          onClick={() => dispatch(setPage(ENV.PAGE_LANDING))}
+        >
+          Panoptes
+        </div>
         <form className={styles.searchBar} onSubmit={(e) => onSearch(e)}>
           <TextField
             id="outlined-basic"
