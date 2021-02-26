@@ -280,7 +280,8 @@ def objects_id(object_id):
                 db_helper.update_object(object_id, name=body.get('name'), object_set_id=body.get('object_set_id')))
         abort(400)
     elif request.method == 'DELETE':
-        return jsonify_result(db_helper.delete_object(object_id))
+        db_helper.delete_object(object_id)
+        return make_response('', 204)
 
 
 # VIDEOS
