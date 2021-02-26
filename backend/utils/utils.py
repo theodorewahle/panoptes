@@ -39,8 +39,13 @@ def check_body(request, *keys):
 
 def unwrap_body(request, *keys):
 
-    # check for empty body
-    if not check_body(request, *keys):
+    # check for completely empty body
+    not_empty = False
+    for key in keys:
+        if check_body(request, key):
+            not_empty = True
+
+    if not not_empty:
         return None
 
     body = {}

@@ -153,7 +153,7 @@ def incidents_id(incident_id):
         return jsonify_result(db_helper.get_incident(incident_id=incident_id))
     elif request.method == 'PUT':
         if body is not None:
-            return unwrap_db_result(db_helper.get_incident(incident_id=incident_id, object_id=body.get('object_id'),
+            return unwrap_db_result(db_helper.update_incident(incident_id=incident_id, object_id=body.get('object_id'),
                                                            video_id=body.get('video_id'), start_time=body.get('start_time'),
                                                            end_time=body.get('end_time')))
         abort(400)
@@ -280,8 +280,7 @@ def objects_id(object_id):
                 db_helper.update_object(object_id, name=body.get('name'), object_set_id=body.get('object_set_id')))
         abort(400)
     elif request.method == 'DELETE':
-        db_helper.delete_object(object_id)
-        return make_response('', 204)
+        return jsonify_result(db_helper.delete_object(object_id))
 
 
 # VIDEOS
