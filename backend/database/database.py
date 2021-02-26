@@ -34,10 +34,10 @@ class DatabaseHelper:
     # Camera CRUD:
     def get_camera(self, camera_id=None, url=None):
         if camera_id is not None:
-            return self.db.session.query(models.Camera).filter(models.Camera.camera_id == camera_id).all()
+            return self.db.session.query(models.Camera).filter(models.Camera.camera_id == camera_id).order_by(models.Camera.camera_id.asc()).all()
         elif url is not None:
-            return self.db.session.query(models.Camera).filter(models.Camera.url == url).all()
-        return self.db.session.query(models.Camera).all()
+            return self.db.session.query(models.Camera).filter(models.Camera.url == url).order_by(models.Camera.camera_id.asc()).all()
+        return self.db.session.query(models.Camera).order_by(models.Camera.camera_id.asc()).all()
 
     def add_camera(self, url):
         camera = models.Camera(url=url)
@@ -72,12 +72,12 @@ class DatabaseHelper:
     # Video CRUD:
     def get_video(self, video_id=None, file_path=None, camera_id=None):
         if video_id is not None:
-            return self.db.session.query(models.Video).filter(models.Video.video_id == video_id).all()
+            return self.db.session.query(models.Video).filter(models.Video.video_id == video_id).order_by(models.Video.video_id.asc()).all()
         elif file_path is not None:
-            return self.db.session.query(models.Video).filter(models.Video.file_path == file_path).all()
+            return self.db.session.query(models.Video).filter(models.Video.file_path == file_path).order_by(models.Video.video_id.asc()).all()
         elif camera_id is not None:
-            return self.db.session.query(models.Video).filter(models.Video.camera_id == camera_id).all()
-        return self.db.session.query(models.Video).all()
+            return self.db.session.query(models.Video).filter(models.Video.camera_id == camera_id).order_by(models.Video.video_id.asc()).all()
+        return self.db.session.query(models.Video).order_by(models.Video.video_id.asc()).all()
 
     def add_video(self, file_path, camera_id):
         video = models.Video(file_path=file_path, camera_id=camera_id)
@@ -119,15 +119,15 @@ class DatabaseHelper:
     def get_incident(self, incident_id=None, object_id=None, video_id=None):
         if incident_id is not None:
             return self.db.session.query(models.Incident) \
-                .filter(models.Incident.incident_id == incident_id).all()
+                .filter(models.Incident.incident_id == incident_id).order_by(models.Incident.incident_id.asc()).all()
         if object_id is not None and video_id is not None:
             return self.db.session.query(models.Incident) \
-                .filter(models.Incident.object_id == object_id, models.Incident.video_id == video_id).all()
+                .filter(models.Incident.object_id == object_id, models.Incident.video_id == video_id).order_by(models.Incident.incident_id.asc()).all()
         elif object_id is not None:
-            return self.db.session.query(models.Incident).filter(models.Incident.object_id == object_id).all()
+            return self.db.session.query(models.Incident).filter(models.Incident.object_id == object_id).order_by(models.Incident.incident_id.asc()).all()
         elif video_id is not None:
-            return self.db.session.query(models.Incident).filter(models.Incident.video_id == video_id).all()
-        return self.db.session.query(models.Incident).all()
+            return self.db.session.query(models.Incident).filter(models.Incident.video_id == video_id).order_by(models.Incident.incident_id.asc()).all()
+        return self.db.session.query(models.Incident).order_by(models.Incident.incident_id.asc()).all()
 
     def get_incidents_by_camera_id(self, camera_id):
         return self.db.session.query(models.Incident) \
@@ -137,7 +137,7 @@ class DatabaseHelper:
             .all()
 
     def add_incident(self, start_time, end_time, object_id, video_id):
-        incident = models.Video(
+        incident = models.Incident(
             start_time=start_time, end_time=end_time, object_id=object_id, video_id=video_id)
         try:
             self.db.session.add(incident)
@@ -187,12 +187,12 @@ class DatabaseHelper:
     # Object CRUD:
     def get_object(self, object_id=None, name=None, object_set_id=None):
         if object_id is not None:
-            return self.db.session.query(models.Object).filter(models.Object.object_id == object_id).all()
+            return self.db.session.query(models.Object).filter(models.Object.object_id == object_id).order_by(models.Object.object_id.asc()).all()
         elif name is not None:
-            return self.db.session.query(models.Object).filter(models.Object.name == name).all()
+            return self.db.session.query(models.Object).filter(models.Object.name == name).order_by(models.Object.object_id.asc()).all()
         elif object_set_id is not None:
-            return self.db.session.query(models.Object).filter(models.Object.object_set_id == object_set_id).all()
-        return self.db.session.query(models.Object).all()
+            return self.db.session.query(models.Object).filter(models.Object.object_set_id == object_set_id).order_by(models.Object.object_id.asc()).all()
+        return self.db.session.query(models.Object).order_by(models.Object.object_id.asc()).all()
 
     def add_object(self, name, object_set_id):
         object = models.Object(name=name, object_set_id=object_set_id)
@@ -233,10 +233,10 @@ class DatabaseHelper:
     # Object set CRUD:
     def get_object_set(self, object_set_id=None, name=None):
         if object_set_id is not None:
-            return self.db.session.query(models.ObjectSet).filter(models.ObjectSet.object_set_id == object_set_id).all()
+            return self.db.session.query(models.ObjectSet).filter(models.ObjectSet.object_set_id == object_set_id).order_by(models.ObjectSet.object_set_id.asc()).all()
         elif name is not None:
-            return self.db.session.query(models.ObjectSet).filter(models.ObjectSet.name == name).all()
-        return self.db.session.query(models.ObjectSet).all()
+            return self.db.session.query(models.ObjectSet).filter(models.ObjectSet.name == name).order_by(models.ObjectSet.object_set_id.asc()).all()
+        return self.db.session.query(models.ObjectSet).order_by(models.ObjectSet.object_set_id.asc()).all()
 
     def add_object_set(self, name):
         object_set = models.ObjectSet(name=name)
@@ -251,6 +251,10 @@ class DatabaseHelper:
     def update_object_set(self, object_set_id, name):
         object_set = self.db.session.query(models.ObjectSet).filter(
             models.ObjectSet.object_set_id == object_set_id).first()
+
+        if object_set is None:
+            return None
+            
         try:
             object_set.name = name
             self.db.session.commit()

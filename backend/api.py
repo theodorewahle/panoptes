@@ -67,7 +67,7 @@ def cameras():
 
 @api.route('/cameras/<camera_id>', methods=['GET', 'PUT', 'DELETE'])
 @auth.login_required
-def cameras(camera_id):
+def cameras_id(camera_id):
     if request.method == 'GET':
         return jsonify_result(db_helper.get_camera(camera_id=camera_id))
     elif request.method == 'PUT':
@@ -132,7 +132,7 @@ def incidents():
     elif request.method == 'POST':
         if body is not None:
             response = unwrap_db_result(db_helper.add_incident(start_time=body.get('start_time'), end_time=body.get('end_time'),
-                                                               object_id=body.get('object_ud'), video_id=body.get('video_id')))
+                                                               object_id=body.get('object_id'), video_id=body.get('video_id')))
             response.status_code = 201
             return response
         abort(400)
@@ -145,7 +145,7 @@ def incidents():
 
 @api.route('/incidents/<incident_id>', methods=['GET', 'PUT', 'DELETE'])
 @auth.login_required
-def incidents(incident_id):
+def incidents_id(incident_id):
     body = unwrap_body(request, 'object_id', 'video_id', 'start_time', 'end_time')
     if request.method == 'GET':
         if body is not None:
@@ -208,7 +208,7 @@ def object_sets():
 
 @api.route('/object_sets/<object_set_id>', methods=['GET', 'PUT', 'DELETE'])
 @auth.login_required
-def objects(object_set_id):
+def object_sets_id(object_set_id):
     if request.method == 'GET':
         return jsonify_result(db_helper.get_object_set(object_set_id=object_set_id))
     elif request.method == 'PUT':
@@ -270,7 +270,7 @@ def objects():
 
 @api.route('/objects/<object_id>', methods=['GET', 'PUT', 'DELETE'])
 @auth.login_required
-def objects(object_id):
+def objects_id(object_id):
     if request.method == 'GET':
         return jsonify_result(db_helper.get_object(object_id=object_id))
     elif request.method == 'PUT':
@@ -330,7 +330,7 @@ def videos():
 
 @api.route('/videos/<video_id>', methods=['GET', 'PUT', 'DELETE'])
 @auth.login_required
-def videos(video_id):
+def videos_id(video_id):
     if request.method == 'GET':
         return jsonify_result(db_helper.get_video(video_id=video_id))
     elif request.method == 'PUT':

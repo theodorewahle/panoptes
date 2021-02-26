@@ -40,7 +40,7 @@ def check_body(request, *keys):
 def unwrap_body(request, *keys):
 
     # check for empty body
-    if not check_body(request, keys):
+    if not check_body(request, *keys):
         return None
 
     body = {}
@@ -59,6 +59,8 @@ def unwrap_body(request, *keys):
 def unwrap_db_result(result):
 
     # check for error
-    if isinstance(result, SQLAlchemyError):
+    if result is None:
+        abort(400)
+    elif isinstance(result, SQLAlchemyError):
         abort(400, result)
     return jsonify_result(result)
