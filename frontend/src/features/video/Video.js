@@ -23,11 +23,12 @@ const Video = (props) => {
     index,
     videoType,
     pageLink,
+    cameraIndex,
   } = props;
   // TODO: have prop be option of size in text then convert
   //       to dimensions here
   if (width == null || height == null || url == null) {
-    console.error('"width", "height", & "url" params in Video cannot be null');
+    // console.error('"width", "height", & "url" params in Video cannot be null');
     return null;
   }
   let displayTitle = title;
@@ -36,13 +37,17 @@ const Video = (props) => {
   }
 
   const onSelect = () => {
+    console.log(`title: ${title}, isThumbnail: ${isThumbnail}`);
+    console.log(`index: ${index}, videoType: ${videoType}, url: ${url}`);
+    console.log(`cameraIndex: ${cameraIndex}, pageLink: ${pageLink}`);
+    if (videoType === ENV.VIDEO_TYPE_CAMERA) {
+      dispatch(setCurCameraIndex(index));
+    } else if (videoType === ENV.VIDEO_TYPE_INCIDENT) {
+      if (cameraIndex !== -1) dispatch(setCurCameraIndex(cameraIndex));
+      dispatch(setCurIncidentIndex(index));
+    }
     if (pageLink !== ENV.PAGE_NO_LINK) {
       dispatch(setPage(pageLink));
-      if (videoType === ENV.VIDEO_TYPE_CAMERA) {
-        dispatch(setCurCameraIndex(index));
-      } else if (videoType === ENV.VIDEO_TYPE_INCIDENT) {
-        dispatch(setCurIncidentIndex(index));
-      }
     }
   };
 
@@ -62,7 +67,11 @@ const Video = (props) => {
   // const isThumbnail = url.includes('.jpg');
 
   return (
-    <div onClick={onSelect} className={styles.video} style={{ width, height }}>
+    <div
+      onClick={() => onSelect()}
+      className={styles.video}
+      style={{ width, height }}
+    >
       {display}
       <div className={styles.title}>{displayTitle}</div>
     </div>

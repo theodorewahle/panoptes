@@ -92,10 +92,13 @@ const PageContainer = () => {
     display = null;
   } else if (page === ENV.PAGE_SEARCH_RESULTS_NONE) {
     display = null;
-  } else if (page === ENV.PAGE_INCIDENT_VIEWER) {
-    display = <IncidentViewerPage />;
-  } else if (page === ENV.PAGE_LIVE_STREAM) {
+  } else if (
+    page === ENV.PAGE_INCIDENT_VIEWER ||
+    page === ENV.PAGE_LIVE_STREAM
+  ) {
     display = <LiveStreamPage />;
+    // } else if (page === ENV.PAGE_LIVE_STREAM) {
+    //   display = <LiveStreamPage />;
   } else if (page === ENV.PAGE_OBJECT_SET) {
     display = null;
   }

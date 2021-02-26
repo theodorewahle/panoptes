@@ -19,7 +19,9 @@ const LandingPage = () => {
   }
   let cameras = [];
   let incidents = []; // TODO: splice together most recent incidents from all cameras
+  let cameraIndex = -1;
   mainDataModel.forEach((cameraObj) => {
+    cameraIndex++;
     cameras.push({ title: cameraObj.title, url: cameraObj.url });
     cameraObj.incidents.forEach((incident) => {
       console.log(JSON.stringify(incident));
@@ -29,12 +31,15 @@ const LandingPage = () => {
         startTime: incident.startTime,
         endTime: incident.endTime,
         objectsIdentified: incident.objectsIdentified,
+        cameraIndex,
       };
       incidents.push(thumbnail);
     });
   });
 
   // TODO: CSS cursor hover
+  // TODO: pass camera index to VideoThumbnails for VIDEO_TYPE_INCIDENT
+  //       (this is currently hardcoded in videoSlice.video.curCameraIndex)
   return (
     <div>
       <div className={styles.containerVideoStreams}>

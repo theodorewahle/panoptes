@@ -28,7 +28,7 @@ export const videoSlice = createSlice({
     recentIncidents: initRecentIncidents,
 
     curIncidentIndex: 0,
-    curCameraIndex: 0,
+    curCameraIndex: 1,
     searchResults: [],
   },
   reducers: {
