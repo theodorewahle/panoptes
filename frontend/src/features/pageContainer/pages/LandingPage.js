@@ -5,9 +5,15 @@ import VideoThumbnails from '../../video/VideoThumbnails';
 import styles from './LandingPage.module.scss';
 import ENV from '../../../env';
 
-const LandingPage = () => {
+const LandingPage = (props) => {
+  const { mainDataModel } = props;
+  if (mainDataModel == null) {
+    console.log('TODO: display nice loading wheel');
+    return <div>Loading...</div>;
+  }
   const streams = useSelector(selectStreams);
   const recentIncidents = useSelector(selectRecentIncidents);
+
   return (
     <div>
       <div className={styles.containerVideoStreams}>
