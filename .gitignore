@@ -6,3 +6,4 @@ frontend/.eslintcache
 backend/localconfig.py
 */incidents/raw/*
 */incidents/converted/*
+*/incidents/examples/*
