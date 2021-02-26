@@ -1,5 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { initRecentIncidents, mainDataModel, objectSets } from '../video/data';
+import {
+  initRecentIncidents,
+  objectSets,
+  // tempDataMainDataModel,
+} from '../video/data';
 import ENV from '../../env';
 
 export const videoSlice = createSlice({
@@ -10,7 +14,7 @@ export const videoSlice = createSlice({
     objectSets: objectSets, // [{ name, object_set_id, objects=[name, ...] }, ...]
     objects: [], // not using
     videos: [],
-    mainDataModel: mainDataModel,
+    mainDataModel: [],
 
     statusCameras: ENV.STATUS_IDLE,
     statusIncidents: ENV.STATUS_IDLE,
@@ -22,7 +26,9 @@ export const videoSlice = createSlice({
     objectSet: [],
     streams: [],
     recentIncidents: initRecentIncidents,
+
     curIncidentIndex: 0,
+    curCameraIndex: 0,
     searchResults: [],
   },
   reducers: {
@@ -51,7 +57,8 @@ export const videoSlice = createSlice({
       state.videos = action.payload;
     },
     setMainDataModel: (state, action) => {
-      state.videos = action.payload;
+      console.log(`setMainDataModel: ${action.payload.toString()}`);
+      state.mainDataModel = action.payload;
     },
 
     setStatusCameras: (state, action) => {
@@ -91,6 +98,9 @@ export const videoSlice = createSlice({
     setCurIncidentIndex: (state, action) => {
       state.curIncidentIndex = action.payload;
     },
+    setCurCameraIndex: (state, action) => {
+      state.curCameraIndex = action.payload;
+    },
     setSearchResults: (state, action) => {
       state.searchResults = action.payload;
     },
@@ -117,6 +127,7 @@ export const {
   setStreams,
   setRecentIncidents,
   setCurIncidentIndex,
+  setCurCameraIndex,
   setSearchResults,
 } = videoSlice.actions;
 
@@ -125,7 +136,7 @@ export const selectIncidents = (state) => state.video.incidents;
 export const selectObjectSets = (state) => state.video.objectSets;
 export const selectObjects = (state) => state.video.objects;
 export const selectVideos = (state) => state.video.videos;
-export const selectMainDataModel = (state) => state.mainDataModel;
+export const selectMainDataModel = (state) => state.video.mainDataModel;
 
 export const selectStatusCameras = (state) => state.video.statusCameras;
 export const selectStatusIncidents = (state) => state.video.statusIncidents;
@@ -138,6 +149,7 @@ export const selectObjectSet = (state) => state.video.objectSet;
 export const selectStreams = (state) => state.video.streams;
 export const selectRecentIncidents = (state) => state.video.recentIncidents;
 export const selectCurIncidentIndex = (state) => state.video.curIncidentIndex;
+export const selectCurCameraIndex = (state) => state.video.curCameraIndex;
 export const selectSearchResults = (state) => state.video.searchResults;
 
 export default videoSlice.reducer;

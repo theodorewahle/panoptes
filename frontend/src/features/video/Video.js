@@ -1,15 +1,29 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { setPage } from '../pageContainer/pageContainerSlice';
+import { setCurCameraIndex, setCurIncidentIndex } from './videoSlice';
 
 import ReactPlayer from 'react-player';
 import VideoThumbnail from 'react-video-thumbnail';
 
+import ENV from '../../env';
 import styles from './Video.module.scss';
 
 // import { Link } from 'react-router-dom';
 
 const Video = (props) => {
-  // TODO: redundancy
-  const { width, height, title, url, isThumbnail } = props;
+  const dispatch = useDispatch();
+  // TODO: pageLink can be removed with logic
+  const {
+    width,
+    height,
+    title,
+    url,
+    isThumbnail,
+    index,
+    videoType,
+    pageLink,
+  } = props;
   // TODO: have prop be option of size in text then convert
   //       to dimensions here
   if (width == null || height == null || url == null) {
@@ -20,6 +34,17 @@ const Video = (props) => {
   if (displayTitle == null) {
     displayTitle = 'No Title';
   }
+
+  const onSelect = () => {
+    if (pageLink !== ENV.PAGE_NO_LINK) {
+      dispatch(setPage(pageLink));
+      if (videoType === ENV.VIDEO_TYPE_CAMERA) {
+        dispatch(setCurCameraIndex(index));
+      } else if (videoType === ENV.VIDEO_TYPE_INCIDENT) {
+        dispatch(setCurIncidentIndex(index));
+      }
+    }
+  };
 
   let display;
   if (isThumbnail) {
@@ -37,11 +62,7 @@ const Video = (props) => {
   // const isThumbnail = url.includes('.jpg');
 
   return (
-    <div
-      onClick={console.log('TODO: click')}
-      className={styles.video}
-      style={{ width, height }}
-    >
+    <div onClick={onSelect} className={styles.video} style={{ width, height }}>
       {display}
       <div className={styles.title}>{displayTitle}</div>
     </div>

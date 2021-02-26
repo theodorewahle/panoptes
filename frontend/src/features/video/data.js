@@ -73,7 +73,7 @@ export const initRecentIncidents = [
 ];
 
 // placeholder until 'title' or 'name' is added to GET /cameras
-export const mainDataModel = [
+export const tempDataMainDataModel = [
   {
     title: 'Beautiful Nature',
     url: 'https://www.youtube.com/watch?v=P7d1H83IcjE',

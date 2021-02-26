@@ -1,8 +1,10 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setRecentIncidents,
   setStreams,
+  setMainDataModel,
   selectMainDataModel,
 } from '../video/videoSlice';
 import {
@@ -17,8 +19,9 @@ import { TextField, Button } from '@material-ui/core';
 
 import LandingPage from './pages/LandingPage';
 import LiveStreamPage from './pages/LiveStreamPage';
+import IncidentViewerPage from './pages/IncidentViewerPage';
 
-import { initStreams, initRecentIncidents } from '../video/data';
+import { mainDataModel } from '../video/data';
 import ENV from '../../env';
 import styles from './PageContainer.module.scss';
 
@@ -63,12 +66,12 @@ const PageHeader = () => {
 // This component doubles as a socketWrapper
 const PageContainer = () => {
   const dispatch = useDispatch();
-  const mainDataModel = useSelector(selectMainDataModel);
   const page = useSelector(selectPage);
   useEffect(() => {
     dispatch(openSocket());
-    dispatch(setStreams(initStreams));
-    dispatch(setRecentIncidents(initRecentIncidents));
+    // TODO ping API
+    // dispatch(setStreams(initStreams));
+    // dispatch(setRecentIncidents(initRecentIncidents));
     return () => {
       dispatch(closeSocket());
     };
@@ -77,15 +80,15 @@ const PageContainer = () => {
   let display = null;
   // TODO holding off linking up to router incase server-side rendering changes this
   if (page === ENV.PAGE_LANDING) {
-    display = <LandingPage mainDataModel={mainDataModel} />;
+    display = <LandingPage />;
   } else if (page === ENV.PAGE_SEARCH_RESULTS) {
     display = null;
   } else if (page === ENV.PAGE_SEARCH_RESULTS_NONE) {
     display = null;
   } else if (page === ENV.PAGE_INCIDENT_VIEWER) {
-    display = null;
+    display = <IncidentViewerPage />;
   } else if (page === ENV.PAGE_LIVE_STREAM) {
-    display = <LiveStreamPage mainDataModel={mainDataModel} />;
+    display = <LiveStreamPage />;
   } else if (page === ENV.PAGE_OBJECT_SET) {
     display = null;
   }

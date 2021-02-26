@@ -16,7 +16,7 @@ const DataRow = (props) => {
   );
 };
 
-// TODO: possibly merge with LiveStreamPage as CSS will be similar
+// TODO: merge with LiveStreamPage as CSS will be similar
 // TODO: wire up with redux
 const IncidentViewerPage = () => {
   // placeholder data
