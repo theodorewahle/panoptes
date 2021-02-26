@@ -5,6 +5,18 @@ import ENV from '../../env';
 export const videoSlice = createSlice({
   name: 'video',
   initialState: {
+    cameras: [],
+    incidents: [],
+    objectSets: [],
+    objects: [],
+    videos: [],
+
+    statusCameras: ENV.STATUS_IDLE,
+    statusIncidents: ENV.STATUS_IDLE,
+    statusObjectSets: ENV.STATUS_IDLE,
+    statusObjects: ENV.STATUS_IDLE,
+    statusVideos: ENV.STATUS_IDLE,
+
     streamStatus: ENV.STATUS_STREAM_IDLE,
     objectSet: [],
     streams: [],
@@ -13,6 +25,38 @@ export const videoSlice = createSlice({
     searchResults: [],
   },
   reducers: {
+    setCameras: (state, action) => {
+      state.cameras = action.payload;
+    },
+    setIncidents: (state, action) => {
+      state.incidents = action.payload;
+    },
+    setObjectSets: (state, action) => {
+      state.objectSets = action.payload;
+    },
+    setObjects: (state, action) => {
+      state.objects = action.payload;
+    },
+    setVideos: (state, action) => {
+      state.videos = action.payload;
+    },
+
+    setStatusCameras: (state, action) => {
+      state.statusCameras = action.payload;
+    },
+    setStatusIncidents: (state, action) => {
+      state.statusIncidents = action.payload;
+    },
+    setStatusObjectSets: (state, action) => {
+      state.statusObjectSets = action.payload;
+    },
+    setStatusObjects: (state, action) => {
+      state.statusObjects = action.payload;
+    },
+    setStatusVideos: (state, action) => {
+      state.statusVideos = action.payload;
+    },
+
     setStreamStatus: (state, action) => {
       state.streamStatus = action.payload;
     },
@@ -41,6 +85,18 @@ export const videoSlice = createSlice({
 });
 
 export const {
+  setCameras,
+  setIncidents,
+  setObjectSets,
+  setObjects,
+  setVideos,
+
+  setStatusCameras,
+  setStatusIncidents,
+  setStatusObjectSets,
+  setStatusObjects,
+  setStatusVideos,
+
   setStreamStatus,
   addObject,
   setObjectSet,
@@ -49,6 +105,18 @@ export const {
   setCurIncidentIndex,
   setSearchResults,
 } = videoSlice.actions;
+
+export const selectCameras = (state) => state.video.cameras;
+export const selectIncidents = (state) => state.video.incidents;
+export const selectObjectSets = (state) => state.video.objectSets;
+export const selectObjects = (state) => state.video.objects;
+export const selectVideos = (state) => state.video.videos;
+
+export const selectStatusCameras = (state) => state.video.statusCameras;
+export const selectStatusIncidents = (state) => state.video.statusIncidents;
+export const selectStatusObjectSets = (state) => state.video.statusObjectSets;
+export const selectStatusObjects = (state) => state.video.statusObjects;
+export const selectStatusVideos = (state) => state.video.statusVideos;
 
 export const selectStreamStatus = (state) => state.video.streamStatus;
 export const selectObjectSet = (state) => state.video.objectSet;

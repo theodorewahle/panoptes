@@ -1,8 +1,17 @@
 const CONSTANTS = {
-  STATUS_STREAM_IDLE: 0,
-  STATUS_STREAM_ERROR: -1,
-  STATUS_STREAM_WAITING: 1,
-  STATUS_STREAM_DONE: 2,
+  // fetching statuses
+  STATUS_IDLE: 0,
+  STATUS_ERROR: -1,
+  STATUS_WAITING: 1,
+  STATUS_DONE: 2,
+
+  // API Endpoint
+  API_ENDPOINT: 'http://127.0.0.1:8000/api',
+  API_CAMERAS: '/cameras',
+  API_INCIDENTS: '/incidents',
+  API_OBJECT_SETS: '/object_sets',
+  API_OBJECTS: '/objects',
+  API_VIDEOS: '/videos',
 
   SOCKET_IO_ENDPOINT_DEV: 'http://localhost:3000',
   SOCKET_IO_ENDPOINT_PROD: 'TODO',
