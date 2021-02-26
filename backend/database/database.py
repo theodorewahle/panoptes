@@ -52,6 +52,10 @@ class DatabaseHelper:
     def update_camera(self, camera_id, url):
         camera = self.db.session.query(models.Camera).filter(
             models.Camera.camera_id == camera_id).first()
+
+        if camera is None:
+            return camera
+
         try:
             camera.url = url
             self.db.session.commit()
@@ -92,6 +96,10 @@ class DatabaseHelper:
     def update_video(self, video_id, file_path=None, camera_id=None):
         video = self.db.session.query(models.Video).filter(
             models.Video.video_id == video_id).first()
+
+        if video is None:
+            return None
+
         try:
             if file_path is not None:
                 video.file_path = file_path
@@ -150,6 +158,10 @@ class DatabaseHelper:
     def update_incident(self, incident_id, object_id=None, video_id=None, start_time=None, end_time=None):
         incident = self.db.session.query(models.Incident).filter(
             models.Incident.incident_id == incident_id).first()
+
+        if incident is None:
+            return None
+
         try:
             if object_id is not None:
                 incident.object_id = object_id
@@ -207,6 +219,10 @@ class DatabaseHelper:
     def update_object(self, object_id, name=None, object_set_id=None):
         object = self.db.session.query(models.Object).filter(
             models.Object.object_id == object_id).first()
+
+        if object is None:
+            return None
+        
         try:
             if name is not None:
                 object.name = name
@@ -254,7 +270,7 @@ class DatabaseHelper:
 
         if object_set is None:
             return None
-            
+
         try:
             object_set.name = name
             self.db.session.commit()
@@ -270,4 +286,4 @@ class DatabaseHelper:
         elif name is not None:
             self.db.session.query(models.ObjectSet).filter(
                 models.ObjectSet.name == name).delete()
-        self.db.session.query(models.ObjectSet).commit()
+        self.db.session.commit()

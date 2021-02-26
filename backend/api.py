@@ -215,7 +215,7 @@ def object_sets_id(object_set_id):
         body = unwrap_body(request, 'name')
         if body is not None:
             response = unwrap_db_result(
-                db_helper.update_object(object_set_id, name=body.get('name')))
+                db_helper.update_object_set(object_set_id, name=body.get('name')))
             response.status_code = 201
             return response
         abort(400)
