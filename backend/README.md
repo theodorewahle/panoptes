@@ -17,6 +17,8 @@ Must have libvlc.dll from VCL video player installed, see https://www.videolan.o
 Must have local sql instance running, see https://dev.mysql.com/downloads/, download and install
 mysql shell and start an instance, note the password for the sql server.
 
+NOTE: Mac users must download mysql shell using homebrew
+
 Must have python3 and pip3 installed
 
 Other modules found in requirements.txt.
