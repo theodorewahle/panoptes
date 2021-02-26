@@ -92,7 +92,7 @@ def cameras_id(camera_id):
 #       @returns: {incident with id}
 #   /incidents?camera_id={id}
 #       @success: 200
-#       @returns: {all incidents related to specified id}
+#       @returns: {all incident and object pairs related to specified id}
 #
 # POST:
 #   /incidents

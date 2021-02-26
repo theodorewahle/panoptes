@@ -146,8 +146,9 @@ class DatabaseHelper:
         return self.db.session.query(models.Incident).order_by(models.Incident.incident_id.asc()).all()
 
     def get_incidents_by_camera_id(self, camera_id):
-        return self.db.session.query(models.Incident) \
-            .join(models.Video) \
+        return self.db.session.query(models.Incident, models.Object) \
+            .join(models.Object) \
+                .join(models.Video) \
             .join(models.Camera) \
             .filter(models.Camera.camera_id == camera_id) \
             .all()
