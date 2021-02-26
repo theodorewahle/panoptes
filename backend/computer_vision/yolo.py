@@ -3,6 +3,7 @@ import cv2
 import torch
 import numpy as np
 import matplotlib
+import string
 
 try:
     from PIL import Image, ImageDraw
@@ -145,17 +146,26 @@ class YOLOVidClassificationModel():
             return img
 
     # outputs the bounding boxes for the live images
-    def classify(self, video_path, FRAMES_PER_CLASSIFY=1):
+    def classify(self, video_path, CLASS_PER_SECOND=1):
         counter = 0
         success = True
+
         video = cv2.VideoCapture(video_path)
         FPS = int(video.get(cv2.CAP_PROP_FPS))
-        print(video.get(cv2.CAP_PROP_FPS))
-        yield(FPS)
+        # yield(FPS)
+        
+        frames_per_class = 1
+
+        if FPS > CLASS_PER_SECOND:
+            frames_per_class = int(FPS/CLASS_PER_SECOND)+1
+
         while success:
             success, frame = video.read()  # read the camera frame
+            
+            if counter == FPS:
+                counter = 0
 
-            if counter % FRAMES_PER_CLASSIFY == 0:
+            if counter % frames_per_class == 0:
                 # save image for classification 
                 yolo_image = frame
         
@@ -170,10 +180,11 @@ class YOLOVidClassificationModel():
                 results.print()
                 object_classes = new_stdout.getvalue()
                 sys.stdout = old_stdout
-
-                classes = object_classes.split(" ")
+                
+                classes = object_classes.translate(str.maketrans('', '', string.punctuation))
+                classes = classes.split(" ")
                 classes[-1] = classes[-1][:-1]
-                print(classes[3:])
+                print(counter, classes[3:])
                 yield(classes[3:])
 
                 # get PIL image with bounding boxes drawn

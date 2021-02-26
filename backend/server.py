@@ -10,6 +10,8 @@ from computer_vision.hog_detection import HOGDetectionModel
 from incidents.ftp import fetch_todays_incidents
 from api import api, db_helper
 
+# from demo import populate_db
+
 def create_app():
     # DO NOT CHANGE THIS NAME
     # IT MUST BE NAMED "application" IN ORDER TO BE
@@ -64,6 +66,9 @@ def index():
 @application.route('/ping')
 def ping():
     return "pong"
+
+# @application.route('/dylan_demo')
+# def 
 
 
 @application.route('/incident/<path:path>')
