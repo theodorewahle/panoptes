@@ -228,8 +228,9 @@ def object_sets_id(object_set_id):
 # 
 # GET:
 #   /objects
+#       @body: {object_set_id:[object set id]}
 #       @success: 200
-#       @returns: {all objects}
+#       @returns: {all objects} | {all objects with given object set id}
 #   /objects/{id}
 #       @success: 200
 #       @returns: {object with id}
@@ -256,10 +257,13 @@ def object_sets_id(object_set_id):
 @api.route('/objects', methods=['GET', 'POST'])
 @auth.login_required
 def objects():
+    body = unwrap_body(request, 'name', 'object_set_id')
     if request.method == 'GET':
-        return jsonify_result(db_helper.get_object())
+        if body is None:
+            return jsonify_result(db_helper.get_object())
+        else:
+            return jsonify_result(db_helper.get_object(object_set_id=body.get('object_set_id')))
     elif request.method == 'POST':
-        body = unwrap_body(request, 'name', 'object_set_id')
         if check_body(request, 'name', 'object_set_id'):
             response = unwrap_db_result(
                 db_helper.add_object(body.get('name'), body.get('object_set_id')))
