@@ -34,9 +34,8 @@ def convert_video(relative_file_path):
     cleanup_command = "rm incidents/converted/" + today_as_string + "/*.264"
     os.system(cleanup_command)
 
-def fetch_todays_incidents(db_helper):
+def fetch_todays_incidents():
     with pysftp.Connection(host=myHostname, username=myUsername, password=myPassword, cnopts=cnopts) as sftp:
-        db_helper.add_video("minecraft", 1)
         print ("Connection succesfully stablished ... ")
         with sftp.cd(today_as_string+ "/record"):
             all_files = [(attr.filename, attr.st_atime) for attr in sftp.listdir_attr()]
