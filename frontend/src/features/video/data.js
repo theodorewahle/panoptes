@@ -83,7 +83,7 @@ export const tempDataMainDataModel = [
   },
   {
     title: 'Alpha Chi Alpha Parking Lot',
-    url: 'https://www.youtube.com/watch?v=P7d1H83IcjE',
+    url: 'http://localhost:8080/webcam.ogg',
     camera_id: '1',
     incidents: [
       {
