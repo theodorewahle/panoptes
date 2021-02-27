@@ -2,6 +2,7 @@
 api.py
 
 Blueprint for api for backend connection to db, actualized by flask server in server.py
+Contains CRUD endpoints for all database tables in models.py
 """
 from flask import Blueprint, request, abort, current_app, make_response
 from utils.utils import *
@@ -163,6 +164,20 @@ def incidents_id(incident_id):
         return make_response('', 204)
 
 
+# SEARCH
+# 
+# GET:
+#   /search?object_name={object name}
+#       @success: 200
+#       @returns: {all incidents and objects with object name like the one provided}
+#
+@api.route('/search', methods=['GET'])
+@auth.login_required
+def search_indcidents():
+    object_name = request.args.get('object_name')
+    return jsonify_result(db_helper.search_incident(object_name))
+
+
 # OBJECT SETS
 # 
 # GET:
@@ -228,8 +243,9 @@ def object_sets_id(object_set_id):
 # 
 # GET:
 #   /objects
+#       @body: {object_set_id:[object set id]}
 #       @success: 200
-#       @returns: {all objects}
+#       @returns: {all objects} | {all objects with given object set id}
 #   /objects/{id}
 #       @success: 200
 #       @returns: {object with id}
@@ -256,10 +272,13 @@ def object_sets_id(object_set_id):
 @api.route('/objects', methods=['GET', 'POST'])
 @auth.login_required
 def objects():
+    body = unwrap_body(request, 'name', 'object_set_id')
     if request.method == 'GET':
-        return jsonify_result(db_helper.get_object())
+        if body is None:
+            return jsonify_result(db_helper.get_object())
+        else:
+            return jsonify_result(db_helper.get_object(object_set_id=body.get('object_set_id')))
     elif request.method == 'POST':
-        body = unwrap_body(request, 'name', 'object_set_id')
         if check_body(request, 'name', 'object_set_id'):
             response = unwrap_db_result(
                 db_helper.add_object(body.get('name'), body.get('object_set_id')))
