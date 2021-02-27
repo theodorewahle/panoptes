@@ -145,6 +145,21 @@ class DatabaseHelper:
             return self.db.session.query(models.Incident).filter(models.Incident.video_id == video_id).order_by(models.Incident.incident_id.asc()).all()
         return self.db.session.query(models.Incident).order_by(models.Incident.incident_id.asc()).all()
 
+    def get_incident_with_object(self, incident_id=None, object_id=None, video_id=None):
+        if incident_id is not None:
+            return self.db.session.query(models.Incident, models.Object) \
+                .join(models.Object).filter(models.Incident.incident_id == incident_id).order_by(models.Incident.incident_id.asc()).all()
+        if object_id is not None and video_id is not None:
+            return self.db.session.query(models.Incident, models.Object) \
+                .join(models.Object).filter(models.Incident.object_id == object_id, models.Incident.video_id == video_id).order_by(models.Incident.incident_id.asc()).all()
+        elif object_id is not None:
+            return self.db.session.query(models.Incident, models.Object) \
+                .join(models.Object).filter(models.Incident.object_id == object_id).order_by(models.Incident.incident_id.asc()).all()
+        elif video_id is not None:
+            return self.db.session.query(models.Incident, models.Object) \
+                .join(models.Object).filter(models.Incident.video_id == video_id).order_by(models.Incident.incident_id.asc()).all()
+        return self.db.session.query(models.Incident, models.Object).join(models.Object).order_by(models.Incident.incident_id.asc()).all()
+
     def get_incidents_by_camera_id(self, camera_id):
         return self.db.session.query(models.Incident, models.Object) \
             .join(models.Object) \
@@ -152,6 +167,16 @@ class DatabaseHelper:
             .join(models.Camera) \
             .filter(models.Camera.camera_id == camera_id) \
             .all()
+
+    def search_incident(self, object_name):
+        if object_name is None:
+            return self.get_incident_with_object()
+        else:
+            search = "%{}%".format(object_name)
+            return self.db.session.query(models.Incident, models.Object) \
+                .join(models.Object) \
+                    .filter(models.Object.name.like(search)) \
+                        .all()
 
     def add_incident(self, start_time, end_time, object_id, video_id):
         incident = models.Incident(
