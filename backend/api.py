@@ -2,6 +2,7 @@
 api.py
 
 Blueprint for api for backend connection to db, actualized by flask server in server.py
+Contains CRUD endpoints for all database tables in models.py
 """
 from flask import Blueprint, request, abort, current_app, make_response
 from utils.utils import *
