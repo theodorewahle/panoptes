@@ -1,21 +1,3 @@
-// TODO: communicate with back-end coders on how they want to send this info
-export const initStreams = [
-  {
-    title: 'Beautiful Nature',
-    url: 'https://www.youtube.com/watch?v=P7d1H83IcjE',
-    // ...,
-  },
-  {
-    title: 'Alpha Chi Alpha Parking Lot',
-    url: 'http://admin:admin@172.24.28.36/tmpfs/auto.jpg',
-    camera_id: 'alpha_chi_parking_lot',
-  },
-  {
-    title: 'Random Scenery',
-    url: 'https://www.youtube.com/watch?v=hZSPmqAddzs',
-  },
-];
-
 export const initRecentIncidents2 = [
   {
     title: 'Brown Bear Shows Off its Fishing Skills',
@@ -72,7 +54,7 @@ export const initRecentIncidents = [
   },
 ];
 
-// placeholder until 'title' or 'name' is added to GET /cameras
+// UI main data model
 export const tempDataMainDataModel = [
   {
     title: 'Beautiful Nature',

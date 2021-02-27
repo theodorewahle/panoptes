@@ -37,7 +37,6 @@ const LandingPage = () => {
     });
   });
 
-  // TODO: CSS cursor hover
   // TODO: pass camera index to VideoThumbnails for VIDEO_TYPE_INCIDENT
   //       (this is currently hardcoded in videoSlice.video.curCameraIndex)
   return (

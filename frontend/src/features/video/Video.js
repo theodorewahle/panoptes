@@ -28,7 +28,6 @@ const Video = (props) => {
   // TODO: have prop be option of size in text then convert
   //       to dimensions here
   if (width == null || height == null || url == null) {
-    // console.error('"width", "height", & "url" params in Video cannot be null');
     return null;
   }
   let displayTitle = title;

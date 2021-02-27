@@ -1,12 +1,5 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  setRecentIncidents,
-  setStreams,
-  setMainDataModel,
-  selectMainDataModel,
-} from '../video/videoSlice';
 import {
   openSocket,
   closeSocket,
@@ -21,7 +14,6 @@ import { TextField, Button } from '@material-ui/core';
 import LandingPage from './pages/LandingPage';
 import LiveStreamPage from './pages/LiveStreamPage';
 
-import { mainDataModel } from '../video/data';
 import ENV from '../../env';
 import styles from './PageContainer.module.scss';
 
@@ -36,7 +28,6 @@ const PageHeader = () => {
     console.log('TODO: processed server-side or client-side?');
     dispatch(setSearchInput('TODO'));
   };
-  // TODO: CSS hover cursor over title
   return (
     <div className={styles.header}>
       <div className={styles.headerContent}>
@@ -76,8 +67,6 @@ const PageContainer = () => {
   useEffect(() => {
     dispatch(openSocket());
     // TODO ping API
-    // dispatch(setStreams(initStreams));
-    // dispatch(setRecentIncidents(initRecentIncidents));
     return () => {
       dispatch(closeSocket());
     };
@@ -96,8 +85,6 @@ const PageContainer = () => {
     page === ENV.PAGE_LIVE_STREAM
   ) {
     display = <LiveStreamPage />;
-    // } else if (page === ENV.PAGE_LIVE_STREAM) {
-    //   display = <LiveStreamPage />;
   } else if (page === ENV.PAGE_OBJECT_SET) {
     display = null;
   }

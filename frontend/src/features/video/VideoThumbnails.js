@@ -3,13 +3,11 @@ import Video from './Video';
 
 import styles from './Video.module.scss';
 
-// TODO probably combine with Video.js file
 // TODO: isThumbnail prop is confusing given name of component
 const VideoThumbnails = (props) => {
   const { videos, width, height, isThumbnail, videoType, pageLink } = props;
   if (videos == null) return null;
   if (width == null || height == null) {
-    // console.error('"width" & "height" params required in VideoThumbnails');
     return null;
   }
   if (!Array.isArray(videos)) {

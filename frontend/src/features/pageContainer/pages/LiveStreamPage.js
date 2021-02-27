@@ -55,10 +55,13 @@ const LiveStreamPage = () => {
   let display, url;
   if (page === ENV.PAGE_LIVE_STREAM) {
     url = curCamera.url;
+    const recentIncidentsText = `Recent Incidents: ${incidents.length}`;
     display = (
       <div>
         <h1>Live Stream: {curCamera.title}</h1>
-        <h3>Recent Incidents: {incidents.length}</h3>
+        <h3>
+          {incidents.length === 0 ? 'No Recent Incidents' : recentIncidentsText}
+        </h3>
       </div>
     );
   } else if (page === ENV.PAGE_INCIDENT_VIEWER) {
@@ -84,7 +87,7 @@ const LiveStreamPage = () => {
     console.error('pageContainerSlice.page is not wired correctly');
   }
 
-  // TODO: display objects being tracked (currently no link to cameras in backend)
+  // TODO: display objects being tracked
   // TODO: add object set button/form/modal
   return (
     <div>
