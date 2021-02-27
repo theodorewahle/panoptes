@@ -6,8 +6,11 @@ import {
   selectPage,
   selectSearchInput,
   setSearchInput,
+  setSearchCurrent,
   setPage,
 } from './pageContainerSlice';
+import { processDataModel } from '../../api/processData';
+
 import Video from '../video/Video';
 import { TextField, Button } from '@material-ui/core';
 
@@ -25,8 +28,9 @@ const PageHeader = () => {
   console.log(`searchInput: ${searchInput}`);
   const onSearch = (e) => {
     e.preventDefault();
-    console.log('TODO: processed server-side or client-side?');
-    dispatch(setSearchInput('TODO'));
+    dispatch(setSearchCurrent(searchInput));
+    dispatch(setPage(ENV.PAGE_SEARCH_RESULTS));
+    dispatch(setSearchInput(''));
   };
   return (
     <div className={styles.header}>
@@ -66,6 +70,7 @@ const PageContainer = () => {
   const page = useSelector(selectPage);
   useEffect(() => {
     dispatch(openSocket());
+    processDataModel();
     // TODO ping API
     return () => {
       dispatch(closeSocket());

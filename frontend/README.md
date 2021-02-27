@@ -12,14 +12,10 @@
 
 ### TODO
 
+- Clean up and sort imports in all files
 - Rough UI outline of basic functionality
-  - Thumbnails should open to page of its own
-  - Are thumbnails coming server-side, or does front-end need to process and generate them?
-  - Camera / Live-Stream Page
   - Add/Update Object Set Page
-  - Incident Viewer Page
   - Search Results Page
-- Confirm best format to store data coming from back-end in redux
 - Build a video player? Some libraries...
   - [react-player](https://www.npmjs.com/package/react-player) (currently using this)
   - [video-react](https://video-react.js.org/)
@@ -27,8 +23,11 @@
   - [video.js](https://www.npmjs.com/package/video.js)
   - ...
 - Make sure every page collapses cleanly all the way to mobile version
-- Knock out TODOs sprinkled in code (code cleanup)
 - Deploy
   - [Heroku](https://www.heroku.com/)?
   - Serve front-end [with flask](https://stackoverflow.com/questions/44209978/serving-a-front-end-created-with-create-react-app-with-flask)?
 - ...
+
+### APIs
+
+-

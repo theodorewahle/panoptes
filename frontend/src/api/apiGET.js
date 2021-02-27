@@ -1,4 +1,4 @@
-import store from '../App/store';
+import store from '../app/store';
 import {
   setCameras,
   setIncidents,

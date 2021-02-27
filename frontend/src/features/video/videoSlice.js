@@ -21,6 +21,7 @@ export const videoSlice = createSlice({
     statusObjectSets: ENV.STATUS_IDLE,
     statusObjects: ENV.STATUS_IDLE,
     statusVideos: ENV.STATUS_IDLE,
+    statusMainDataModel: ENV.STATUS_IDLE,
 
     streamStatus: ENV.STATUS_STREAM_IDLE,
     objectSet: [],
@@ -76,6 +77,7 @@ export const videoSlice = createSlice({
     setStatusVideos: (state, action) => {
       state.statusVideos = action.payload;
     },
+    setStatusMainDataModel: (state, action) => {},
 
     setStreamStatus: (state, action) => {
       state.streamStatus = action.payload;
@@ -120,6 +122,7 @@ export const {
   setStatusObjectSets,
   setStatusObjects,
   setStatusVideos,
+  setStatusMainDataModel,
 
   setStreamStatus,
   addObject,
@@ -143,6 +146,7 @@ export const selectStatusIncidents = (state) => state.video.statusIncidents;
 export const selectStatusObjectSets = (state) => state.video.statusObjectSets;
 export const selectStatusObjects = (state) => state.video.statusObjects;
 export const selectStatusVideos = (state) => state.video.statusVideos;
+export const selectStatusMainDataModel = (state) => state.video.mainDataModel;
 
 export const selectStreamStatus = (state) => state.video.streamStatus;
 export const selectObjectSet = (state) => state.video.objectSet;
