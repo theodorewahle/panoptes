@@ -87,34 +87,34 @@ export const tempDataMainDataModel = [
     camera_id: '1',
     incidents: [
       {
-        url: 'http://127.0.0.1:8000/incident/demo/demo1.mp4',
+        url: 'http://127.0.0.1:8000/incident/1.mp4',
         startTime: '8:01PM',
         endTime: '8:02PM',
         objectIdentified: 'JT',
       },
       {
-        url: 'http://127.0.0.1:8000/incident/demo/demo2.mp4',
+        url: 'http://127.0.0.1:8000/incident/2.mp4',
         startTime: '9:01PM',
         endTime: '9:02PM',
-        objectsIdentified: 'Computer',
+        objectIdentified: 'Computer',
       },
       {
-        url: 'http://127.0.0.1:8000/incident/demo/demo3.mp4',
+        url: 'http://127.0.0.1:8000/incident/3.mp4',
         startTime: '10:35PM',
         endTime: '10:36PM',
-        objectsIdentified: 'Fan',
+        objectIdentified: 'Fan',
       },
       {
-        url: 'http://127.0.0.1:8000/incident/demo/demo4.mp4',
+        url: 'http://127.0.0.1:8000/incident/4.mp4',
         startTime: '12:42PM',
         endTime: '12:43PM',
-        objectsIdentified: 'Light',
+        objectIdentified: 'Light',
       },
       {
-        url: 'http://127.0.0.1:8000/incident/demo/demo5.mp4',
+        url: 'http://127.0.0.1:8000/incident/5.mp4',
         startTime: '1:52am',
         endTime: '1:52am',
-        objectsIdentified: 'Fan',
+        objectIdentified: 'Fan',
       },
     ],
     objectSets: 'SEE BELOW', // unsure if objectSets correlate with camera_ids

@@ -11,9 +11,21 @@ import { setPage, selectPage } from '../pageContainerSlice';
 
 import VideoThumbnails from '../../video/VideoThumbnails';
 import ReactPlayer from 'react-player';
+import { Button } from '@material-ui/core';
 
 import ENV from '../../../env';
 import styles from './LiveStreamPage.module.scss';
+
+const DataRow = (props) => {
+  const { title, data } = props;
+  if (title == null || data == null) return null;
+  return (
+    <div className={styles.incidentRow}>
+      <div className={styles.rowTitle}>{title}</div>
+      <div className={styles.rowData}>{data}</div>
+    </div>
+  );
+};
 
 const LiveStreamPage = () => {
   const dispatch = useDispatch(setPage);
@@ -51,17 +63,21 @@ const LiveStreamPage = () => {
     );
   } else if (page === ENV.PAGE_INCIDENT_VIEWER) {
     url = curIncident.url;
-    // TODO: port IncidentViewPage code over here
+    // CSS: move RETURN TO LIVE FEED button to bottom of container
     display = (
       <div>
         <h1>Incident</h1>
-        <h3>Start Time: {curIncident.startTime}</h3>
-        <h3>End Time: {curIncident.startTime}</h3>
-        <h3>Start Time: {curIncident.endTime}</h3>
-        <h3>Object Identified: {curIncident.objectIdentified}</h3>
-        <button onClick={() => dispatch(setPage(ENV.PAGE_LIVE_STREAM))}>
-          Return to Live Feed
-        </button>
+        <DataRow title={'Start Time'} data={curIncident.startTime} />
+        <DataRow title={'End Time'} data={curIncident.endTime} />
+        <DataRow
+          title={'Object Identified'}
+          data={curIncident.objectIdentified}
+        />
+        <div className={styles.button}>
+          <Button onClick={() => dispatch(setPage(ENV.PAGE_LIVE_STREAM))}>
+            Return to Live Feed
+          </Button>
+        </div>
       </div>
     );
   } else {

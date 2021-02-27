@@ -20,7 +20,6 @@ import { TextField, Button } from '@material-ui/core';
 
 import LandingPage from './pages/LandingPage';
 import LiveStreamPage from './pages/LiveStreamPage';
-import IncidentViewerPage from './pages/IncidentViewerPage';
 
 import { mainDataModel } from '../video/data';
 import ENV from '../../env';
