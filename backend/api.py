@@ -164,6 +164,20 @@ def incidents_id(incident_id):
         return make_response('', 204)
 
 
+# SEARCH
+# 
+# GET:
+#   /search?object_name={object name}
+#       @success: 200
+#       @returns: {all incidents and objects with object name like the one provided}
+#
+@api.route('/search', methods=['GET'])
+@auth.login_required
+def search_indcidents():
+    object_name = request.args.get('object_name')
+    return jsonify_result(db_helper.search_incident(object_name))
+
+
 # OBJECT SETS
 # 
 # GET:
