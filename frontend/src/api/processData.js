@@ -63,6 +63,7 @@ export const fetchAndProcessDataModel = () => {
       for (let i = 0; i < incidentsByCamera.length; i++) {
         const incidents = [];
         if (incidentsByCamera[i].status === 200) {
+          let incidentIndex = 0;
           incidentsByCamera[i].data.forEach((incident) => {
             incidents.push({
               url:
@@ -73,12 +74,15 @@ export const fetchAndProcessDataModel = () => {
               objectIdentified: incident[1]?.name || 'No Object Identified',
               object_id: incident[1]?.object_id || 'No object_id',
               object_set_id: incident[1]?.object_set_id || 'No object_set_id',
+              incidentIndex,
             });
+            incidentIndex++;
           });
           mainDataModel.push({
             title: cameras[i]?.title || 'No Title',
             url: cameras[i]?.url || 'No URL',
             camera_id: cameras[i]?.camera_id || 'No camera_id',
+            cameraIndex: i,
             incidents,
           });
         }

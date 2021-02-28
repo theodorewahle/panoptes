@@ -1,10 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import VideoThumbnails from '../../video/VideoThumbnails';
-import {
-  selectSearchResults,
-  selectSearchCurrent,
-} from '../pageContainerSlice';
+import { selectSearchCurrent } from '../pageContainerSlice';
+import { selectSearchResults } from '../../video/videoSlice';
 import styles from './SearchResultsPage.module.scss';
 import ENV from '../../../env';
 
