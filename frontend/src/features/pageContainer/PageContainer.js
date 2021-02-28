@@ -1,15 +1,13 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  openSocket,
-  closeSocket,
   selectPage,
   selectSearchInput,
   setSearchInput,
   setSearchCurrent,
   setPage,
 } from './pageContainerSlice';
-import { processDataModel } from '../../api/processData';
+import { fetchAndProcessDataModel } from '../../api/processData';
 
 import Video from '../video/Video';
 import { TextField, Button } from '@material-ui/core';
@@ -64,18 +62,15 @@ const PageHeader = () => {
   );
 };
 
-// This component doubles as a socketWrapper
 const PageContainer = () => {
-  const dispatch = useDispatch();
   const page = useSelector(selectPage);
   useEffect(() => {
-    dispatch(openSocket());
-    processDataModel();
-    // TODO ping API
+    // dispatch(openSocket());
+    fetchAndProcessDataModel();
     return () => {
-      dispatch(closeSocket());
+      // dispatch(closeSocket());
     };
-  });
+  }, []);
 
   let display = null;
   // TODO holding off linking up to router incase server-side rendering changes this

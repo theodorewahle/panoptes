@@ -9,10 +9,10 @@ import ENV from '../../env';
 export const videoSlice = createSlice({
   name: 'video',
   initialState: {
-    cameras: [], // [{ title, url }, ...]
-    incidents: [], // [{ }]
-    objectSets: objectSets, // [{ name, object_set_id, objects=[name, ...] }, ...]
-    objects: [], // not using
+    cameras: [],
+    incidents: [],
+    objectSets: objectSets,
+    objects: [],
     videos: [],
     mainDataModel: [],
 
@@ -58,7 +58,6 @@ export const videoSlice = createSlice({
       state.videos = action.payload;
     },
     setMainDataModel: (state, action) => {
-      console.log(`setMainDataModel: ${action.payload.toString()}`);
       state.mainDataModel = action.payload;
     },
 
@@ -77,7 +76,9 @@ export const videoSlice = createSlice({
     setStatusVideos: (state, action) => {
       state.statusVideos = action.payload;
     },
-    setStatusMainDataModel: (state, action) => {},
+    setStatusMainDataModel: (state, action) => {
+      state.statusMainDataModel = action.payload;
+    },
 
     setStreamStatus: (state, action) => {
       state.streamStatus = action.payload;
@@ -146,7 +147,8 @@ export const selectStatusIncidents = (state) => state.video.statusIncidents;
 export const selectStatusObjectSets = (state) => state.video.statusObjectSets;
 export const selectStatusObjects = (state) => state.video.statusObjects;
 export const selectStatusVideos = (state) => state.video.statusVideos;
-export const selectStatusMainDataModel = (state) => state.video.mainDataModel;
+export const selectStatusMainDataModel = (state) =>
+  state.video.statusMainDataModel;
 
 export const selectStreamStatus = (state) => state.video.streamStatus;
 export const selectObjectSet = (state) => state.video.objectSet;

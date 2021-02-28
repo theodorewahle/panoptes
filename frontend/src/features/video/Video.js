@@ -8,21 +8,20 @@ import VideoThumbnail from 'react-video-thumbnail';
 
 import ENV from '../../env';
 import styles from './Video.module.scss';
-
 // import { Link } from 'react-router-dom';
 
+// TODO: CSS mouse over --> display light box around or something
 const Video = (props) => {
   const dispatch = useDispatch();
-  // TODO: pageLink can be removed with logic
   const {
     width,
     height,
     title,
     url,
     isThumbnail,
-    index,
     videoType,
     pageLink,
+    incidentIndex,
     cameraIndex,
   } = props;
   // TODO: have prop be option of size in text then convert
@@ -34,16 +33,13 @@ const Video = (props) => {
   if (displayTitle == null) {
     displayTitle = 'No Title';
   }
-
+  console.log(`videoType: ${videoType}`);
   const onSelect = () => {
-    console.log(`title: ${title}, isThumbnail: ${isThumbnail}`);
-    console.log(`index: ${index}, videoType: ${videoType}, url: ${url}`);
-    console.log(`cameraIndex: ${cameraIndex}, pageLink: ${pageLink}`);
     if (videoType === ENV.VIDEO_TYPE_CAMERA) {
-      dispatch(setCurCameraIndex(index));
+      dispatch(setCurCameraIndex(cameraIndex));
     } else if (videoType === ENV.VIDEO_TYPE_INCIDENT) {
-      if (cameraIndex !== -1) dispatch(setCurCameraIndex(cameraIndex));
-      dispatch(setCurIncidentIndex(index));
+      dispatch(setCurCameraIndex(cameraIndex));
+      dispatch(setCurIncidentIndex(incidentIndex));
     }
     if (pageLink !== ENV.PAGE_NO_LINK) {
       dispatch(setPage(pageLink));
@@ -78,21 +74,3 @@ const Video = (props) => {
 };
 
 export default Video;
-
-// return (
-//   <Link to="/cameras/alpha_chi_parking_lot">
-//     <div
-//       onClick={console.log('click')}
-//       className={styles.video}
-//       style={{ width, height }}
-//     >
-//       {isThumbnail === false && (
-//         <ReactPlayer url={url} width={width} height={height} />
-//       )}
-//       {isThumbnail === true && (
-//         <img src={url} alt="" width={width} height={height} />
-//       )}
-//       <div className={styles.title}>{displayTitle}</div>
-//     </div>
-//   </Link>
-// );

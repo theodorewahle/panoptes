@@ -1,29 +1,59 @@
-/* eslint-disable no-unused-vars */
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectMainDataModel, setMainDataModel } from '../../video/videoSlice';
-import { tempDataMainDataModel } from '../../video/data';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import {
+  selectMainDataModel,
+  selectStatusMainDataModel,
+} from '../../video/videoSlice';
 import VideoThumbnails from '../../video/VideoThumbnails';
 import styles from './LandingPage.module.scss';
 import ENV from '../../../env';
 
+// TODO: CSS
+const Loading = () => {
+  return <div>Loading...</div>;
+};
+
+// TODO: CSS
+const Error = (props) => {
+  const { type } = props;
+  let message;
+  if (type != null && type === 'unknown') {
+    message = 'Unknown error fetching and processing data';
+  } else {
+    message = 'Error Fetching and Processing Data';
+  }
+  return (
+    <div>
+      <div>TODO: CSS</div>
+      <div>{message}</div>
+    </div>
+  );
+};
+
 const LandingPage = () => {
-  const dispatch = useDispatch();
+  const statusMainDataModel = useSelector(selectStatusMainDataModel);
   const mainDataModel = useSelector(selectMainDataModel);
-  useEffect(() => {
-    dispatch(setMainDataModel(tempDataMainDataModel));
-  });
-  if (mainDataModel == null) {
+  console.log(`statusMainDataModel: ${statusMainDataModel}`);
+  if (
+    statusMainDataModel === ENV.STATUS_IDLE ||
+    statusMainDataModel === ENV.STATUS_WAITING
+  ) {
     console.log('TODO: display nice loading wheel');
-    return <div>Loading...</div>;
+    return <Loading />;
+  } else if (statusMainDataModel === ENV.STATUS_ERROR) {
+    return <Error />;
+  } else if (mainDataModel == null) {
+    return <Error type={'unknown'} />;
   }
   let cameras = [];
-  let incidents = []; // TODO: splice together most recent incidents from all cameras
+  let incidents = [];
   let cameraIndex = -1;
   mainDataModel.forEach((cameraObj) => {
     cameraIndex++;
-    cameras.push({ title: cameraObj.title, url: cameraObj.url });
+    cameras.push({ title: cameraObj.title, url: cameraObj.url, cameraIndex });
+    let incidentIndex = -1;
     cameraObj.incidents.forEach((incident) => {
+      incidentIndex++;
       console.log(JSON.stringify(incident));
       const thumbnail = {
         title: incident.startTime,
@@ -32,13 +62,12 @@ const LandingPage = () => {
         endTime: incident.endTime,
         objectsIdentified: incident.objectsIdentified,
         cameraIndex,
+        incidentIndex,
       };
       incidents.push(thumbnail);
     });
   });
 
-  // TODO: pass camera index to VideoThumbnails for VIDEO_TYPE_INCIDENT
-  //       (this is currently hardcoded in videoSlice.video.curCameraIndex)
   return (
     <div>
       <div className={styles.containerVideoStreams}>

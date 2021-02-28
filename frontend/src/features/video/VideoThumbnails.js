@@ -25,10 +25,10 @@ const VideoThumbnails = (props) => {
           width={width}
           height={height}
           isThumbnail={isThumbnail}
-          index={i}
           videoType={videoType}
           pageLink={pageLink}
-          cameraIndex={video.cameraIndex || -1}
+          incidentIndex={video.incidentIndex}
+          cameraIndex={video.cameraIndex}
         />
       </div>
     );
