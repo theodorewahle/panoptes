@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectMainDataModel } from '../../video/videoSlice';
@@ -10,23 +11,11 @@ import styles from './EditCamerasPage.module.scss';
 const EditCamerasPage = () => {
   const [titleInput, setTitleInput] = useState('');
   const [urlInput, setUrlInput] = useState('');
-  const [editTitleInput, setEditTitleInput] = useState('');
-  const [editUrlInput, setEditUrlInput] = useState('');
-  // const [isCameraBeingEdited, setIsCameraBeingEdited] = useState(false);
+  const [isCameraBeingEdited, setIsCameraBeingEdited] = useState(false);
   const [cameras, setCameras] = useState([]);
   const mainDataModel = useSelector(selectMainDataModel);
 
-  useEffect(() => {
-    let tempCameras = [];
-    mainDataModel.forEach((camera) => {
-      tempCameras.push({
-        title: camera.title,
-        url: camera.url,
-        isEditing: false,
-      });
-    });
-    setCameras(tempCameras);
-  }, [mainDataModel]);
+  if (mainDataModel == null) return null;
 
   const isSubmitCameraButtonDisabled = (title, url) => {
     if (url.length === 0 || title.length === 0) {
@@ -38,52 +27,15 @@ const EditCamerasPage = () => {
     return false;
   };
 
-  // const isEditSubmitDisabled = (title, url) => {
-  //   if (isCameraBeingEdited)
-  // };
-
-  let key = -1;
-  const camerasList = cameras.map((camera) => {
+  let key = 0;
+  const camerasList = mainDataModel.map((camera) => {
     key++;
-    const onEditSubmit = () => {
-      if (camera.isEditing) {
-        console.log('TODO: PUT /cameras API');
-        setCameras();
-      } else {
-        console.log('TODO: camera.isEditing===False -> display');
-        camera.isEditing = true;
-      }
-    };
-    let rowDisplay;
-    if (camera.isEditing) {
-      rowDisplay = (
-        <div>
-          <TextField
-            id="outlined-basic"
-            label="Camera Title"
-            variant="outlined"
-            value={editTitleInput}
-            fullWidth={true}
-            onChange={(e) => setEditTitleInput(e.target.value)}
-          />
-          <TextField
-            id="outlined-basic"
-            label="URL"
-            variant="outlined"
-            value={editUrlInput}
-            fullWidth={true}
-            onChange={(e) => setEditUrlInput(e.target.value)}
-          />
-        </div>
-      );
-    } else {
-      rowDisplay = (
-        <div>
-          <div>Title: {camera.title}</div>
-          <div>URL: {camera.url}</div>
-        </div>
-      );
-    }
+    const rowDisplay = (
+      <div>
+        <div>Title: {camera.title}</div>
+        <div>URL: {camera.url}</div>
+      </div>
+    );
     return (
       <div className={styles.cameraRowEdit} key={key}>
         {rowDisplay}
@@ -91,7 +43,7 @@ const EditCamerasPage = () => {
           variant="outlined"
           size="large"
           // disabled={isEditSubmitDisabled(editTitleInput, editUrlInput)}
-          onClick={() => onEditSubmit()}
+          onClick={() => console.log('onClick()')}
         >
           {camera.isEditing ? 'Submit' : 'Edit'}
         </Button>

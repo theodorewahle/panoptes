@@ -23,7 +23,6 @@ export const videoSlice = createSlice({
     statusVideos: ENV.STATUS_IDLE,
     statusMainDataModel: ENV.STATUS_IDLE,
 
-    streamStatus: ENV.STATUS_STREAM_IDLE,
     objectSet: [],
     streams: [],
     recentIncidents: initRecentIncidents,
@@ -60,6 +59,21 @@ export const videoSlice = createSlice({
     setMainDataModel: (state, action) => {
       state.mainDataModel = action.payload;
     },
+    insertCameraToDataModel: (state, action) => {
+      const newCamera = action.payload;
+      let doesCameraIdExist = false;
+      state.mainDataModel.forEach((camera) => {
+        if (camera.camera_id === newCamera.camera_id) {
+          doesCameraIdExist = true;
+          camera.title = newCamera.title;
+          camera.url = newCamera.url;
+          camera.camera_id = newCamera.camera_id;
+        }
+      });
+      if (!doesCameraIdExist) {
+        state.mainDataModel.push(newCamera);
+      }
+    },
 
     setStatusCameras: (state, action) => {
       state.statusCameras = action.payload;
@@ -80,9 +94,6 @@ export const videoSlice = createSlice({
       state.statusMainDataModel = action.payload;
     },
 
-    setStreamStatus: (state, action) => {
-      state.streamStatus = action.payload;
-    },
     addObject: (state, action) => {
       state.objectSet.push(action.payload);
     },
@@ -117,6 +128,7 @@ export const {
   setObjects,
   setVideos,
   setMainDataModel,
+  insertCameraToDataModel,
 
   setStatusCameras,
   setStatusIncidents,
@@ -125,7 +137,6 @@ export const {
   setStatusVideos,
   setStatusMainDataModel,
 
-  setStreamStatus,
   addObject,
   setObjectSet,
   setStreams,
@@ -150,7 +161,6 @@ export const selectStatusVideos = (state) => state.video.statusVideos;
 export const selectStatusMainDataModel = (state) =>
   state.video.statusMainDataModel;
 
-export const selectStreamStatus = (state) => state.video.streamStatus;
 export const selectObjectSet = (state) => state.video.objectSet;
 export const selectStreams = (state) => state.video.streams;
 export const selectRecentIncidents = (state) => state.video.recentIncidents;
