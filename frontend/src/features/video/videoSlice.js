@@ -6,6 +6,7 @@ import {
 } from '../video/data';
 import ENV from '../../env';
 
+// TODO: remove unused vars / functions
 export const videoSlice = createSlice({
   name: 'video',
   initialState: {
@@ -16,7 +17,10 @@ export const videoSlice = createSlice({
     videos: [],
     mainDataModel: [],
 
-    statusCameras: ENV.STATUS_IDLE,
+    statusCameras: {
+      status: ENV.STATUS_IDLE,
+      message: '',
+    },
     statusIncidents: ENV.STATUS_IDLE,
     statusObjectSets: ENV.STATUS_IDLE,
     statusObjects: ENV.STATUS_IDLE,
@@ -76,7 +80,10 @@ export const videoSlice = createSlice({
     },
 
     setStatusCameras: (state, action) => {
-      state.statusCameras = action.payload;
+      const { status, message } = action.payload;
+      let messageTemp = '';
+      if (message != null) messageTemp = message;
+      state.statusCameras = { status, message: messageTemp };
     },
     setStatusIncidents: (state, action) => {
       state.statusIncidents = action.payload;

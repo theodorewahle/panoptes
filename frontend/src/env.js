@@ -38,6 +38,11 @@ const CONSTANTS = {
   PAGE_LIVE_STREAM: 4,
   PAGE_OBJECT_SET: 5,
   PAGE_EDIT_CAMERAS: 6,
+
+  // camera form status
+  FORM_IDLE: 0,
+  FORM_UPDATE_CAMERA: 1,
+  FORM_ADD_CAMERA: 2,
 };
 
 export default CONSTANTS;

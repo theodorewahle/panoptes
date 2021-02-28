@@ -1,25 +1,44 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { selectMainDataModel } from '../../video/videoSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  selectMainDataModel,
+  setStatusCameras,
+  selectStatusCameras,
+} from '../../video/videoSlice';
+import { addUpdateCamera } from '../../../api/cameras';
 import { isValidHttpUrl } from '../../../utilGeneral/utils';
 
-import { TextField, Button } from '@material-ui/core';
+import { TextField, Button, CircularProgress } from '@material-ui/core';
 
 import styles from './EditCamerasPage.module.scss';
+import ENV from '../../../env';
 
+// TODO: CSS lol
 const EditCamerasPage = () => {
-  // maybe put in ENV.js
-  const FORM_IDLE = 0;
-  const FORM_UPDATE_CAMERA = 1;
-  const FORM_ADD_CAMERA = 2;
+  const dispatch = useDispatch();
   const [titleInput, setTitleInput] = useState('');
   const [urlInput, setUrlInput] = useState('');
   const [cameraId, setCameraId] = useState('');
-  const [formStatus, setFormStatus] = useState(FORM_IDLE);
+  const [formStatus, setFormStatus] = useState(ENV.FORM_IDLE);
   const mainDataModel = useSelector(selectMainDataModel);
+  const statusCameras = useSelector(selectStatusCameras);
 
+  useEffect(() => {
+    dispatch(setStatusCameras({ status: ENV.STATUS_IDLE }));
+  }, [dispatch]);
+
+  // TODO: put LandingPage.js error code somewhere else and use here
   if (mainDataModel == null) return null;
+
+  const onAddUpdateCamera = (e) => {
+    e.preventDefault();
+    setStatusCameras({ status: ENV.STATUS_WAITING });
+    addUpdateCamera({ formStatus, titleInput, urlInput, cameraId });
+    setTitleInput('');
+    setUrlInput('');
+    setCameraId(-1);
+  };
 
   // TODO: display bad URL message to user if they keep clicking 'Update Camera'?
   const isSubmitCameraButtonDisabled = (title, url) => {
@@ -32,6 +51,7 @@ const EditCamerasPage = () => {
     return false;
   };
 
+  // TODO: add checkmark indicating successful update
   let key = 0;
   const camerasList = mainDataModel.map((camera) => {
     key++;
@@ -47,9 +67,9 @@ const EditCamerasPage = () => {
         <Button
           variant="outlined"
           size="large"
-          // disabled={isEditSubmitDisabled(editTitleInput, editUrlInput)}
           onClick={() => {
-            setFormStatus(FORM_UPDATE_CAMERA);
+            setStatusCameras({ status: ENV.STATUS_IDLE });
+            setFormStatus(ENV.FORM_UPDATE_CAMERA);
             setCameraId(camera.camera_id);
             setTitleInput(camera.title);
             setUrlInput(camera.url);
@@ -61,21 +81,13 @@ const EditCamerasPage = () => {
     );
   });
 
-  const onAddUpdateCamera = (e) => {
-    e.preventDefault();
-    if (formStatus === FORM_ADD_CAMERA) {
-    } else if (formStatus === FORM_UPDATE_CAMERA) {
-    } else {
-      console.log('Bad UI logic - display error?');
-    }
-  };
-
   let cameraButtonTitleRow = (
     <Button
       variant="outlined"
       size="large"
       onClick={() => {
-        setFormStatus(FORM_ADD_CAMERA);
+        setStatusCameras({ status: ENV.STATUS_IDLE });
+        setFormStatus(ENV.FORM_ADD_CAMERA);
         setTitleInput('');
         setUrlInput('');
       }}
@@ -84,15 +96,16 @@ const EditCamerasPage = () => {
     </Button>
   );
 
-  let form;
-  if (formStatus === FORM_IDLE) {
+  // TODO: this logic could be cleaned up and made more readable
+  let form, apiStatus;
+  if (formStatus === ENV.FORM_IDLE) {
     form = null;
   } else {
     let formButtonText = '';
-    if (formStatus === FORM_ADD_CAMERA) {
+    if (formStatus === ENV.FORM_ADD_CAMERA) {
       formButtonText = 'Add Camera';
       cameraButtonTitleRow = null;
-    } else if (formStatus === FORM_UPDATE_CAMERA) {
+    } else if (formStatus === ENV.FORM_UPDATE_CAMERA) {
       formButtonText = 'Update Camera';
     }
     form = (
@@ -125,6 +138,18 @@ const EditCamerasPage = () => {
     );
   }
 
+  if (statusCameras.status === ENV.STATUS_IDLE) {
+    apiStatus = null;
+  } else if (statusCameras.status === ENV.STATUS_WAITING) {
+    apiStatus = <CircularProgress />;
+  } else if (statusCameras.status === ENV.STATUS_ERROR) {
+    apiStatus = <div>{statusCameras.message}</div>;
+  } else if (statusCameras.status === ENV.STATUS_DONE) {
+    // TOOD: display checkmark
+    apiStatus = null;
+    form = null;
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.cameraTitleRow}>
@@ -133,6 +158,7 @@ const EditCamerasPage = () => {
       </div>
       {camerasList}
       {form}
+      {apiStatus}
     </div>
   );
 };
