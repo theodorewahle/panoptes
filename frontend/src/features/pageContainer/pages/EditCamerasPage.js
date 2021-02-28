@@ -14,7 +14,8 @@ import { TextField, Button, CircularProgress } from '@material-ui/core';
 import styles from './EditCamerasPage.module.scss';
 import ENV from '../../../env';
 
-// TODO: CSS lol
+// TODO: form should not go away if camera already exists
+//      (no point in pinging API before checking UI data model)
 const EditCamerasPage = () => {
   const dispatch = useDispatch();
   const [titleInput, setTitleInput] = useState('');
@@ -23,6 +24,8 @@ const EditCamerasPage = () => {
   const [formStatus, setFormStatus] = useState(ENV.FORM_IDLE);
   const mainDataModel = useSelector(selectMainDataModel);
   const statusCameras = useSelector(selectStatusCameras);
+  console.log(`formStatus: ${formStatus}`);
+  console.log(`statusCameras.status: ${statusCameras.status}`);
 
   useEffect(() => {
     dispatch(setStatusCameras({ status: ENV.STATUS_IDLE }));
@@ -33,7 +36,8 @@ const EditCamerasPage = () => {
 
   const onAddUpdateCamera = (e) => {
     e.preventDefault();
-    setStatusCameras({ status: ENV.STATUS_WAITING, message: '' });
+    dispatch(setStatusCameras({ status: ENV.STATUS_WAITING, message: '' }));
+    setFormStatus(ENV.FORM_IDLE);
     addUpdateCamera({ formStatus, titleInput, urlInput, cameraId });
     setTitleInput('');
     setUrlInput('');
@@ -78,7 +82,9 @@ const EditCamerasPage = () => {
             variant="outlined"
             size="large"
             onClick={() => {
-              setStatusCameras({ status: ENV.STATUS_IDLE, message: '' });
+              dispatch(
+                setStatusCameras({ status: ENV.STATUS_IDLE, message: '' })
+              );
               setFormStatus(ENV.FORM_UPDATE_CAMERA);
               setCameraId(camera.camera_id);
               setTitleInput(camera.title);
@@ -91,7 +97,10 @@ const EditCamerasPage = () => {
             variant="outlined"
             size="large"
             onClick={() => {
-              setStatusCameras({ status: ENV.STATUS_IDLE, message: '' });
+              dispatch(
+                setStatusCameras({ status: ENV.STATUS_IDLE, message: '' })
+              );
+              setFormStatus(ENV.FORM_IDLE);
               addUpdateCamera({
                 formStatus: ENV.FORM_DELETE_CAMERA,
                 titleInput,
@@ -112,7 +121,7 @@ const EditCamerasPage = () => {
       variant="outlined"
       size="large"
       onClick={() => {
-        setStatusCameras({ status: ENV.STATUS_IDLE });
+        dispatch(setStatusCameras({ status: ENV.STATUS_IDLE }));
         setFormStatus(ENV.FORM_ADD_CAMERA);
         setTitleInput('');
         setUrlInput('');
