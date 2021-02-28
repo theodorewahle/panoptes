@@ -12,7 +12,12 @@
 
 ### TODO
 
+- CSS work (low priority)
 - Clean up and sort imports in all files
+- If not handled on backend, incidents need to be trimmed
+  - [react-video-trimmer](https://www.npmjs.com/package/react-video-trimmer)
+  - Implement something similar to above in conjunction with [react-player](https://www.npmjs.com/package/react-player)
+- Add / Update / Delete Cameras from UI (APIs are already in place)
 - Rough UI outline of basic functionality
   - Add/Update Object Set Page
   - Search Results Page
@@ -30,4 +35,4 @@
 
 ### APIs
 
--
+- Waiting for new object_set endpoint. See comment on [PR #16](https://github.com/theodorewahle/panoptes/pull/16)
