@@ -63,7 +63,10 @@ const EditCamerasPage = () => {
           <b>Title:</b> {camera.title}
         </div>
         <div className={styles.textRow}>
-          <b>URL:</b> {camera.url}
+          <b>URL:</b>{' '}
+          <a href={camera.url} target="_blank" rel="noopener noreferrer">
+            {camera.url}
+          </a>
         </div>
       </div>
     );
