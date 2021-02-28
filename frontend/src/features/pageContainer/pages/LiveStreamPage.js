@@ -1,94 +1,118 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  selectCurIncidentIndex,
+  selectMainDataModel,
+  selectCurCameraIndex,
+} from '../../video/videoSlice';
+import { setPage, selectPage } from '../pageContainerSlice';
 
 import VideoThumbnails from '../../video/VideoThumbnails';
-import styles from './LiveStreamPage.module.scss';
-import ENV from '../../../env';
 import ReactPlayer from 'react-player';
+import { Button } from '@material-ui/core';
 
-class LiveStreamPage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      playerVideo : {
-        title: 'Live Video Feed',
-        url : 'http://localhost:8080/webcam.ogg',
-        type: 'video/ogg'
-      },
-      incidents : [
-        {
-          title: 'Woman Walking With Notebook',
-          url: 'http://127.0.0.1:8000/incident/20210218/A210218_003304_003318.mp4',
-          type: 'video/mp4'
-        },
-        {
-          title: 'Garbage Truck',
-          url: 'http://127.0.0.1:8000/incident/20210219/A210219_234913_234927.mp4',
-          type: 'video/mp4'
-        },
-        {
-          title: 'Woman With Suspicious Dog',
-          url: 'http://127.0.0.1:8000/incident/20210218/A210218_020152_020207.mp4',
-          type: 'video/mp4'
-        },
-        {
-          title: 'Inividual Removes Suspicious Envelope From Vehicle',
-          url: 'http://127.0.0.1:8000/incident/20210218/A210218_032104_032118.mp4',
-          type: 'video/mp4'
-        },
-        {
-          title: 'Suspicious Trio Enters Vehicle, Camera Disturbance',
-          url: 'http://127.0.0.1:8000/incident/20210219/A210219_122703_122717.mp4',
-          type: 'video/mp4'
-        },
-      ]
-    };  
-  }
-  
-  onSelect = (video) => {
-    this.setState({ playerVideo: video })
-  }
+import ENV from '../../../env';
+import styles from './LiveStreamPage.module.scss';
 
-  resetFeed = () => {
-    this.setState({
-      playerVideo: {
-        title: 'Live Video Feed',
-        url : 'http://localhost:8080/webcam.ogg',
-        type: 'video/ogg'
-      }
-    })
-  }
+const DataRow = (props) => {
+  const { title, data } = props;
+  if (title == null || data == null) return null;
+  return (
+    <div className={styles.incidentRow}>
+      <div className={styles.rowTitle}>{title}</div>
+      <div className={styles.rowData}>{data}</div>
+    </div>
+  );
+};
 
-  render() {
+const LiveStreamPage = () => {
+  const dispatch = useDispatch(setPage);
+  const mainDataModel = useSelector(selectMainDataModel);
+  const curIncidentIndex = useSelector(selectCurIncidentIndex);
+  const curCameraIndex = useSelector(selectCurCameraIndex);
+  const page = useSelector(selectPage);
 
-    return (
+  console.log(`curIncidentIndex: ${curIncidentIndex}`);
+  console.log(`curCameraIndex: ${curCameraIndex}`);
+  console.log(`page: ${page}`);
+
+  const curCamera = mainDataModel[curCameraIndex];
+  const curIncident = curCamera.incidents[curIncidentIndex];
+
+  let incidents = [];
+  // this is to add 'title'
+  let incidentIndex = -1;
+  curCamera.incidents.forEach((incident) => {
+    incidentIndex++;
+    incidents.push({
+      title: incident.startTime,
+      url: incident.url,
+      startTime: incident.startTime,
+      endTime: incident.endTime,
+      objectsIdentified: incident.objectsIdentified,
+      incidentIndex,
+      cameraIndex: curCameraIndex,
+    });
+  });
+  let display, url;
+  if (page === ENV.PAGE_LIVE_STREAM) {
+    url = curCamera.url;
+    const recentIncidentsText = `Recent Incidents: ${incidents.length}`;
+    display = (
       <div>
-        <div className={styles.containerLiveStream}> 
-        <div className={styles.containerStreamData}>
-          <h1>Alpha Chi Alpha — Parking Lot</h1>
-          <h2>Now Playing: {this.state.playerVideo.title}</h2>
-          <h3>Recent Incidents: {this.state.incidents.length}</h3>
-          <button onClick={this.resetFeed}>
+        <h1>Live Stream: {curCamera.title}</h1>
+        <h3>
+          {incidents.length === 0 ? 'No Recent Incidents' : recentIncidentsText}
+        </h3>
+      </div>
+    );
+  } else if (page === ENV.PAGE_INCIDENT_VIEWER) {
+    url = curIncident.url;
+    // CSS: move RETURN TO LIVE FEED button to bottom of container
+    display = (
+      <div>
+        <h1>Incident</h1>
+        <DataRow title={'Start Time'} data={curIncident.startTime} />
+        <DataRow title={'End Time'} data={curIncident.endTime} />
+        <DataRow
+          title={'Object Identified'}
+          data={curIncident.objectIdentified}
+        />
+        <div className={styles.button}>
+          <Button onClick={() => dispatch(setPage(ENV.PAGE_LIVE_STREAM))}>
             Return to Live Feed
-          </button>
-        </div>
-        <div>
-          <ReactPlayer url={this.state.playerVideo.url} width={720} height={405} playing />
-        </div>
-        </div>
-  
-        <div className={styles.containerRecentIncidents}>
-          <div className={styles.titleRecentIncidents}>Recent Incidents</div>
-          <VideoThumbnails
-            videos={this.state.incidents}
-            width={ENV.VIDEO_THUMBNAIL_WIDTH}
-            height={ENV.VIDEO_THUMBNAIL_HEIGHT}
-            onSelect={this.onSelect}
-          />
+          </Button>
         </div>
       </div>
     );
+  } else {
+    console.error('pageContainerSlice.page is not wired correctly');
   }
-}
 
+  // TODO: display objects being tracked
+  // TODO: add object set button/form/modal
+  return (
+    <div>
+      <div className={styles.containerLiveStream}>
+        <div className={styles.containerStreamData}>{display}</div>
+        <div>
+          <ReactPlayer url={url} width={720} height={405} playing />
+        </div>
+      </div>
+
+      <div className={styles.containerRecentIncidents}>
+        <div className={styles.titleRecentIncidents}>Recent Incidents</div>
+        <VideoThumbnails
+          videos={incidents}
+          width={ENV.VIDEO_THUMBNAIL_WIDTH}
+          height={ENV.VIDEO_THUMBNAIL_HEIGHT}
+          isThumbnail={false}
+          pageLink={ENV.PAGE_INCIDENT_VIEWER}
+          videoType={ENV.VIDEO_TYPE_INCIDENT}
+        />
+      </div>
+    </div>
+  );
+};
 
 export default LiveStreamPage;

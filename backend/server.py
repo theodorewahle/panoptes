@@ -5,6 +5,7 @@ Backend flask server
 """
 from threading import Thread
 from flask import Flask, current_app
+from flask_cors import CORS, cross_origin
 from streaming.rtsp import RTSPStreamer
 from incidents.ftp import fetch_todays_incidents
 from api import api, db_helper
@@ -47,6 +48,8 @@ class PanoptesFlaskApp(Flask):
 # IT MUST BE NAMED "application" IN ORDER TO BE
 # DETECTED BY AWS ELASTIC BEANSTALK
 application = PanoptesFlaskApp(__name__, static_url_path='')
+cors = CORS(application)
+application.config['CORS_HEADERS'] = 'Content-Type'
 
 if __name__ == '__main__':
     host = "127.0.0.1"
