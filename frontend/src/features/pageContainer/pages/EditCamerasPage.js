@@ -33,7 +33,7 @@ const EditCamerasPage = () => {
 
   const onAddUpdateCamera = (e) => {
     e.preventDefault();
-    setStatusCameras({ status: ENV.STATUS_WAITING });
+    setStatusCameras({ status: ENV.STATUS_WAITING, message: '' });
     addUpdateCamera({ formStatus, titleInput, urlInput, cameraId });
     setTitleInput('');
     setUrlInput('');
@@ -78,7 +78,7 @@ const EditCamerasPage = () => {
             variant="outlined"
             size="large"
             onClick={() => {
-              setStatusCameras({ status: ENV.STATUS_IDLE });
+              setStatusCameras({ status: ENV.STATUS_IDLE, message: '' });
               setFormStatus(ENV.FORM_UPDATE_CAMERA);
               setCameraId(camera.camera_id);
               setTitleInput(camera.title);
@@ -91,7 +91,7 @@ const EditCamerasPage = () => {
             variant="outlined"
             size="large"
             onClick={() => {
-              setStatusCameras({ status: ENV.STATUS_IDLE });
+              setStatusCameras({ status: ENV.STATUS_IDLE, message: '' });
               addUpdateCamera({
                 formStatus: ENV.FORM_DELETE_CAMERA,
                 titleInput,
@@ -175,7 +175,9 @@ const EditCamerasPage = () => {
   } else if (statusCameras.status === ENV.STATUS_WAITING) {
     apiStatus = <CircularProgress />;
   } else if (statusCameras.status === ENV.STATUS_ERROR) {
-    apiStatus = <div>{statusCameras.message}</div>;
+    apiStatus = (
+      <div className={styles.errorMessage}>{statusCameras.message}</div>
+    );
   } else if (statusCameras.status === ENV.STATUS_DONE) {
     // TOOD: display checkmark
     apiStatus = null;

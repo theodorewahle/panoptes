@@ -60,13 +60,6 @@ export const addUpdateCamera = (params) => {
         store.dispatch(
           setStatusCameras({ status: ENV.STATUS_DONE, message: '' })
         );
-      } else if (res.status === 400) {
-        store.dispatch(
-          setStatusCameras({
-            status: ENV.STATUS_ERROR,
-            message: `'${titleInput}' or '${urlInput}' is already in use.`,
-          })
-        );
       } else {
         setStatusCameras({
           status: ENV.STATUS_ERROR,
@@ -76,12 +69,21 @@ export const addUpdateCamera = (params) => {
       console.log('');
     })
     .catch((err) => {
-      console.log(err);
-      store.dispatch(
-        setStatusCameras({
-          status: ENV.STATUS_ERROR,
-          message: 'Internal Server Error. Please try again.',
-        })
-      );
+      console.log(JSON.stringify(err));
+      if (err.message.includes('400')) {
+        store.dispatch(
+          setStatusCameras({
+            status: ENV.STATUS_ERROR,
+            message: `'${titleInput}' or '${urlInput}' is already in use.`,
+          })
+        );
+      } else {
+        store.dispatch(
+          setStatusCameras({
+            status: ENV.STATUS_ERROR,
+            message: 'Internal Server Error. Please try again.',
+          })
+        );
+      }
     });
 };
