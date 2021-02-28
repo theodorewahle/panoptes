@@ -70,17 +70,23 @@ const LiveStreamPage = () => {
     url = curIncident.url;
     // CSS: move RETURN TO LIVE FEED button to bottom of container
     display = (
-      <div>
-        <h1>Incident</h1>
-        <DataRow title={'Start Time'} data={curIncident.startTime} />
-        <DataRow title={'End Time'} data={curIncident.endTime} />
-        <DataRow
-          title={'Object Identified'}
-          data={curIncident.objectIdentified}
-        />
+      <div className={styles.leftPanel}>
+        <div>
+          <h1>Incident</h1>
+          <DataRow title={'Start Time'} data={curIncident.startTime} />
+          <DataRow title={'End Time'} data={curIncident.endTime} />
+          <DataRow
+            title={'Object Identified'}
+            data={curIncident.objectIdentified}
+          />
+        </div>
         <div className={styles.button}>
-          <Button onClick={() => dispatch(setPage(ENV.PAGE_LIVE_STREAM))}>
-            Return to Live Feed
+          <Button
+            size="large"
+            variant="outlined"
+            onClick={() => dispatch(setPage(ENV.PAGE_LIVE_STREAM))}
+          >
+            View Live Feed
           </Button>
         </div>
       </div>

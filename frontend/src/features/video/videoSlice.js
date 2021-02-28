@@ -185,6 +185,5 @@ export const selectStreams = (state) => state.video.streams;
 export const selectRecentIncidents = (state) => state.video.recentIncidents;
 export const selectCurIncidentIndex = (state) => state.video.curIncidentIndex;
 export const selectCurCameraIndex = (state) => state.video.curCameraIndex;
-export const selectSearchResults = (state) => state.video.searchResults;
 
 export default videoSlice.reducer;
