@@ -41,8 +41,10 @@ export const addUpdateCamera = (params) => {
 
   axios(config)
     .then((res) => {
-      if (res.status === 200) {
-        store.dispatch(insertCameraToDataModel(res.data));
+      if (res.status === 200 || res.status === 201) {
+        store.dispatch(
+          insertCameraToDataModel({ update: formStatus, data: res.data })
+        );
         store.dispatch(
           setStatusCameras({ status: ENV.STATUS_DONE, message: '' })
         );
@@ -50,7 +52,7 @@ export const addUpdateCamera = (params) => {
         store.dispatch(
           setStatusCameras({
             status: ENV.STATUS_ERROR,
-            message: `'${titleInput}' is already in use.`,
+            message: `'${titleInput}' or '${urlInput}' is already in use.`,
           })
         );
       }

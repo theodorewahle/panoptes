@@ -64,18 +64,22 @@ export const videoSlice = createSlice({
       state.mainDataModel = action.payload;
     },
     insertCameraToDataModel: (state, action) => {
-      const newCamera = action.payload;
-      let doesCameraIdExist = false;
-      state.mainDataModel.forEach((camera) => {
-        if (camera.camera_id === newCamera.camera_id) {
-          doesCameraIdExist = true;
-          camera.title = newCamera.title;
-          camera.url = newCamera.url;
-          camera.camera_id = newCamera.camera_id;
-        }
-      });
-      if (!doesCameraIdExist) {
-        state.mainDataModel.push(newCamera);
+      const { update, data } = action.payload;
+      if (update === ENV.FORM_UPDATE_CAMERA) {
+        state.mainDataModel.forEach((camera) => {
+          if (camera.camera_id === data.camera_id) {
+            camera.title = data.title;
+            camera.url = data.url;
+            camera.camera_id = data.camera_id;
+          }
+        });
+      } else {
+        state.mainDataModel.push({
+          title: data.title,
+          url: data.url,
+          camera_id: data.camera_id,
+          incidents: [],
+        });
       }
     },
 
