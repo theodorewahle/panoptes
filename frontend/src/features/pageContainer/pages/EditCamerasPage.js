@@ -52,6 +52,8 @@ const EditCamerasPage = () => {
   };
 
   // TODO: add checkmark indicating successful update
+  // TODO: add 'Are you sure you want to delete this camera'
+  //       popup with typing name confirmation
   let key = 0;
   const camerasList = mainDataModel.map((camera) => {
     key++;
@@ -64,19 +66,36 @@ const EditCamerasPage = () => {
     return (
       <div className={styles.cameraRowEdit} key={key}>
         {rowDisplay}
-        <Button
-          variant="outlined"
-          size="large"
-          onClick={() => {
-            setStatusCameras({ status: ENV.STATUS_IDLE });
-            setFormStatus(ENV.FORM_UPDATE_CAMERA);
-            setCameraId(camera.camera_id);
-            setTitleInput(camera.title);
-            setUrlInput(camera.url);
-          }}
-        >
-          Edit
-        </Button>
+        <div>
+          <Button
+            variant="outlined"
+            size="large"
+            onClick={() => {
+              setStatusCameras({ status: ENV.STATUS_IDLE });
+              setFormStatus(ENV.FORM_UPDATE_CAMERA);
+              setCameraId(camera.camera_id);
+              setTitleInput(camera.title);
+              setUrlInput(camera.url);
+            }}
+          >
+            Edit
+          </Button>
+          <Button
+            variant="outlined"
+            size="large"
+            onClick={() => {
+              setStatusCameras({ status: ENV.STATUS_IDLE });
+              addUpdateCamera({
+                formStatus: ENV.FORM_DELETE_CAMERA,
+                titleInput,
+                urlInput,
+                cameraId: camera.camera_id,
+              });
+            }}
+          >
+            Del
+          </Button>
+        </div>
       </div>
     );
   });

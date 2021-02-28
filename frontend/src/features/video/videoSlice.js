@@ -82,6 +82,13 @@ export const videoSlice = createSlice({
         });
       }
     },
+    deleteCameraFromDataModel: (state, action) => {
+      const { cameraId } = action.payload;
+      const newArr = state.mainDataModel.filter((camera) => {
+        return camera.camera_id !== cameraId;
+      });
+      state.mainDataModel = newArr;
+    },
 
     setStatusCameras: (state, action) => {
       const { status, message } = action.payload;
@@ -140,6 +147,7 @@ export const {
   setVideos,
   setMainDataModel,
   insertCameraToDataModel,
+  deleteCameraFromDataModel,
 
   setStatusCameras,
   setStatusIncidents,

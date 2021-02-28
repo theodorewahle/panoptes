@@ -3,6 +3,7 @@ import store from '../app/store';
 import {
   setStatusCameras,
   insertCameraToDataModel,
+  deleteCameraFromDataModel,
 } from '../features/video/videoSlice';
 
 import axios from 'axios';
@@ -34,6 +35,11 @@ export const addUpdateCamera = (params) => {
         url: urlInput,
       },
     };
+  } else if (formStatus === ENV.FORM_DELETE_CAMERA) {
+    config = {
+      method: 'delete',
+      url: `${ENV.API_ENDPOINT}/cameras/${cameraId}`,
+    };
   } else {
     console.log('UI logic issue');
     return null;
@@ -41,10 +47,16 @@ export const addUpdateCamera = (params) => {
 
   axios(config)
     .then((res) => {
+      console.log(`status: ${res.status}`);
       if (res.status === 200 || res.status === 201) {
         store.dispatch(
           insertCameraToDataModel({ update: formStatus, data: res.data })
         );
+        store.dispatch(
+          setStatusCameras({ status: ENV.STATUS_DONE, message: '' })
+        );
+      } else if (res.status === 204) {
+        store.dispatch(deleteCameraFromDataModel({ cameraId }));
         store.dispatch(
           setStatusCameras({ status: ENV.STATUS_DONE, message: '' })
         );
@@ -55,6 +67,11 @@ export const addUpdateCamera = (params) => {
             message: `'${titleInput}' or '${urlInput}' is already in use.`,
           })
         );
+      } else {
+        setStatusCameras({
+          status: ENV.STATUS_ERROR,
+          message: 'Unknown Internal Server Error',
+        });
       }
       console.log('');
     })

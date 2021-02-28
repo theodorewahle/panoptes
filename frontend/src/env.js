@@ -43,6 +43,7 @@ const CONSTANTS = {
   FORM_IDLE: 0,
   FORM_UPDATE_CAMERA: 1,
   FORM_ADD_CAMERA: 2,
+  FORM_DELETE_CAMERA: 3,
 };
 
 export default CONSTANTS;
