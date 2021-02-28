@@ -17,6 +17,7 @@ import LiveStreamPage from './pages/LiveStreamPage';
 
 import ENV from '../../env';
 import styles from './PageContainer.module.scss';
+import EditCamerasPage from './pages/EditCamerasPage';
 
 // import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
@@ -112,8 +113,9 @@ const PageContainer = () => {
     display = <LiveStreamPage />;
   } else if (page === ENV.PAGE_OBJECT_SET) {
     display = null;
+  } else if (page === ENV.PAGE_EDIT_CAMERAS) {
+    display = <EditCamerasPage />;
   }
-  console.log(display);
 
   return (
     <div className={styles.PageContainer}>
