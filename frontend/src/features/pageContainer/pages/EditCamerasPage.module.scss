@@ -4,12 +4,29 @@
   padding-right: 100px;
 }
 
-.cameraRowEdit {
+.cameraTitleRow {
   display: flex;
   justify-content: space-between;
 }
 
-.cameraTitleRow {
+.cameraRowEdit {
   display: flex;
   justify-content: space-between;
+  padding-top: 20px;
+}
+
+.textRow {
+  padding-top: 8px;
+}
+
+.textField {
+  padding-top: 20px;
+}
+
+.form {
+  padding-top: 20px;
+}
+
+.formButton {
+  padding-top: 20px;
 }

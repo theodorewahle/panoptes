@@ -59,8 +59,12 @@ const EditCamerasPage = () => {
     key++;
     const rowDisplay = (
       <div>
-        <div>Title: {camera.title}</div>
-        <div>URL: {camera.url}</div>
+        <div>
+          <b>Title:</b> {camera.title}
+        </div>
+        <div className={styles.textRow}>
+          <b>URL:</b> {camera.url}
+        </div>
       </div>
     );
     return (
@@ -128,31 +132,37 @@ const EditCamerasPage = () => {
       formButtonText = 'Update Camera';
     }
     form = (
-      <form className={styles.searchBar} onSubmit={(e) => onAddUpdateCamera(e)}>
-        <TextField
-          id="outlined-basic"
-          label="Camera Title"
-          variant="outlined"
-          value={titleInput}
-          fullWidth={true}
-          onChange={(e) => setTitleInput(e.target.value)}
-        />
-        <TextField
-          id="outlined-basic"
-          label="URL"
-          variant="outlined"
-          value={urlInput}
-          fullWidth={true}
-          onChange={(e) => setUrlInput(e.target.value)}
-        />
-        <Button
-          type="submit"
-          variant="outlined"
-          size="large"
-          disabled={isSubmitCameraButtonDisabled(titleInput, urlInput)}
-        >
-          {formButtonText}
-        </Button>
+      <form className={styles.form} onSubmit={(e) => onAddUpdateCamera(e)}>
+        <div className={styles.textField}>
+          <TextField
+            id="outlined-basic"
+            label="Camera Title"
+            variant="outlined"
+            value={titleInput}
+            fullWidth={true}
+            onChange={(e) => setTitleInput(e.target.value)}
+          />
+        </div>
+        <div className={styles.textField}>
+          <TextField
+            id="outlined-basic"
+            label="URL"
+            variant="outlined"
+            value={urlInput}
+            fullWidth={true}
+            onChange={(e) => setUrlInput(e.target.value)}
+          />
+        </div>
+        <div className={styles.formButton}>
+          <Button
+            type="submit"
+            variant="outlined"
+            size="large"
+            disabled={isSubmitCameraButtonDisabled(titleInput, urlInput)}
+          >
+            {formButtonText}
+          </Button>
+        </div>
       </form>
     );
   }
