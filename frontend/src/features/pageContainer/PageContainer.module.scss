@@ -25,6 +25,11 @@
   cursor: pointer;
 }
 
+.rightMenuContainer {
+  display: flex;
+  flex-direction: row;
+}
+
 .searchBar {
   display: flex;
   width: 400px;

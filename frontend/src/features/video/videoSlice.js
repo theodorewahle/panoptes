@@ -6,6 +6,7 @@ import {
 } from '../video/data';
 import ENV from '../../env';
 
+// TODO: remove unused vars / functions
 export const videoSlice = createSlice({
   name: 'video',
   initialState: {
@@ -16,14 +17,16 @@ export const videoSlice = createSlice({
     videos: [],
     mainDataModel: [],
 
-    statusCameras: ENV.STATUS_IDLE,
+    statusCameras: {
+      status: ENV.STATUS_IDLE,
+      message: '',
+    },
     statusIncidents: ENV.STATUS_IDLE,
     statusObjectSets: ENV.STATUS_IDLE,
     statusObjects: ENV.STATUS_IDLE,
     statusVideos: ENV.STATUS_IDLE,
     statusMainDataModel: ENV.STATUS_IDLE,
 
-    streamStatus: ENV.STATUS_STREAM_IDLE,
     objectSet: [],
     streams: [],
     recentIncidents: initRecentIncidents,
@@ -60,9 +63,38 @@ export const videoSlice = createSlice({
     setMainDataModel: (state, action) => {
       state.mainDataModel = action.payload;
     },
+    insertCameraToDataModel: (state, action) => {
+      const { update, data } = action.payload;
+      if (update === ENV.FORM_UPDATE_CAMERA) {
+        state.mainDataModel.forEach((camera) => {
+          if (camera.camera_id === data.camera_id) {
+            camera.title = data.title;
+            camera.url = data.url;
+            camera.camera_id = data.camera_id;
+          }
+        });
+      } else {
+        state.mainDataModel.push({
+          title: data.title,
+          url: data.url,
+          camera_id: data.camera_id,
+          incidents: [],
+        });
+      }
+    },
+    deleteCameraFromDataModel: (state, action) => {
+      const { cameraId } = action.payload;
+      const newArr = state.mainDataModel.filter((camera) => {
+        return camera.camera_id !== cameraId;
+      });
+      state.mainDataModel = newArr;
+    },
 
     setStatusCameras: (state, action) => {
-      state.statusCameras = action.payload;
+      const { status, message } = action.payload;
+      let messageTemp = '';
+      if (message != null) messageTemp = message;
+      state.statusCameras = { status, message: messageTemp };
     },
     setStatusIncidents: (state, action) => {
       state.statusIncidents = action.payload;
@@ -80,9 +112,6 @@ export const videoSlice = createSlice({
       state.statusMainDataModel = action.payload;
     },
 
-    setStreamStatus: (state, action) => {
-      state.streamStatus = action.payload;
-    },
     addObject: (state, action) => {
       state.objectSet.push(action.payload);
     },
@@ -117,6 +146,8 @@ export const {
   setObjects,
   setVideos,
   setMainDataModel,
+  insertCameraToDataModel,
+  deleteCameraFromDataModel,
 
   setStatusCameras,
   setStatusIncidents,
@@ -125,7 +156,6 @@ export const {
   setStatusVideos,
   setStatusMainDataModel,
 
-  setStreamStatus,
   addObject,
   setObjectSet,
   setStreams,
@@ -150,7 +180,6 @@ export const selectStatusVideos = (state) => state.video.statusVideos;
 export const selectStatusMainDataModel = (state) =>
   state.video.statusMainDataModel;
 
-export const selectStreamStatus = (state) => state.video.streamStatus;
 export const selectObjectSet = (state) => state.video.objectSet;
 export const selectStreams = (state) => state.video.streams;
 export const selectRecentIncidents = (state) => state.video.recentIncidents;

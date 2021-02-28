@@ -17,18 +17,35 @@ import LiveStreamPage from './pages/LiveStreamPage';
 
 import ENV from '../../env';
 import styles from './PageContainer.module.scss';
+import EditCamerasPage from './pages/EditCamerasPage';
 
 // import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 const PageHeader = () => {
   const dispatch = useDispatch();
   const searchInput = useSelector(selectSearchInput);
+  const page = useSelector(selectPage);
   console.log(`searchInput: ${searchInput}`);
+
+  let editCameraButtonText;
+  if (page === ENV.PAGE_EDIT_CAMERAS) {
+    editCameraButtonText = 'View Streams';
+  } else {
+    editCameraButtonText = 'Edit Cameras';
+  }
+
   const onSearch = (e) => {
     e.preventDefault();
     dispatch(setSearchCurrent(searchInput));
     dispatch(setPage(ENV.PAGE_SEARCH_RESULTS));
     dispatch(setSearchInput(''));
+  };
+  const onEditCameras = () => {
+    if (page === ENV.PAGE_EDIT_CAMERAS) {
+      dispatch(setPage(ENV.PAGE_LANDING));
+    } else {
+      dispatch(setPage(ENV.PAGE_EDIT_CAMERAS));
+    }
   };
   return (
     <div className={styles.header}>
@@ -39,24 +56,33 @@ const PageHeader = () => {
         >
           Panoptes
         </div>
-        <form className={styles.searchBar} onSubmit={(e) => onSearch(e)}>
-          <TextField
-            id="outlined-basic"
-            label="Search Today's Incidents..."
-            variant="outlined"
-            value={searchInput}
-            fullWidth={true}
-            onChange={(e) => dispatch(setSearchInput(e.target.value))}
-          />
+        <div className={styles.rightMenuContainer}>
           <Button
-            type="submit"
             variant="outlined"
             size="large"
-            disabled={searchInput.length > 0 ? false : true} // TODO
+            onClick={() => onEditCameras()}
           >
-            Go
+            {editCameraButtonText}
           </Button>
-        </form>
+          <form className={styles.searchBar} onSubmit={(e) => onSearch(e)}>
+            <TextField
+              id="outlined-basic"
+              label="Search Today's Incidents..."
+              variant="outlined"
+              value={searchInput}
+              fullWidth={true}
+              onChange={(e) => dispatch(setSearchInput(e.target.value))}
+            />
+            <Button
+              type="submit"
+              variant="outlined"
+              size="large"
+              disabled={searchInput.length > 0 ? false : true} // TODO
+            >
+              Go
+            </Button>
+          </form>
+        </div>
       </div>
     </div>
   );
@@ -87,8 +113,9 @@ const PageContainer = () => {
     display = <LiveStreamPage />;
   } else if (page === ENV.PAGE_OBJECT_SET) {
     display = null;
+  } else if (page === ENV.PAGE_EDIT_CAMERAS) {
+    display = <EditCamerasPage />;
   }
-  console.log(display);
 
   return (
     <div className={styles.PageContainer}>
