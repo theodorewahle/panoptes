@@ -12,6 +12,8 @@
 
 ### TODO
 
+- Warnings
+  - The YouTube player is not attached to the DOM. API calls should be made after the onReady event. See more: https://developers.google.com/youtube/iframe_api_reference#Events
 - CSS work (low priority)
 - Clean up and sort imports in all files
 - If not handled on backend, incidents need to be trimmed

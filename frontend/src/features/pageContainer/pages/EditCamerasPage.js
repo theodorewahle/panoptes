@@ -21,6 +21,7 @@ const EditCamerasPage = () => {
 
   if (mainDataModel == null) return null;
 
+  // TODO: display bad URL message to user if they keep clicking 'Update Camera'?
   const isSubmitCameraButtonDisabled = (title, url) => {
     if (url.length === 0 || title.length === 0) {
       return true;
@@ -54,15 +55,19 @@ const EditCamerasPage = () => {
             setUrlInput(camera.url);
           }}
         >
-          {camera.isEditing ? 'Submit' : 'Edit'}
+          Edit
         </Button>
       </div>
     );
   });
 
-  const onAddCamera = (e) => {
+  const onAddUpdateCamera = (e) => {
     e.preventDefault();
-    console.log('onAddCamera: ping API');
+    if (formStatus === FORM_ADD_CAMERA) {
+    } else if (formStatus === FORM_UPDATE_CAMERA) {
+    } else {
+      console.log('Bad UI logic - display error?');
+    }
   };
 
   let cameraButtonTitleRow = (
@@ -91,7 +96,7 @@ const EditCamerasPage = () => {
       formButtonText = 'Update Camera';
     }
     form = (
-      <form className={styles.searchBar} onSubmit={(e) => onAddCamera(e)}>
+      <form className={styles.searchBar} onSubmit={(e) => onAddUpdateCamera(e)}>
         <TextField
           id="outlined-basic"
           label="Camera Title"
@@ -112,7 +117,7 @@ const EditCamerasPage = () => {
           type="submit"
           variant="outlined"
           size="large"
-          disabled={isSubmitCameraButtonDisabled(titleInput, urlInput)} // TODO
+          disabled={isSubmitCameraButtonDisabled(titleInput, urlInput)}
         >
           {formButtonText}
         </Button>
