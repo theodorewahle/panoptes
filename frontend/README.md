@@ -12,6 +12,7 @@
 
 ### TODO
 
+- Add timeouts to API calls
 - Videos reload on LandingPage in what seems to be UI thread... [react-player](https://www.npmjs.com/package/react-player) is not handling this automatically
 - Warnings
   - The YouTube player is not attached to the DOM. API calls should be made after the onReady event. See more: https://developers.google.com/youtube/iframe_api_reference#Events
