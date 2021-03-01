@@ -1,28 +1,26 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  selectMainDataModel,
   setStatusCameras,
   selectStatusCameras,
-} from '../../video/videoSlice';
-import { addUpdateCamera } from '../../../api/cameras';
-import { isValidHttpUrl } from '../../../utilGeneral/utils';
+} from '../../../video/videoSlice';
+import { addUpdateCamera } from '../../../../api/cameras';
+import { isValidHttpUrl } from '../../../../utilGeneral/utils';
 
 import { TextField, Button, CircularProgress } from '@material-ui/core';
 
 import styles from './EditCamerasPage.module.scss';
-import ENV from '../../../env';
+import ENV from '../../../../env';
 
 // TODO: form should not go away if camera already exists
 //      (no point in pinging API before checking UI data model)
-const EditCamerasPage = () => {
+const EditCamerasPage = (props) => {
   const dispatch = useDispatch();
+  const { mainDataModel } = props;
   const [titleInput, setTitleInput] = useState('');
   const [urlInput, setUrlInput] = useState('');
   const [cameraId, setCameraId] = useState('');
   const [formStatus, setFormStatus] = useState(ENV.FORM_IDLE);
-  const mainDataModel = useSelector(selectMainDataModel);
   const statusCameras = useSelector(selectStatusCameras);
   console.log(`formStatus: ${formStatus}`);
   console.log(`statusCameras.status: ${statusCameras.status}`);

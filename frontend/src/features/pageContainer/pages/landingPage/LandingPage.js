@@ -1,16 +1,16 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import {
-  selectMainDataModel,
-  selectStatusMainDataModel,
-} from '../../video/videoSlice';
-import VideoThumbnails from '../../video/VideoThumbnails';
+import { selectStatusMainDataModel } from '../../../video/videoSlice';
+
+import VideoThumbnails from '../../../video/VideoThumbnails';
+import { CircularProgress } from '@material-ui/core';
+
 import styles from './LandingPage.module.scss';
-import ENV from '../../../env';
+import ENV from '../../../../env';
 
 // TODO: CSS
 const Loading = () => {
-  return <div>Loading...</div>;
+  return <CircularProgress />;
 };
 
 // TODO: CSS
@@ -30,15 +30,13 @@ const Error = (props) => {
   );
 };
 
-const LandingPage = () => {
+const LandingPage = (props) => {
+  const { mainDataModel } = props;
   const statusMainDataModel = useSelector(selectStatusMainDataModel);
-  const mainDataModel = useSelector(selectMainDataModel);
-  console.log(`statusMainDataModel: ${statusMainDataModel}`);
   if (
     statusMainDataModel === ENV.STATUS_IDLE ||
     statusMainDataModel === ENV.STATUS_WAITING
   ) {
-    console.log('TODO: display nice loading wheel');
     return <Loading />;
   } else if (statusMainDataModel === ENV.STATUS_ERROR) {
     return <Error />;
@@ -47,24 +45,16 @@ const LandingPage = () => {
   }
   let cameras = [];
   let incidents = [];
-  let cameraIndex = -1;
   mainDataModel.forEach((cameraObj) => {
-    cameraIndex++;
-    cameras.push({ title: cameraObj.title, url: cameraObj.url, cameraIndex });
-    let incidentIndex = -1;
+    cameras.push({
+      title: cameraObj.title,
+      url: cameraObj.url,
+      cameraIndex: cameraObj.cameraIndex,
+    });
     cameraObj.incidents.forEach((incident) => {
-      incidentIndex++;
-      console.log(JSON.stringify(incident));
-      const thumbnail = {
-        title: incident.startTime,
-        url: incident.url,
-        startTime: incident.startTime,
-        endTime: incident.endTime,
-        objectsIdentified: incident.objectsIdentified,
-        cameraIndex,
-        incidentIndex,
-      };
-      incidents.push(thumbnail);
+      const tempIncident = { ...incident };
+      tempIncident['title'] = incident.objectIdentified;
+      incidents.push(tempIncident);
     });
   });
 

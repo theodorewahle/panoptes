@@ -24,8 +24,6 @@ const Video = (props) => {
     incidentIndex,
     cameraIndex,
   } = props;
-  // TODO: have prop be option of size in text then convert
-  //       to dimensions here
   if (width == null || height == null || url == null) {
     return null;
   }

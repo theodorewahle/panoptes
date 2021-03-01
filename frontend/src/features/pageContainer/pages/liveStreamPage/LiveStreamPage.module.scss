@@ -1,3 +1,5 @@
+// TODO: clean these containers up
+
 .titleVideoStreams {
   padding-left: 64px;
   font-weight: bold;
@@ -17,6 +19,13 @@
 
 .containerRecentIncidents {
   padding: 32px;
+}
+
+.leftPanel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .incidentRow {

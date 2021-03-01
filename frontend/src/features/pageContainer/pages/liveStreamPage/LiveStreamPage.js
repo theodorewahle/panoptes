@@ -2,16 +2,15 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   selectCurIncidentIndex,
-  selectMainDataModel,
   selectCurCameraIndex,
-} from '../../video/videoSlice';
-import { setPage, selectPage } from '../pageContainerSlice';
+} from '../../../video/videoSlice';
+import { setPage, selectPage } from '../../pageContainerSlice';
 
-import VideoThumbnails from '../../video/VideoThumbnails';
+import VideoThumbnails from '../../../video/VideoThumbnails';
 import ReactPlayer from 'react-player';
 import { Button } from '@material-ui/core';
 
-import ENV from '../../../env';
+import ENV from '../../../../env';
 import styles from './LiveStreamPage.module.scss';
 
 const DataRow = (props) => {
@@ -25,34 +24,21 @@ const DataRow = (props) => {
   );
 };
 
-const LiveStreamPage = () => {
-  const dispatch = useDispatch(setPage);
-  const mainDataModel = useSelector(selectMainDataModel);
+const LiveStreamPage = (props) => {
+  const dispatch = useDispatch();
+  const { mainDataModel } = props;
   const curIncidentIndex = useSelector(selectCurIncidentIndex);
   const curCameraIndex = useSelector(selectCurCameraIndex);
   const page = useSelector(selectPage);
-
-  console.log(`curIncidentIndex: ${curIncidentIndex}`);
-  console.log(`curCameraIndex: ${curCameraIndex}`);
-  console.log(`page: ${page}`);
 
   const curCamera = mainDataModel[curCameraIndex];
   const curIncident = curCamera.incidents[curIncidentIndex];
 
   let incidents = [];
-  // this is to add 'title'
-  let incidentIndex = -1;
   curCamera.incidents.forEach((incident) => {
-    incidentIndex++;
-    incidents.push({
-      title: incident.startTime,
-      url: incident.url,
-      startTime: incident.startTime,
-      endTime: incident.endTime,
-      objectsIdentified: incident.objectsIdentified,
-      incidentIndex,
-      cameraIndex: curCameraIndex,
-    });
+    const tempIncident = { ...incident };
+    tempIncident['title'] = incident.objectIdentified;
+    incidents.push(tempIncident);
   });
   let display, url;
   if (page === ENV.PAGE_LIVE_STREAM) {
@@ -68,19 +54,24 @@ const LiveStreamPage = () => {
     );
   } else if (page === ENV.PAGE_INCIDENT_VIEWER) {
     url = curIncident.url;
-    // CSS: move RETURN TO LIVE FEED button to bottom of container
     display = (
-      <div>
-        <h1>Incident</h1>
-        <DataRow title={'Start Time'} data={curIncident.startTime} />
-        <DataRow title={'End Time'} data={curIncident.endTime} />
-        <DataRow
-          title={'Object Identified'}
-          data={curIncident.objectIdentified}
-        />
+      <div className={styles.leftPanel}>
+        <div>
+          <h1>Incident</h1>
+          <DataRow title={'Start Time'} data={curIncident.startTime} />
+          <DataRow title={'End Time'} data={curIncident.endTime} />
+          <DataRow
+            title={'Object Identified'}
+            data={curIncident.objectIdentified}
+          />
+        </div>
         <div className={styles.button}>
-          <Button onClick={() => dispatch(setPage(ENV.PAGE_LIVE_STREAM))}>
-            Return to Live Feed
+          <Button
+            size="large"
+            variant="outlined"
+            onClick={() => dispatch(setPage(ENV.PAGE_LIVE_STREAM))}
+          >
+            View Live Feed
           </Button>
         </div>
       </div>
