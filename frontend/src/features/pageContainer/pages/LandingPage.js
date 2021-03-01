@@ -4,13 +4,16 @@ import {
   selectMainDataModel,
   selectStatusMainDataModel,
 } from '../../video/videoSlice';
+
 import VideoThumbnails from '../../video/VideoThumbnails';
+import { CircularProgress } from '@material-ui/core';
+
 import styles from './LandingPage.module.scss';
 import ENV from '../../../env';
 
 // TODO: CSS
 const Loading = () => {
-  return <div>Loading...</div>;
+  return <CircularProgress />;
 };
 
 // TODO: CSS
