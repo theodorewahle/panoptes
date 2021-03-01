@@ -57,7 +57,7 @@ const SearchResultsPage = () => {
   return (
     <div className={styles.container}>
       <div className={styles.resultsMessage}>{message}</div>
-      {display}
+      <div className={styles.resultsContainer}>{display}</div>
     </div>
   );
 };

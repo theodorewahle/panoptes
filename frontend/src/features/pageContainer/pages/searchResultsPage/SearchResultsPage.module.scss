@@ -1,11 +1,14 @@
 .container {
-  display: flex;
+  padding-top: 50px;
+  padding-left: 100px;
+  padding-right: 100px;
 }
 
 .resultsMessage {
 }
 
-.results {
+.resultsContainer {
+  padding-top: 25px;
 }
 
 .loading {
