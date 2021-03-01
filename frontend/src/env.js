@@ -5,6 +5,9 @@ const CONSTANTS = {
   STATUS_WAITING: 1,
   STATUS_DONE: 2,
 
+  // search status
+  STATUS_NO_RESULTS: -10,
+
   // API Endpoint
   API_ENDPOINT: 'http://127.0.0.1:8000/api',
   API_FILE_SERVER: 'http://127.0.0.1:8000/video', // X.mp4 needs to be appended

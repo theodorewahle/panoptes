@@ -7,19 +7,19 @@ import {
   setSearchCurrent,
   setPage,
 } from './pageContainerSlice';
+import { selectMainDataModel, setStatusSearch } from '../video/videoSlice';
 import { fetchAndProcessDataModel } from '../../api/processData';
 import { processSearch } from './pages/searchResultsPage/processSearch';
 
-import Video from '../video/Video';
 import { TextField, Button } from '@material-ui/core';
 
+import EditCamerasPage from './pages/editCamerasPage/EditCamerasPage';
 import LandingPage from './pages/landingPage/LandingPage';
 import LiveStreamPage from './pages/liveStreamPage/LiveStreamPage';
+import SearchResultsPage from './pages/searchResultsPage/SearchResultsPage';
 
 import ENV from '../../env';
 import styles from './PageContainer.module.scss';
-import EditCamerasPage from './pages/editCamerasPage/EditCamerasPage';
-import { selectMainDataModel } from '../video/videoSlice';
 
 // import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
@@ -40,6 +40,7 @@ const PageHeader = (props) => {
   const onSearch = (e) => {
     e.preventDefault();
     dispatch(setSearchCurrent(searchInput));
+    dispatch(setStatusSearch(ENV.STATUS_WAITING));
     dispatch(setPage(ENV.PAGE_SEARCH_RESULTS));
     processSearch({ mainDataModel, searchCurrent: searchInput });
     dispatch(setSearchInput(''));
@@ -108,7 +109,7 @@ const PageContainer = () => {
   if (page === ENV.PAGE_LANDING) {
     display = <LandingPage mainDataModel={mainDataModel} />;
   } else if (page === ENV.PAGE_SEARCH_RESULTS) {
-    display = null;
+    display = <SearchResultsPage />;
   } else if (page === ENV.PAGE_SEARCH_RESULTS_NONE) {
     display = null;
   } else if (
@@ -124,8 +125,7 @@ const PageContainer = () => {
 
   return (
     <div className={styles.PageContainer}>
-      <PageHeader />
-      <Video />
+      <PageHeader mainDataModel={mainDataModel} />
       {display}
     </div>
   );

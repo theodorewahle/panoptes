@@ -173,6 +173,7 @@ export const {
   setCurIncidentIndex,
   setCurCameraIndex,
   setSearchResults,
+  setStatusSearch,
 } = videoSlice.actions;
 
 export const selectCameras = (state) => state.video.cameras;
