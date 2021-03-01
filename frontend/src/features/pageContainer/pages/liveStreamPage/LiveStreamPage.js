@@ -60,7 +60,6 @@ const LiveStreamPage = (props) => {
     );
   } else if (page === ENV.PAGE_INCIDENT_VIEWER) {
     url = curIncident.url;
-    // CSS: move RETURN TO LIVE FEED button to bottom of container
     display = (
       <div className={styles.leftPanel}>
         <div>

@@ -38,10 +38,16 @@ export const processSearch = ({ mainDataModel, searchCurrent }) => {
       })
     );
   } else {
+    let message = '';
+    if (results.length === 1) {
+      message = `1 result matches your search for "${searchCurrent}"`;
+    } else {
+      message = `${results.length} results match your search for "${searchCurrent}"`;
+    }
     store.dispatch(
       setStatusSearch({
         status: ENV.STATUS_DONE,
-        message: `${results.length} results match your search for "${searchCurrent}"`,
+        message,
       })
     );
   }
