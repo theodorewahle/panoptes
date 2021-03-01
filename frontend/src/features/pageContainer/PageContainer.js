@@ -39,10 +39,11 @@ const PageHeader = (props) => {
 
   const onSearch = (e) => {
     e.preventDefault();
-    dispatch(setSearchCurrent(searchInput));
+    const trimmedSearch = searchInput.trim();
+    dispatch(setSearchCurrent(trimmedSearch));
     dispatch(setStatusSearch(ENV.STATUS_WAITING));
     dispatch(setPage(ENV.PAGE_SEARCH_RESULTS));
-    processSearch({ mainDataModel, searchCurrent: searchInput });
+    processSearch({ mainDataModel, searchCurrent: trimmedSearch });
     dispatch(setSearchInput(''));
   };
   const onEditCameras = () => {
