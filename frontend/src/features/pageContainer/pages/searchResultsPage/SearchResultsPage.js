@@ -1,10 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import VideoThumbnails from '../../video/VideoThumbnails';
-import { selectSearchCurrent } from '../pageContainerSlice';
-import { selectSearchResults } from '../../video/videoSlice';
+import VideoThumbnails from '../../../video/VideoThumbnails';
+import { selectSearchCurrent } from '../../pageContainerSlice';
+import { selectSearchResults } from '../../../video/videoSlice';
 import styles from './SearchResultsPage.module.scss';
-import ENV from '../../../env';
+import ENV from '../../../../env';
 
 const SearchResultsPage = () => {
   const searchCurrent = useSelector(selectSearchCurrent);

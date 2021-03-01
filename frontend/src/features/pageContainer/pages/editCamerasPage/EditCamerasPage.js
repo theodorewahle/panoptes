@@ -5,14 +5,14 @@ import {
   selectMainDataModel,
   setStatusCameras,
   selectStatusCameras,
-} from '../../video/videoSlice';
-import { addUpdateCamera } from '../../../api/cameras';
-import { isValidHttpUrl } from '../../../utilGeneral/utils';
+} from '../../../video/videoSlice';
+import { addUpdateCamera } from '../../../../api/cameras';
+import { isValidHttpUrl } from '../../../../utilGeneral/utils';
 
 import { TextField, Button, CircularProgress } from '@material-ui/core';
 
 import styles from './EditCamerasPage.module.scss';
-import ENV from '../../../env';
+import ENV from '../../../../env';
 
 // TODO: form should not go away if camera already exists
 //      (no point in pinging API before checking UI data model)

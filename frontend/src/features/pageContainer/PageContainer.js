@@ -12,12 +12,12 @@ import { fetchAndProcessDataModel } from '../../api/processData';
 import Video from '../video/Video';
 import { TextField, Button } from '@material-ui/core';
 
-import LandingPage from './pages/LandingPage';
-import LiveStreamPage from './pages/LiveStreamPage';
+import LandingPage from './pages/landingPage/LandingPage';
+import LiveStreamPage from './pages/liveStreamPage/LiveStreamPage';
 
 import ENV from '../../env';
 import styles from './PageContainer.module.scss';
-import EditCamerasPage from './pages/EditCamerasPage';
+import EditCamerasPage from './pages/editCamerasPage/EditCamerasPage';
 
 // import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 

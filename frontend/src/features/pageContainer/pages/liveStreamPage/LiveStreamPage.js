@@ -4,14 +4,14 @@ import {
   selectCurIncidentIndex,
   selectMainDataModel,
   selectCurCameraIndex,
-} from '../../video/videoSlice';
-import { setPage, selectPage } from '../pageContainerSlice';
+} from '../../../video/videoSlice';
+import { setPage, selectPage } from '../../pageContainerSlice';
 
-import VideoThumbnails from '../../video/VideoThumbnails';
+import VideoThumbnails from '../../../video/VideoThumbnails';
 import ReactPlayer from 'react-player';
 import { Button } from '@material-ui/core';
 
-import ENV from '../../../env';
+import ENV from '../../../../env';
 import styles from './LiveStreamPage.module.scss';
 
 const DataRow = (props) => {

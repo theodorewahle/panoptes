@@ -3,13 +3,13 @@ import { useSelector } from 'react-redux';
 import {
   selectMainDataModel,
   selectStatusMainDataModel,
-} from '../../video/videoSlice';
+} from '../../../video/videoSlice';
 
-import VideoThumbnails from '../../video/VideoThumbnails';
+import VideoThumbnails from '../../../video/VideoThumbnails';
 import { CircularProgress } from '@material-ui/core';
 
 import styles from './LandingPage.module.scss';
-import ENV from '../../../env';
+import ENV from '../../../../env';
 
 // TODO: CSS
 const Loading = () => {

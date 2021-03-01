@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addObjectToSet } from '../../video/videoSlice';
+import { addObjectToSet } from '../../../video/videoSlice';
 
 import { TextField, Button } from '@material-ui/core';
 
