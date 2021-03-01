@@ -98,11 +98,7 @@ const PageContainer = () => {
   const page = useSelector(selectPage);
   const mainDataModel = useSelector(selectMainDataModel);
   useEffect(() => {
-    // dispatch(openSocket());
     fetchAndProcessDataModel();
-    return () => {
-      // dispatch(closeSocket());
-    };
   }, []);
 
   let display = null;

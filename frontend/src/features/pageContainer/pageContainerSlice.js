@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import ENV from '../../env';
 
-// TODO: consider merging videoSlice.js here
 export const pageContainerSlice = createSlice({
   name: 'pageContainer',
   initialState: {

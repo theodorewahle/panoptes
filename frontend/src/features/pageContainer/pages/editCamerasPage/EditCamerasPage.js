@@ -1,8 +1,6 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  selectMainDataModel,
   setStatusCameras,
   selectStatusCameras,
 } from '../../../video/videoSlice';
@@ -23,7 +21,6 @@ const EditCamerasPage = (props) => {
   const [urlInput, setUrlInput] = useState('');
   const [cameraId, setCameraId] = useState('');
   const [formStatus, setFormStatus] = useState(ENV.FORM_IDLE);
-  // const mainDataModel = useSelector(selectMainDataModel);
   const statusCameras = useSelector(selectStatusCameras);
   console.log(`formStatus: ${formStatus}`);
   console.log(`statusCameras.status: ${statusCameras.status}`);

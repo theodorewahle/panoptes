@@ -23,7 +23,6 @@ const SearchResultsPage = () => {
 
   // TODO: (1) & (2)
   // (3)
-  // TODO: this feels a bit messy
   let display;
   if (status === ENV.STATUS_ERROR) {
     display = <div className={styles.error}>TODO: Error</div>;

@@ -2,7 +2,6 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   selectCurIncidentIndex,
-  // selectMainDataModel,
   selectCurCameraIndex,
 } from '../../../video/videoSlice';
 import { setPage, selectPage } from '../../pageContainerSlice';
@@ -28,14 +27,9 @@ const DataRow = (props) => {
 const LiveStreamPage = (props) => {
   const dispatch = useDispatch();
   const { mainDataModel } = props;
-  // const mainDataModel = useSelector(selectMainDataModel);
   const curIncidentIndex = useSelector(selectCurIncidentIndex);
   const curCameraIndex = useSelector(selectCurCameraIndex);
   const page = useSelector(selectPage);
-
-  console.log(`curIncidentIndex: ${curIncidentIndex}`);
-  console.log(`curCameraIndex: ${curCameraIndex}`);
-  console.log(`page: ${page}`);
 
   const curCamera = mainDataModel[curCameraIndex];
   const curIncident = curCamera.incidents[curIncidentIndex];

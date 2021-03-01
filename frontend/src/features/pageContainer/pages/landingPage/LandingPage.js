@@ -1,9 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import {
-  // selectMainDataModel,
-  selectStatusMainDataModel,
-} from '../../../video/videoSlice';
+import { selectStatusMainDataModel } from '../../../video/videoSlice';
 
 import VideoThumbnails from '../../../video/VideoThumbnails';
 import { CircularProgress } from '@material-ui/core';
@@ -36,13 +33,10 @@ const Error = (props) => {
 const LandingPage = (props) => {
   const { mainDataModel } = props;
   const statusMainDataModel = useSelector(selectStatusMainDataModel);
-  // const mainDataModel = useSelector(selectMainDataModel);
-  console.log(`statusMainDataModel: ${statusMainDataModel}`);
   if (
     statusMainDataModel === ENV.STATUS_IDLE ||
     statusMainDataModel === ENV.STATUS_WAITING
   ) {
-    console.log('TODO: display nice loading wheel');
     return <Loading />;
   } else if (statusMainDataModel === ENV.STATUS_ERROR) {
     return <Error />;
