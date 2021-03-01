@@ -50,13 +50,13 @@ const LandingPage = () => {
   }
   let cameras = [];
   let incidents = [];
-  let cameraIndex = -1;
   mainDataModel.forEach((cameraObj) => {
-    cameraIndex++;
-    cameras.push({ title: cameraObj.title, url: cameraObj.url, cameraIndex });
-    let incidentIndex = -1;
+    cameras.push({
+      title: cameraObj.title,
+      url: cameraObj.url,
+      cameraIndex: cameraObj.cameraIndex,
+    });
     cameraObj.incidents.forEach((incident) => {
-      incidentIndex++;
       console.log(JSON.stringify(incident));
       const thumbnail = {
         title: incident.startTime,
@@ -64,8 +64,8 @@ const LandingPage = () => {
         startTime: incident.startTime,
         endTime: incident.endTime,
         objectsIdentified: incident.objectsIdentified,
-        cameraIndex,
-        incidentIndex,
+        cameraIndex: cameraObj.cameraIndex,
+        incidentIndex: incident.incidentIndex,
       };
       incidents.push(thumbnail);
     });
