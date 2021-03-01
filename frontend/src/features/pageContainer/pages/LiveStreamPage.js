@@ -41,16 +41,14 @@ const LiveStreamPage = () => {
 
   let incidents = [];
   // this is to add 'title'
-  let incidentIndex = -1;
   curCamera.incidents.forEach((incident) => {
-    incidentIndex++;
     incidents.push({
       title: incident.startTime,
       url: incident.url,
       startTime: incident.startTime,
       endTime: incident.endTime,
       objectsIdentified: incident.objectsIdentified,
-      incidentIndex,
+      incidentIndex: incident.incidentIndex,
       cameraIndex: curCameraIndex,
     });
   });
