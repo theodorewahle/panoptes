@@ -16,13 +16,14 @@ import ENV from '../../../../env';
 
 // TODO: form should not go away if camera already exists
 //      (no point in pinging API before checking UI data model)
-const EditCamerasPage = () => {
+const EditCamerasPage = (props) => {
   const dispatch = useDispatch();
+  const { mainDataModel } = props;
   const [titleInput, setTitleInput] = useState('');
   const [urlInput, setUrlInput] = useState('');
   const [cameraId, setCameraId] = useState('');
   const [formStatus, setFormStatus] = useState(ENV.FORM_IDLE);
-  const mainDataModel = useSelector(selectMainDataModel);
+  // const mainDataModel = useSelector(selectMainDataModel);
   const statusCameras = useSelector(selectStatusCameras);
   console.log(`formStatus: ${formStatus}`);
   console.log(`statusCameras.status: ${statusCameras.status}`);

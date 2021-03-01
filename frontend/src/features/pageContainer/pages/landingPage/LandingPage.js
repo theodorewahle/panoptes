@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import {
-  selectMainDataModel,
+  // selectMainDataModel,
   selectStatusMainDataModel,
 } from '../../../video/videoSlice';
 
@@ -33,9 +33,10 @@ const Error = (props) => {
   );
 };
 
-const LandingPage = () => {
+const LandingPage = (props) => {
+  const { mainDataModel } = props;
   const statusMainDataModel = useSelector(selectStatusMainDataModel);
-  const mainDataModel = useSelector(selectMainDataModel);
+  // const mainDataModel = useSelector(selectMainDataModel);
   console.log(`statusMainDataModel: ${statusMainDataModel}`);
   if (
     statusMainDataModel === ENV.STATUS_IDLE ||

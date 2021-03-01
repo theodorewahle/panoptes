@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   selectCurIncidentIndex,
-  selectMainDataModel,
+  // selectMainDataModel,
   selectCurCameraIndex,
 } from '../../../video/videoSlice';
 import { setPage, selectPage } from '../../pageContainerSlice';
@@ -25,9 +25,10 @@ const DataRow = (props) => {
   );
 };
 
-const LiveStreamPage = () => {
-  const dispatch = useDispatch(setPage);
-  const mainDataModel = useSelector(selectMainDataModel);
+const LiveStreamPage = (props) => {
+  const dispatch = useDispatch();
+  const { mainDataModel } = props;
+  // const mainDataModel = useSelector(selectMainDataModel);
   const curIncidentIndex = useSelector(selectCurIncidentIndex);
   const curCameraIndex = useSelector(selectCurCameraIndex);
   const page = useSelector(selectPage);

@@ -8,6 +8,7 @@ import {
   setPage,
 } from './pageContainerSlice';
 import { fetchAndProcessDataModel } from '../../api/processData';
+import { processSearch } from './pages/searchResultsPage/processSearch';
 
 import Video from '../video/Video';
 import { TextField, Button } from '@material-ui/core';
@@ -18,11 +19,13 @@ import LiveStreamPage from './pages/liveStreamPage/LiveStreamPage';
 import ENV from '../../env';
 import styles from './PageContainer.module.scss';
 import EditCamerasPage from './pages/editCamerasPage/EditCamerasPage';
+import { selectMainDataModel } from '../video/videoSlice';
 
 // import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-const PageHeader = () => {
+const PageHeader = (props) => {
   const dispatch = useDispatch();
+  const { mainDataModel } = props;
   const searchInput = useSelector(selectSearchInput);
   const page = useSelector(selectPage);
   console.log(`searchInput: ${searchInput}`);
@@ -38,6 +41,7 @@ const PageHeader = () => {
     e.preventDefault();
     dispatch(setSearchCurrent(searchInput));
     dispatch(setPage(ENV.PAGE_SEARCH_RESULTS));
+    processSearch({ mainDataModel, searchCurrent: searchInput });
     dispatch(setSearchInput(''));
   };
   const onEditCameras = () => {
@@ -90,6 +94,7 @@ const PageHeader = () => {
 
 const PageContainer = () => {
   const page = useSelector(selectPage);
+  const mainDataModel = useSelector(selectMainDataModel);
   useEffect(() => {
     // dispatch(openSocket());
     fetchAndProcessDataModel();
@@ -101,7 +106,7 @@ const PageContainer = () => {
   let display = null;
   // TODO holding off linking up to router incase server-side rendering changes this
   if (page === ENV.PAGE_LANDING) {
-    display = <LandingPage />;
+    display = <LandingPage mainDataModel={mainDataModel} />;
   } else if (page === ENV.PAGE_SEARCH_RESULTS) {
     display = null;
   } else if (page === ENV.PAGE_SEARCH_RESULTS_NONE) {
@@ -110,11 +115,11 @@ const PageContainer = () => {
     page === ENV.PAGE_INCIDENT_VIEWER ||
     page === ENV.PAGE_LIVE_STREAM
   ) {
-    display = <LiveStreamPage />;
+    display = <LiveStreamPage mainDataModel={mainDataModel} />;
   } else if (page === ENV.PAGE_OBJECT_SET) {
     display = null;
   } else if (page === ENV.PAGE_EDIT_CAMERAS) {
-    display = <EditCamerasPage />;
+    display = <EditCamerasPage mainDataModel={mainDataModel} />;
   }
 
   return (

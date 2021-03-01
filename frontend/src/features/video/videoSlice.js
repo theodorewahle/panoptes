@@ -34,6 +34,10 @@ export const videoSlice = createSlice({
     curIncidentIndex: 0,
     curCameraIndex: 1,
     searchResults: [],
+    statusSearch: {
+      status: ENV.STATUS_IDLE,
+      message: '',
+    },
   },
   reducers: {
     setCameras: (state, action) => {
@@ -136,6 +140,12 @@ export const videoSlice = createSlice({
     setSearchResults: (state, action) => {
       state.searchResults = action.payload;
     },
+    setStatusSearch: (state, action) => {
+      const { status, message } = action.payload;
+      let messageTemp = '';
+      if (message != null) messageTemp = message;
+      state.statusSearch = { status, message: messageTemp };
+    },
   },
 });
 
@@ -186,5 +196,6 @@ export const selectRecentIncidents = (state) => state.video.recentIncidents;
 export const selectCurIncidentIndex = (state) => state.video.curIncidentIndex;
 export const selectCurCameraIndex = (state) => state.video.curCameraIndex;
 export const selectSearchResults = (state) => state.video.searchResults;
+export const selectStatusSearch = (state) => state.video.statusSearch;
 
 export default videoSlice.reducer;
