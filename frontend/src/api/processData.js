@@ -76,6 +76,7 @@ export const fetchAndProcessDataModel = () => {
               object_set_id: incident[1]?.object_set_id || 'No object_set_id',
               incidentIndex,
               cameraIndex: i,
+              cameraTitle: cameras[i]?.title || '',
             });
             incidentIndex++;
           });

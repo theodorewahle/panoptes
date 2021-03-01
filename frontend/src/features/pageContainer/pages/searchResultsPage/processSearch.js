@@ -11,7 +11,6 @@ export const processSearch = ({ mainDataModel, searchCurrent }) => {
   const results = [];
   const search = searchCurrent.toLowerCase().trim();
   const search2 = search.replace(/\W/g, '');
-  console.log(`search2: ${search2}`);
   for (let i = 0; i < mainDataModel.length; i++) {
     const incidentsArr = mainDataModel[i].incidents;
     for (let j = 0; j < incidentsArr.length; j++) {
@@ -24,7 +23,9 @@ export const processSearch = ({ mainDataModel, searchCurrent }) => {
         objIdentified2 === search ||
         objIdentified2 === search2
       ) {
-        results.push(incident);
+        const tempIncident = { ...incident };
+        tempIncident['title'] = incident.cameraTitle;
+        results.push(tempIncident);
       }
     }
   }

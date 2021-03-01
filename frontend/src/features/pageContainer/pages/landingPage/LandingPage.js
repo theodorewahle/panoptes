@@ -58,17 +58,9 @@ const LandingPage = (props) => {
       cameraIndex: cameraObj.cameraIndex,
     });
     cameraObj.incidents.forEach((incident) => {
-      console.log(JSON.stringify(incident));
-      const thumbnail = {
-        title: incident.startTime,
-        url: incident.url,
-        startTime: incident.startTime,
-        endTime: incident.endTime,
-        objectsIdentified: incident.objectsIdentified,
-        cameraIndex: cameraObj.cameraIndex,
-        incidentIndex: incident.incidentIndex,
-      };
-      incidents.push(thumbnail);
+      const tempIncident = { ...incident };
+      tempIncident['title'] = incident.objectIdentified;
+      incidents.push(tempIncident);
     });
   });
 

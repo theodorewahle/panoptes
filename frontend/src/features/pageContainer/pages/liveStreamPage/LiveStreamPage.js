@@ -41,17 +41,10 @@ const LiveStreamPage = (props) => {
   const curIncident = curCamera.incidents[curIncidentIndex];
 
   let incidents = [];
-  // this is to add 'title'
   curCamera.incidents.forEach((incident) => {
-    incidents.push({
-      title: incident.startTime,
-      url: incident.url,
-      startTime: incident.startTime,
-      endTime: incident.endTime,
-      objectsIdentified: incident.objectsIdentified,
-      incidentIndex: incident.incidentIndex,
-      cameraIndex: curCameraIndex,
-    });
+    const tempIncident = { ...incident };
+    tempIncident['title'] = incident.objectIdentified;
+    incidents.push(tempIncident);
   });
   let display, url;
   if (page === ENV.PAGE_LIVE_STREAM) {
