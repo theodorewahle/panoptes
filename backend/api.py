@@ -5,6 +5,7 @@ Blueprint for api for backend connection to db, actualized by flask server in se
 Contains CRUD endpoints for all database tables in models.py
 """
 from flask import Blueprint, request, abort, current_app, make_response
+from datetime import datetime
 from utils.utils import *
 from database.database import DatabaseHelper
 from flask_httpauth import HTTPTokenAuth
@@ -100,14 +101,14 @@ def cameras_id(camera_id):
 #
 # POST:
 #   /incidents
-#       @body: {start_time:[start time]} & {end_time:[end time]} & {object_id:[object id]} & {video_id:[video id]}
+#       @body: {start_time:[start time]} & {end_time:[end time]} & {object_id:[object id]} & {video_id:[video id]} | {timestamp:[time stamp in format YYYY-mm-dd HH:MM:SS]}
 #       @success: 201
 #       @error: 400
 #       @returns: {incident created} | {error}
 #
 # PUT:
 #   /incidents/{id}
-#       @body: {start_time:[start time]} | {end_time:[end time]} | {object_id:[object id]} | {video_id:[video id]}
+#       @body: {start_time:[start time]} | {end_time:[end time]} | {object_id:[object id]} | {video_id:[video id]} | {timestamp:[time stamp in format YYYY-mm-dd HH:MM:SS]}
 #       @success: 200
 #       @error: 400
 #       @returns: {updated incident} | {error}
@@ -124,7 +125,7 @@ def cameras_id(camera_id):
 @api.route('/incidents', methods=['GET','POST','DELETE'])
 @auth.login_required
 def incidents():
-    body = unwrap_body(request, 'object_id', 'video_id', 'start_time', 'end_time')
+    body = unwrap_body(request, 'object_id', 'video_id', 'start_time', 'end_time', 'timestamp')
     if request.method == 'GET':
         camera_id = request.args.get('camera_id')
         object_name = request.args.get('object_name')
@@ -135,17 +136,17 @@ def incidents():
         elif body is None:
             return jsonify_result(db_helper.get_incident())
         else:
-            return jsonify_result(db_helper.get_incident(object_id=body.get('object_id'), video_id=body.get('video_id')))
+            return jsonify_result(db_helper.get_incident(object_id=body.get('object_id'), video_id=body.get('video_id'), timestamp=body.get('timestamp')))
     elif request.method == 'POST':
         if check_body(request, 'object_id', 'video_id', 'start_time', 'end_time'):
             response = unwrap_db_result(db_helper.add_incident(start_time=body.get('start_time'), end_time=body.get('end_time'),
-                                                               object_id=body.get('object_id'), video_id=body.get('video_id')))
+                                                               object_id=body.get('object_id'), video_id=body.get('video_id'), timestamp=body.get('timestamp')))
             response.status_code = 201
             return response
         abort(400)
     elif request.method == 'DELETE':
         if body is not None:
-            db_helper.delete_incident(object_id=body.get('object_id'), video_id=body.get('video_id'))
+            db_helper.delete_incident(object_id=body.get('object_id'), video_id=body.get('video_id'), timestamp=body.get('timestamp'))
             return make_response('', 204)
         abort(400)
 
@@ -153,20 +154,20 @@ def incidents():
 @api.route('/incidents/<incident_id>', methods=['GET', 'PUT', 'DELETE'])
 @auth.login_required
 def incidents_id(incident_id):
-    body = unwrap_body(request, 'object_id', 'video_id', 'start_time', 'end_time')
+    body = unwrap_body(request, 'object_id', 'video_id', 'start_time', 'end_time', 'timestamp')
     if request.method == 'GET':
         if body is not None:
-            return jsonify_result(db_helper.get_incident(incident_id=incident_id, object_id=body.get('object_id'), video_id=body.get('video_id')))
+            return jsonify_result(db_helper.get_incident(incident_id=incident_id, object_id=body.get('object_id'), video_id=body.get('video_id'), timestamp=body.get('timestamp')))
         return jsonify_result(db_helper.get_incident(incident_id=incident_id))
     elif request.method == 'PUT':
         if body is not None:
             return unwrap_db_result(db_helper.update_incident(incident_id=incident_id, object_id=body.get('object_id'),
                                                            video_id=body.get('video_id'), start_time=body.get('start_time'),
-                                                           end_time=body.get('end_time')))
+                                                           end_time=body.get('end_time'), timestamp=body.get('timestamp')))
         abort(400)
     elif request.method == 'DELETE':
         db_helper.delete_incident(incident_id=incident_id, object_id=body.get('object_id'),
-                                                              video_id=body.get('video_id'))
+                                                              video_id=body.get('video_id'), timestamp=body.get('timestamp'))
         return make_response('', 204)
 
 
@@ -321,14 +322,14 @@ def objects_id(object_id):
 #
 # POST:
 #   /videos
-#       @body: {file_path:[video file path]} & {camera_id:[camera id]}
+#       @body: {file_path:[video file path]} & {camera_id:[camera id]} | {timestamp:[time stamp in format YYYY-mm-dd HH:MM:SS]}
 #       @success: 200
 #       @error: 400
 #       @returns: {video created} | {error}
 #
 # PUT:
 #   /videos/{id}
-#       @body: {file_path:[video file path]} | {camera_id:[camera id]}
+#       @body: {file_path:[video file path]} | {camera_id:[camera id]} | {timestamp:[time stamp in format YYYY-mm-dd HH:MM:SS]}
 #       @success: 200
 #       @error: 400
 #       @returns: {updated camera} | {error}
@@ -344,10 +345,10 @@ def videos():
     if request.method == 'GET':
         return jsonify_result(db_helper.get_video())
     elif request.method == 'POST':
-        body = unwrap_body(request, 'file_path', 'camera_id')
+        body = unwrap_body(request, 'file_path', 'camera_id', 'timestamp')
         if check_body(request, 'file_path', 'camera_id'):
             response = unwrap_db_result(
-                db_helper.add_video(body.get('file_path'), body.get('camera_id')))
+                db_helper.add_video(body.get('file_path'), body.get('camera_id'), body.get('timestamp')))
             response.status_code = 201
             return response
         abort(400)
@@ -359,10 +360,10 @@ def videos_id(video_id):
     if request.method == 'GET':
         return jsonify_result(db_helper.get_video(video_id=video_id))
     elif request.method == 'PUT':
-        body = unwrap_body(request, 'file_path', 'camera_id')
+        body = unwrap_body(request, 'file_path', 'camera_id', 'timestamp')
         if body is not None:
             return unwrap_db_result(
-                db_helper.update_video(video_id, file_path=body.get('file_path'), camera_id=body.get('camera_id')))
+                db_helper.update_video(video_id, file_path=body.get('file_path'), camera_id=body.get('camera_id'), timestamp=body.get('timestamp')))
         abort(400)
     elif request.method == 'DELETE':
         db_helper.delete_video(video_id)

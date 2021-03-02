@@ -43,7 +43,7 @@ class Incident(Base):
         return {'incident_id': self.incident_id,
         'start_time': self.start_time,
         'end_time': self.end_time,
-        'timestamp': self.timestamp,
+        'timestamp': self.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
         'object_id': self.object_id,
         'video_id': self.video_id}
 
@@ -92,5 +92,5 @@ class Video(Base):
     def serialize(self):
         return {'video_id': self.video_id,
         'file_path': self.file_path,
-        'timestamp': self.timestamp,
+        'timestamp': self.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
         'camera_id': self.camera_id}
