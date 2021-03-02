@@ -94,6 +94,9 @@ def cameras_id(camera_id):
 #   /incidents?camera_id={id}
 #       @success: 200
 #       @returns: {all incident and object pairs related to specified id}
+#   /incidents?object_name={name}
+#       @success:200
+#       @returns: {all incidents with given object name}
 #
 # POST:
 #   /incidents
@@ -124,8 +127,11 @@ def incidents():
     body = unwrap_body(request, 'object_id', 'video_id', 'start_time', 'end_time')
     if request.method == 'GET':
         camera_id = request.args.get('camera_id')
+        object_name = request.args.get('object_name')
         if camera_id is not None:
             return jsonify_result(db_helper.get_incidents_by_camera_id(camera_id))
+        elif object_name is not None:
+            return jsonify_result(db_helper.get_incident_by_object_name(object_name))
         elif body is None:
             return jsonify_result(db_helper.get_incident())
         else:

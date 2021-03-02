@@ -168,6 +168,12 @@ class DatabaseHelper:
             .filter(models.Camera.camera_id == camera_id) \
             .all()
 
+    def get_incident_by_object_name(self, object_name):
+        return self.db.session.query(models.Incident) \
+            .join(models.Object) \
+                .filter(models.Object.name == object_name) \
+                    .all()
+
     def search_incident(self, object_name):
         if object_name is None:
             return self.get_incident_with_object()
