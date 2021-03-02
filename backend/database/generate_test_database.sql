@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS `panoptes`.`cameras` (
   `camera_id` INT NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(100) NULL,
   `url` VARCHAR(100) NULL,
+  `data_type` VARCHAR(100) NULL,
   PRIMARY KEY (`camera_id`),
   UNIQUE INDEX `camera_url_UNIQUE` (`url` ASC),
   UNIQUE INDEX `title_UNIQUE` (`title` ASC))
@@ -107,8 +108,8 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 -- insert values
-INSERT INTO cameras(url, title) VALUES ("test camera url 1", "test camera title 1");
-INSERT INTO cameras(url, title) VALUES ("test camera url 2", "test camera title 2");
+INSERT INTO cameras(url, title, data_type) VALUES ("http://localhost:8080/webcam.ogg", "test camera title 1", "video/ogg");
+INSERT INTO cameras(url, title, data_type) VALUES ("test camera url 2", "test camera title 2", "video/mp4");
 INSERT INTO videos(file_path, camera_id) VALUES ("test video file path 1", 1);
 INSERT INTO videos(file_path, camera_id) VALUES ("test video file path 2", 2);
 INSERT INTO videos(file_path, camera_id) VALUES ("test video file path 3", 1);
