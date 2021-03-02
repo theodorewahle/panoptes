@@ -556,7 +556,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"file_path\": \"not that\",\r\n    \"camera_id\": 2\r\n}",
+					"raw": "{\r\n    \"file_path\": \"not that\",\r\n    \"timestamp\": \"2020-12-07 15:03:45\",\r\n    \"camera_id\": 2\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -668,7 +668,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"file_path\": \"bananana\",\r\n    \"camera_id\": 1\r\n}",
+					"raw": "{\r\n    \"file_path\": \"bananana\",\r\n    \"timestamp\": \"2020-12-07 15:03:45\",\r\n    \"camera_id\": 1\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -967,6 +967,39 @@
 							"key": "object_name",
 							"value": "test object name 1"
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Object Sets and Objects",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/object_sets_and_objects",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"object_sets_and_objects"
 					]
 				}
 			},
