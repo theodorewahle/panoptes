@@ -367,3 +367,16 @@ def videos_id(video_id):
     elif request.method == 'DELETE':
         db_helper.delete_video(video_id)
         return make_response('', 204)
+
+
+# MISC
+# GET:
+#   /object_sets_and_objects
+#       @success: 200
+#       @returns: {all object sets and objects}
+# 
+@api.route('/object_sets_and_objects', methods=['GET', 'POST'])
+@auth.login_required
+def object_sets_and_objects():
+    if request.method == 'GET':
+        return jsonify_result(db_helper.get_object_sets_and_objects())

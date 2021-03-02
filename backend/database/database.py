@@ -294,6 +294,9 @@ class DatabaseHelper:
             return self.db.session.query(models.ObjectSet).filter(models.ObjectSet.name == name).order_by(models.ObjectSet.object_set_id.asc()).all()
         return self.db.session.query(models.ObjectSet).order_by(models.ObjectSet.object_set_id.asc()).all()
 
+    def get_object_sets_and_objects(self):
+        return self.db.session.query(models.ObjectSet, models.Object).join(models.Object).order_by(models.ObjectSet.object_set_id.asc()).all()
+
     def add_object_set(self, name):
         object_set = models.ObjectSet(name=name)
         try:
