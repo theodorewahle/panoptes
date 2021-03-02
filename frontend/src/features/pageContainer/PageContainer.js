@@ -1,114 +1,144 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setRecentIncidents, setStreams } from '../video/videoSlice';
 import {
-  openSocket,
-  closeSocket,
   selectPage,
   selectSearchInput,
   setSearchInput,
+  setSearchCurrent,
+  setPage,
 } from './pageContainerSlice';
-import Video from '../video/Video';
+import { selectMainDataModel, setStatusSearch } from '../video/videoSlice';
+import { fetchAndProcessDataModel } from '../../api/processData';
+import { processSearch } from './pages/searchResultsPage/processSearch';
+
 import { TextField, Button } from '@material-ui/core';
 
-import LandingPage from './pages/LandingPage';
-import LiveStreamPage from './pages/LiveStreamPage';
+import EditCamerasPage from './pages/editCamerasPage/EditCamerasPage';
+import LandingPage from './pages/landingPage/LandingPage';
+import LiveStreamPage from './pages/liveStreamPage/LiveStreamPage';
+import SearchResultsPage from './pages/searchResultsPage/SearchResultsPage';
 
-import { initStreams, initRecentIncidents } from '../video/data';
 import ENV from '../../env';
 import styles from './PageContainer.module.scss';
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from 'react-router-dom';
+// import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-const PageHeader = () => {
+const PageHeader = (props) => {
   const dispatch = useDispatch();
+  const { mainDataModel } = props;
   const searchInput = useSelector(selectSearchInput);
+  const page = useSelector(selectPage);
   console.log(`searchInput: ${searchInput}`);
+
+  let editCameraButtonText;
+  if (page === ENV.PAGE_EDIT_CAMERAS) {
+    editCameraButtonText = 'View Streams';
+  } else {
+    editCameraButtonText = 'Edit Cameras';
+  }
+
   const onSearch = (e) => {
     e.preventDefault();
-    console.log('TODO: processed server-side or client-side?');
-    dispatch(setSearchInput('TODO'));
+    const trimmedSearch = searchInput.trim();
+    dispatch(setSearchCurrent(trimmedSearch));
+    dispatch(setStatusSearch(ENV.STATUS_WAITING));
+    dispatch(setPage(ENV.PAGE_SEARCH_RESULTS));
+    processSearch({ mainDataModel, searchCurrent: trimmedSearch });
+    dispatch(setSearchInput(''));
+  };
+  const onEditCameras = () => {
+    if (page === ENV.PAGE_EDIT_CAMERAS) {
+      dispatch(setPage(ENV.PAGE_LANDING));
+    } else {
+      dispatch(setPage(ENV.PAGE_EDIT_CAMERAS));
+    }
   };
   return (
     <div className={styles.header}>
       <div className={styles.headerContent}>
-        <div className={styles.headerText}>Panoptes</div>
-        <form className={styles.searchBar} onSubmit={(e) => onSearch(e)}>
-          <TextField
-            id='outlined-basic'
-            label="Search Today's Incidents..."
-            variant='outlined'
-            value={searchInput}
-            fullWidth={true}
-            onChange={(e) => dispatch(setSearchInput(e.target.value))}
-          />
+        <div
+          className={styles.headerText}
+          onClick={() => dispatch(setPage(ENV.PAGE_LANDING))}
+        >
+          Panoptes
+        </div>
+        <div className={styles.rightMenuContainer}>
           <Button
-            type='submit'
-            variant='outlined'
-            size='large'
-            disabled={searchInput.length > 0 ? false : true} // TODO
+            variant="outlined"
+            size="large"
+            onClick={() => onEditCameras()}
           >
-            Go
+            {editCameraButtonText}
           </Button>
-        </form>
+          <form className={styles.searchBar} onSubmit={(e) => onSearch(e)}>
+            <TextField
+              id="outlined-basic"
+              label="Search Today's Incidents..."
+              variant="outlined"
+              value={searchInput}
+              fullWidth={true}
+              onChange={(e) => dispatch(setSearchInput(e.target.value))}
+            />
+            <Button
+              type="submit"
+              variant="outlined"
+              size="large"
+              disabled={searchInput.length > 0 ? false : true} // TODO
+            >
+              Go
+            </Button>
+          </form>
+        </div>
       </div>
     </div>
   );
 };
 
-// This component doubles as a socketWrapper
 const PageContainer = () => {
-  const dispatch = useDispatch();
   const page = useSelector(selectPage);
+  const mainDataModel = useSelector(selectMainDataModel);
   useEffect(() => {
-    dispatch(openSocket());
-    dispatch(setStreams(initStreams));
-    dispatch(setRecentIncidents(initRecentIncidents));
-    return () => {
-      dispatch(closeSocket());
-    };
-  });
-  
+    fetchAndProcessDataModel();
+  }, []);
+
   let display = null;
   // TODO holding off linking up to router incase server-side rendering changes this
   if (page === ENV.PAGE_LANDING) {
-    display = <LandingPage />;
+    display = <LandingPage mainDataModel={mainDataModel} />;
   } else if (page === ENV.PAGE_SEARCH_RESULTS) {
-    display = null;
+    display = <SearchResultsPage />;
   } else if (page === ENV.PAGE_SEARCH_RESULTS_NONE) {
     display = null;
-  } else if (page === ENV.PAGE_INCIDENT_VIEWER) {
-    display = null;
-  } else if (page === ENV.PAGE_LIVE_STREAM) {
-    display = null;
+  } else if (
+    page === ENV.PAGE_INCIDENT_VIEWER ||
+    page === ENV.PAGE_LIVE_STREAM
+  ) {
+    display = <LiveStreamPage mainDataModel={mainDataModel} />;
   } else if (page === ENV.PAGE_OBJECT_SET) {
     display = null;
+  } else if (page === ENV.PAGE_EDIT_CAMERAS) {
+    display = <EditCamerasPage mainDataModel={mainDataModel} />;
   }
-  console.log(display)
 
   return (
     <div className={styles.PageContainer}>
-      <PageHeader />
-      <Video />
-      
-      <Router>
-      <div>
-        <Switch>
-          <Route path='/cameras/alpha_chi_parking_lot'>
-            <LiveStreamPage />
-          </Route>
-          <Route path='/'>
-            <LandingPage />
-          </Route>
-        </Switch>
-      </div>
-    </Router>
+      <PageHeader mainDataModel={mainDataModel} />
+      {display}
     </div>
   );
 };
 
 export default PageContainer;
+
+// {/* <Router>
+// <div>
+//   <Switch>
+//     <Route path="/">
+//       <LandingPage mainDataModel={mainDataModel} />
+//     </Route>
+//     <Route path="/cameras/alpha_chi_parking_lot">
+//       <LiveStreamPage mainDataModel={mainDataModel} />
+//     </Route>
+//   </Switch>
+// </div>
+// </Router> */}

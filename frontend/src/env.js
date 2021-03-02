@@ -1,8 +1,22 @@
 const CONSTANTS = {
-  STATUS_STREAM_IDLE: 0,
-  STATUS_STREAM_ERROR: -1,
-  STATUS_STREAM_WAITING: 1,
-  STATUS_STREAM_DONE: 2,
+  // fetching statuses
+  STATUS_IDLE: 0,
+  STATUS_ERROR: -1,
+  STATUS_WAITING: 1,
+  STATUS_DONE: 2,
+
+  // search status
+  STATUS_NO_RESULTS: -10,
+
+  // API Endpoint
+  API_ENDPOINT: 'http://127.0.0.1:8000/api',
+  API_FILE_SERVER: 'http://127.0.0.1:8000/video', // X.mp4 needs to be appended
+  API_CAMERAS: '/cameras',
+  API_INCIDENTS: '/incidents',
+  API_OBJECT_SETS: '/object_sets',
+  API_OBJECTS: '/objects',
+  API_VIDEOS: '/videos',
+  SECRET_TOKEN_STORED_IN_A_NOT_SO_SECRET_LOCATION: 'secret-token-1',
 
   SOCKET_IO_ENDPOINT_DEV: 'http://localhost:3000',
   SOCKET_IO_ENDPOINT_PROD: 'TODO',
@@ -15,13 +29,24 @@ const CONSTANTS = {
   VIDEO_MAIN_WIDTH: 640,
   VIDEO_MAIN_HEIGHT: 360,
 
+  VIDEO_TYPE_CAMERA: 0,
+  VIDEO_TYPE_INCIDENT: 1,
+
   // pages
+  PAGE_NO_LINK: -1,
   PAGE_LANDING: 0,
   PAGE_SEARCH_RESULTS: 1,
   PAGE_SEARCH_RESULTS_NONE: 2,
   PAGE_INCIDENT_VIEWER: 3,
   PAGE_LIVE_STREAM: 4,
   PAGE_OBJECT_SET: 5,
+  PAGE_EDIT_CAMERAS: 6,
+
+  // camera form status
+  FORM_IDLE: 0,
+  FORM_UPDATE_CAMERA: 1,
+  FORM_ADD_CAMERA: 2,
+  FORM_DELETE_CAMERA: 3,
 };
 
 export default CONSTANTS;

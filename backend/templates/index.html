@@ -4,11 +4,11 @@
         <div class="col-lg-8  offset-lg-2">
             <h3 class="mt-5">Panoptes Flask Example</h3>
             <h3 class="mt-5">Livestream: (can also go to /stream)</h3>
-            <img src="{{ url_for('stream') }}" width="100%">
+            <img src="{{ url_for('routes.stream') }}" width="100%">
         </div>
         <div class="col-lg-8  offset-lg-2">
             <h3 class="mt-5">Static video stream: (can also go to /static)</h3>
-            <img src="{{ url_for('static_stream') }}" width="100%">
+            <img src="{{ url_for('routes.static_stream') }}" width="100%">
         </div>
     </div>
 </div>

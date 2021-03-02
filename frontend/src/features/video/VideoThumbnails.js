@@ -1,29 +1,34 @@
 import React from 'react';
 import Video from './Video';
+
 import styles from './Video.module.scss';
 
-// TODO probably combine with Video.js file
+// TODO: isThumbnail prop is confusing given name of component
 const VideoThumbnails = (props) => {
-  const { videos, width, height } = props;
+  const { videos, width, height, isThumbnail, videoType, pageLink } = props;
   if (videos == null) return null;
   if (width == null || height == null) {
-    console.error('"width" & "height" params required in VideoThumbnails');
     return null;
   }
   if (!Array.isArray(videos)) {
     console.error('"videos" param in VideoThumbnails must be an array');
     return null;
   }
-  let i = 0;
+  let i = -1;
   const thumbnails = videos.map((video) => {
     i++;
     return (
-      <div key={i} onClick={() => props.onSelect(video)}>
+      <div key={i}>
         <Video
+          title={video.title}
+          url={video.url}
           width={width}
           height={height}
-          url={video.url}
-          title={video.title}
+          isThumbnail={isThumbnail}
+          videoType={videoType}
+          pageLink={pageLink}
+          incidentIndex={video.incidentIndex}
+          cameraIndex={video.cameraIndex}
         />
       </div>
     );
