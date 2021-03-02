@@ -16,3 +16,4 @@ SCHEMA_NAME = 'panoptes'
 SQLALCHEMY_DATABASE_URI = SQL_URL + '/' + SCHEMA_NAME
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 RTSP = {"rtsp_url": "rtsp://admin:admin@172.24.28.36/11"}
+CORS_HEADERS = 'Content-Type'
