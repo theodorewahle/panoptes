@@ -1,6 +1,7 @@
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.sql.sqltypes import DateTime
 
 # this file represents all the tables in the database and is used by SQL Alchemy
 
@@ -27,6 +28,7 @@ class Incident(Base):
     incident_id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
     start_time = Column(Integer, nullable=False)
     end_time = Column(Integer, nullable=False)
+    timestamp = Column(DateTime)
     object_id = Column(ForeignKey('objects.object_id', ondelete='CASCADE',
                                   onupdate='CASCADE'), nullable=False, index=True)
     video_id = Column(ForeignKey('videos.video_id', ondelete='CASCADE',
@@ -41,6 +43,7 @@ class Incident(Base):
         return {'incident_id': self.incident_id,
         'start_time': self.start_time,
         'end_time': self.end_time,
+        'timestamp': self.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
         'object_id': self.object_id,
         'video_id': self.video_id}
 
@@ -79,6 +82,7 @@ class Video(Base):
     video_id = Column(Integer, primary_key=True,
                       nullable=False, autoincrement=True)
     file_path = Column(String(100), nullable=False, unique=True)
+    timestamp = Column(DateTime)
     camera_id = Column(ForeignKey('cameras.camera_id', ondelete='CASCADE',
                                   onupdate='CASCADE'), nullable=False, index=True)
 
@@ -88,4 +92,5 @@ class Video(Base):
     def serialize(self):
         return {'video_id': self.video_id,
         'file_path': self.file_path,
+        'timestamp': self.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
         'camera_id': self.camera_id}

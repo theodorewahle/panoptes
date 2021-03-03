@@ -91,8 +91,8 @@ class DatabaseHelper:
             return self.db.session.query(models.Video).filter(models.Video.camera_id == camera_id).order_by(models.Video.video_id.asc()).all()
         return self.db.session.query(models.Video).order_by(models.Video.video_id.asc()).all()
 
-    def add_video(self, file_path, camera_id):
-        video = models.Video(file_path=file_path, camera_id=camera_id)
+    def add_video(self, file_path, camera_id, timestamp=None):
+        video = models.Video(file_path=file_path, timestamp=timestamp, camera_id=camera_id)
         try:
             self.db.session.add(video)
             self.db.session.commit()
@@ -101,7 +101,7 @@ class DatabaseHelper:
             self.db.session.rollback()
             return e
 
-    def update_video(self, video_id, file_path=None, camera_id=None):
+    def update_video(self, video_id, file_path=None, timestamp=None, camera_id=None):
         video = self.db.session.query(models.Video).filter(
             models.Video.video_id == video_id).first()
 
@@ -111,6 +111,8 @@ class DatabaseHelper:
         try:
             if file_path is not None:
                 video.file_path = file_path
+            if timestamp is not None:
+                video.timestamp = timestamp
             if camera_id is not None:
                 video.camera_id = camera_id
             self.db.session.commit()
@@ -119,24 +121,29 @@ class DatabaseHelper:
             self.db.session.rollback()
             return e
 
-    def delete_video(self, video_id=None, file_path=None, camera_id=None):
+    def delete_video(self, video_id=None, file_path=None, timestamp=None, camera_id=None):
         if video_id is not None:
             self.db.session.query(models.Video).filter(
                 models.Video.video_id == video_id).delete()
         elif file_path is not None:
             self.db.session.query(models.Video).filter(
                 models.Video.file_path == file_path).delete()
+        elif file_path is not None:
+            self.db.session.query(models.Video).filter(
+                models.Video.timestamp == timestamp).delete()
         elif camera_id is not None:
             self.db.session.query(models.Video).filter(
                 models.Video.camera_id == camera_id).delete()
         self.db.session.commit()
 
     # Incident CRUD:
-    def get_incident(self, incident_id=None, object_id=None, video_id=None):
+    def get_incident(self, incident_id=None, timestamp=None, object_id=None, video_id=None):
         if incident_id is not None:
             return self.db.session.query(models.Incident) \
                 .filter(models.Incident.incident_id == incident_id).order_by(models.Incident.incident_id.asc()).all()
-        if object_id is not None and video_id is not None:
+        if timestamp is not None:
+            return self.db.session.query(models.Incident).filter(models.Incident.timestamp == timestamp).order_by(models.Incident.incident_id.asc()).all()
+        elif object_id is not None and video_id is not None:
             return self.db.session.query(models.Incident) \
                 .filter(models.Incident.object_id == object_id, models.Incident.video_id == video_id).order_by(models.Incident.incident_id.asc()).all()
         elif object_id is not None:
@@ -168,6 +175,12 @@ class DatabaseHelper:
             .filter(models.Camera.camera_id == camera_id) \
             .all()
 
+    def get_incident_by_object_name(self, object_name):
+        return self.db.session.query(models.Incident) \
+            .join(models.Object) \
+                .filter(models.Object.name == object_name) \
+                    .all()
+
     def search_incident(self, object_name):
         if object_name is None:
             return self.get_incident_with_object()
@@ -178,9 +191,9 @@ class DatabaseHelper:
                     .filter(models.Object.name.like(search)) \
                         .all()
 
-    def add_incident(self, start_time, end_time, object_id, video_id):
+    def add_incident(self, start_time, end_time, object_id, video_id, timestamp=None):
         incident = models.Incident(
-            start_time=start_time, end_time=end_time, object_id=object_id, video_id=video_id)
+            start_time=start_time, end_time=end_time, timestamp=timestamp, object_id=object_id, video_id=video_id)
         try:
             self.db.session.add(incident)
             self.db.session.commit()
@@ -189,7 +202,7 @@ class DatabaseHelper:
             self.db.session.rollback()
             return e
 
-    def update_incident(self, incident_id, object_id=None, video_id=None, start_time=None, end_time=None):
+    def update_incident(self, incident_id, object_id=None, video_id=None, start_time=None, end_time=None, timestamp=None):
         incident = self.db.session.query(models.Incident).filter(
             models.Incident.incident_id == incident_id).first()
 
@@ -205,17 +218,22 @@ class DatabaseHelper:
                 incident.start_time = start_time
             if end_time is not None:
                 incident.end_time = end_time
+            if timestamp is not None:
+                incident.timestamp = timestamp
             self.db.session.commit()
             return incident
         except SQLAlchemyError as e:
             self.db.session.rollback()
             return e
 
-    def delete_incident(self, incident_id=None, object_id=None, video_id=None):
+    def delete_incident(self, incident_id=None, timestamp=None, object_id=None, video_id=None):
         if incident_id is not None:
             self.db.session.query(models.Incident) \
                 .filter(models.Incident.incident_id == incident_id).delete()
-        if object_id is not None and video_id is not None:
+        if timestamp is not None:
+            self.db.session.query(models.Incident) \
+                .filter(models.Incident.timestamp == timestamp).delete()
+        elif object_id is not None and video_id is not None:
             self.db.session.query(models.Incident) \
                 .filter(models.Incident.object_id == object_id,
                         models.Incident.video_id == video_id).delete()
@@ -287,6 +305,9 @@ class DatabaseHelper:
         elif name is not None:
             return self.db.session.query(models.ObjectSet).filter(models.ObjectSet.name == name).order_by(models.ObjectSet.object_set_id.asc()).all()
         return self.db.session.query(models.ObjectSet).order_by(models.ObjectSet.object_set_id.asc()).all()
+
+    def get_object_sets_and_objects(self):
+        return self.db.session.query(models.ObjectSet, models.Object).join(models.Object).order_by(models.ObjectSet.object_set_id.asc()).all()
 
     def add_object_set(self, name):
         object_set = models.ObjectSet(name=name)

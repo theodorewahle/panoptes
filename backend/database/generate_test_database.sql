@@ -36,6 +36,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `panoptes`.`videos` (
   `video_id` INT NOT NULL AUTO_INCREMENT,
   `file_path` VARCHAR(100) NOT NULL,
+  `timestamp` DATETIME NULL,
   `camera_id` INT NOT NULL,
   PRIMARY KEY (`video_id`),
   UNIQUE INDEX `file_path_UNIQUE` (`file_path` ASC),
@@ -84,6 +85,7 @@ CREATE TABLE IF NOT EXISTS `panoptes`.`incidents` (
   `incident_id` INT NOT NULL AUTO_INCREMENT,
   `start_time` INT NOT NULL,
   `end_time` INT NOT NULL,
+  `timestamp` DATETIME NULL,
   `object_id` INT NULL,
   `video_id` INT NULL,
   INDEX `fk_objects_idx` (`object_id` ASC),
