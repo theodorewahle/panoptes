@@ -41,6 +41,29 @@ python3 server.py
 ```
 
 Go to http://127.0.0.1:5000 in a browser to see application running locally
- 
+
+## Create an example database
+### 1) Setup test database
+
+From the mysql console, run the file `$PATH/database/generate_test_database.sql`. For example, if `$PWD = /Users/agatha/panoptes/backend/`, run:
+
+```
+source /Users/agatha/panoptes/backend/database/generate_test_database.sql
+```
+
+### 2) Populate test database
+In order to populate the local mysql database run the `incident_generator.py` to generate the `incidents.txt` file. Then run the `generate_example_sql.py` file to generate the `populate_test_database.sql` file.
+
+```
+$ python3 incident_genrator.py
+$ python3 generate_example_sql.py
+```
+
+From the mysql console, run the file `$PATH/populate_test_database.sql`. For example, if `$PWD = /Users/agatha/panoptes/backend/`, run:
+
+```
+source /Users/agatha/panoptes/backend/populate_test_database.sql
+```
+
 # TODO
 
