@@ -55,7 +55,7 @@ source /Users/agatha/panoptes/backend/database/generate_test_database.sql
 In order to populate the local mysql database run the `incident_generator.py` to generate the `incidents.txt` file. Then run the `generate_example_sql.py` file to generate the `populate_test_database.sql` file.
 
 ```
-$ python3 incident_genrator.py
+$ python3 incident_generator.py
 $ python3 generate_example_sql.py
 ```
 
