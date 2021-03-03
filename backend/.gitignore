@@ -1,2 +1,5 @@
 /venv/
 localconfig.py
+incidents.txt
+sql_commands.txt
+yolov5s.pt
