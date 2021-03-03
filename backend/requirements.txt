@@ -24,3 +24,5 @@ python-vlc==3.0.11115
 six==1.15.0
 Werkzeug==1.0.1
 Flask-HTTPAuth==4.2.0
+torch==1.7.1
+torchvision==0.8.2
