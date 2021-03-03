@@ -2,6 +2,9 @@ import os
 import cv2
 from computer_vision.yolo import YOLOVidClassificationModel, YOLOCamClassificationModel
 from collections import Counter
+import ssl
+
+ssl._create_default_https_context = ssl._create_unverified_context
 
 # Class to generate incidents using the yolo model
 # does not yet send post requests to db
