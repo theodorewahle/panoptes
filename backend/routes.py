@@ -6,7 +6,7 @@ Blueprint for routes for backend, actualized by flask server in server.py
 from flask import Blueprint
 from flask.globals import request
 from utils.utils import *
-from flask import Response, render_template, send_from_directory
+from flask import Response, render_template, send_file
 from computer_vision.hog_detection import HOGDetectionModel
 from streaming.live_streaming import generate
 from streaming.static import generate_static
@@ -43,7 +43,8 @@ def ping():
 @routes.route('/video/<video_id>')
 def send_static_file(video_id):
     result = db_helper.get_video(video_id=video_id)
+
     if len(result) != 1:
         abort(404)
     else:
-        return send_from_directory('incidents/converted', result[0].file_path)
+        return send_file(result[0].file_path)
