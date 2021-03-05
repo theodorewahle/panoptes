@@ -24,7 +24,6 @@ CREATE TABLE IF NOT EXISTS `panoptes`.`cameras` (
   `camera_id` INT NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(100) NULL,
   `url` VARCHAR(100) NULL,
-  `data_type` VARCHAR(100) NULL,
   PRIMARY KEY (`camera_id`),
   UNIQUE INDEX `camera_url_UNIQUE` (`url` ASC),
   UNIQUE INDEX `title_UNIQUE` (`title` ASC))
