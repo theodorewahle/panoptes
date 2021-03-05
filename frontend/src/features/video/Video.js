@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setPage } from '../pageContainer/pageContainerSlice';
 import { setCurCameraIndex, setCurIncidentIndex } from './videoSlice';
 
 import ReactPlayer from 'react-player';
 import VideoThumbnail from 'react-video-thumbnail';
+import { CircularProgress } from '@material-ui/core';
 
 import ENV from '../../env';
 import styles from './Video.module.scss';
@@ -13,12 +14,13 @@ import styles from './Video.module.scss';
 // TODO: CSS mouse over --> display light box around or something
 const Video = (props) => {
   const dispatch = useDispatch();
+  const [loadStatus, setLoadStatus] = useState(ENV.STATUS_WAITING);
   const {
     width,
     height,
     title,
     url,
-    isThumbnail,
+    // isThumbnail,
     videoType,
     pageLink,
     incidentIndex,
@@ -45,18 +47,20 @@ const Video = (props) => {
   };
 
   let display;
-  if (isThumbnail) {
+  if (loadStatus === ENV.STATUS_DONE) {
     display = (
-      <VideoThumbnail
-        videoUrl={url}
+      <ReactPlayer
+        url={url}
         width={width}
         height={height}
-        thumbnailHandler={(thumbnail) => console.log(thumbnail)}
+        onReady={() => setLoadStatus(ENV.STATUS_DONE)}
+        onError={() => setLoadStatus(ENV.STATUS_ERROR)}
       />
     );
-  } else {
-    display = <ReactPlayer url={url} width={width} height={height} />;
+  } else if (loadStatus === ENV.STATUS_WAITING) {
+    display = null;
   }
+
   // const isThumbnail = url.includes('.jpg');
 
   return (
