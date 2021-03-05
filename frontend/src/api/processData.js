@@ -8,7 +8,8 @@ import axios from 'axios';
 import ENV from '../env';
 
 axios.defaults.headers.common = {
-  'Access-Control-Allow_origin': '*',
+  'Access-Control-Allow_Origin': '*',
+  'Access-Control-Request-Headers': '*',
   Authorization: `Bearer ${ENV.SECRET_TOKEN_STORED_IN_A_NOT_SO_SECRET_LOCATION}`,
 };
 
