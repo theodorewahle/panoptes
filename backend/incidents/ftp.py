@@ -51,4 +51,4 @@ def fetch_todays_incidents(dbhelper):
                 if not os.path.exists(full_file_path):
                     sftp.get(file_name, full_file_path)
                     convert_video(today_as_string + "/" + file_name)
-                    dbhelper.add_video("http://localhost:8000/" + full_file_path, 1)
+                    dbhelper.add_video(os.getcwd() + "/" + full_file_path, 1)
