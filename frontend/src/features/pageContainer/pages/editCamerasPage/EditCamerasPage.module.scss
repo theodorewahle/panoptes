@@ -7,6 +7,8 @@
 .cameraTitleRow {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+
 }
 
 .cameraRowEdit {
@@ -36,4 +38,9 @@
 
 .errorMessage {
   padding-top: 20px;
+}
+
+.button {
+  max-height: 32px;
+  margin-left: 8px;
 }
