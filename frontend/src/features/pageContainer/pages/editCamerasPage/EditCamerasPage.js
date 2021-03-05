@@ -7,7 +7,7 @@ import {
 import { addUpdateCamera } from '../../../../api/cameras';
 import { isValidHttpUrl } from '../../../../utilGeneral/utils';
 
-import { TextField, Button, CircularProgress } from '@material-ui/core';
+import { TextField, Button, CircularProgress, Link } from '@material-ui/core';
 
 import styles from './EditCamerasPage.module.scss';
 import ENV from '../../../../env';
@@ -61,15 +61,9 @@ const EditCamerasPage = (props) => {
     key++;
     const rowDisplay = (
       <div>
-        <div>
-          <b>Title:</b> {camera.title}
-        </div>
-        <div className={styles.textRow}>
-          <b>URL:</b>{' '}
-          <a href={camera.url} target="_blank" rel="noopener noreferrer">
-            {camera.url}
-          </a>
-        </div>
+        <Link href={camera.url}>
+          {camera.title}
+        </Link>
       </div>
     );
     return (
@@ -78,7 +72,9 @@ const EditCamerasPage = (props) => {
         <div>
           <Button
             variant="outlined"
-            size="large"
+            size="small"
+            color="primary"
+            className={styles.button}
             onClick={() => {
               dispatch(
                 setStatusCameras({ status: ENV.STATUS_IDLE, message: '' })
@@ -93,7 +89,9 @@ const EditCamerasPage = (props) => {
           </Button>
           <Button
             variant="outlined"
-            size="large"
+            size="small"
+            color="primary"
+            className={styles.button}
             onClick={() => {
               dispatch(
                 setStatusCameras({ status: ENV.STATUS_IDLE, message: '' })
@@ -107,7 +105,7 @@ const EditCamerasPage = (props) => {
               });
             }}
           >
-            Del
+            Delete
           </Button>
         </div>
       </div>
@@ -117,7 +115,9 @@ const EditCamerasPage = (props) => {
   let cameraButtonTitleRow = (
     <Button
       variant="outlined"
-      size="large"
+      size="small"
+      color="primary"
+      className={styles.button}
       onClick={() => {
         dispatch(setStatusCameras({ status: ENV.STATUS_IDLE }));
         setFormStatus(ENV.FORM_ADD_CAMERA);
@@ -125,7 +125,7 @@ const EditCamerasPage = (props) => {
         setUrlInput('');
       }}
     >
-      Add New Camera
+      Add New
     </Button>
   );
 
@@ -167,8 +167,10 @@ const EditCamerasPage = (props) => {
           <Button
             type="submit"
             variant="outlined"
-            size="large"
             disabled={isSubmitCameraButtonDisabled(titleInput, urlInput)}
+            size="small"
+            color="primary"
+            className={styles.button}
           >
             {formButtonText}
           </Button>
