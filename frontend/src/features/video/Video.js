@@ -4,8 +4,8 @@ import { setPage } from '../pageContainer/pageContainerSlice';
 import { setCurCameraIndex, setCurIncidentIndex } from './videoSlice';
 
 import ReactPlayer from 'react-player';
-import VideoThumbnail from 'react-video-thumbnail';
 import { CircularProgress } from '@material-ui/core';
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
 import ENV from '../../env';
 import styles from './Video.module.scss';
@@ -58,7 +58,9 @@ const Video = (props) => {
       />
     );
   } else if (loadStatus === ENV.STATUS_WAITING) {
-    display = null;
+    display = <CircularProgress />;
+  } else if (loadStatus === ENV.STATUS_ERROR) {
+    display = <ErrorOutlineIcon />;
   }
 
   // const isThumbnail = url.includes('.jpg');
