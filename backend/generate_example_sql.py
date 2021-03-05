@@ -69,21 +69,24 @@ def write_sql_commands():
                         video_time[curr_path] = timestamp
                         vid_counter+=1
 
+        # open this file to read incidents for generation
+        try:
+                incidents = open("incidents.txt")
 
-        incidents = open("incidents.txt")
-
-# read in incidents and generate insert commands
-        for incident in incidents:
-                incident = incident.split(" ")
-                start_time = str(incident[0])
-                end_time = str(incident[1])
-                obj_id =  str(object_id[" ".join(incident[2:-1])])
-                vid_name = incident[-1][:-1]
-                if vid_name in video_id:
-                        vid_id = str(video_id[vid_name])
-                        print(vid_name)
-                        print(video_time[vid_name])
-                        timestamp = video_time[vid_name] + datetime.timedelta(seconds=int(start_time))
-                        f.write("INSERT INTO incidents(start_time, end_time, timestamp, object_id, video_id) VALUES ("+start_time+", "+end_time+", \""+str(timestamp)+"\", "+obj_id+", "+vid_id+");\n")
+        # read in incidents and generate insert commands
+                for incident in incidents:
+                        incident = incident.split(" ")
+                        start_time = str(incident[0])
+                        end_time = str(incident[1])
+                        obj_id =  str(object_id[" ".join(incident[2:-1])])
+                        vid_name = incident[-1][:-1]
+                        if vid_name in video_id:
+                                vid_id = str(video_id[vid_name])
+                                print(vid_name)
+                                print(video_time[vid_name])
+                                timestamp = video_time[vid_name] + datetime.timedelta(seconds=int(start_time))
+                                f.write("INSERT INTO incidents(start_time, end_time, timestamp, object_id, video_id) VALUES ("+start_time+", "+end_time+", \""+str(timestamp)+"\", "+obj_id+", "+vid_id+");\n")
+        except:
+                print("ERROR: Incidents cannot be generate. Issue with the incidents.txt file. (Make sure to run incident_generator.py first)")
 
 write_sql_commands()
