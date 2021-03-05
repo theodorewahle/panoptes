@@ -37,6 +37,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `panoptes`.`videos` (
   `video_id` INT NOT NULL AUTO_INCREMENT,
   `file_path` VARCHAR(100) NOT NULL,
+  `timestamp` DATETIME NULL,
   `camera_id` INT NOT NULL,
   PRIMARY KEY (`video_id`),
   UNIQUE INDEX `file_path_UNIQUE` (`file_path` ASC),
@@ -85,6 +86,7 @@ CREATE TABLE IF NOT EXISTS `panoptes`.`incidents` (
   `incident_id` INT NOT NULL AUTO_INCREMENT,
   `start_time` INT NOT NULL,
   `end_time` INT NOT NULL,
+  `timestamp` DATETIME NULL,
   `object_id` INT NULL,
   `video_id` INT NULL,
   INDEX `fk_objects_idx` (`object_id` ASC),
@@ -106,22 +108,3 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-
--- insert values
-INSERT INTO cameras(url, title, data_type) VALUES ("http://localhost:8080/webcam.ogg", "test camera title 1", "video/ogg");
-INSERT INTO cameras(url, title, data_type) VALUES ("test camera url 2", "test camera title 2", "video/mp4");
-INSERT INTO videos(file_path, camera_id) VALUES ("test video file path 1", 1);
-INSERT INTO videos(file_path, camera_id) VALUES ("test video file path 2", 2);
-INSERT INTO videos(file_path, camera_id) VALUES ("test video file path 3", 1);
-INSERT INTO object_sets(name) VALUES ("test object set name 1");
-INSERT INTO object_sets(name) VALUES ("test object set name 2");
-INSERT INTO objects(name, object_set_id) VALUES ("test object name 1", 1);
-INSERT INTO objects(name, object_set_id) VALUES ("test object name 2", 2);
-INSERT INTO objects(name, object_set_id) VALUES ("test object name 3", 2);
-INSERT INTO incidents(start_time, end_time, object_id, video_id) VALUES (3, 20, 1, 2);
-INSERT INTO incidents(start_time, end_time, object_id, video_id) VALUES (2, 18, 1, 3);
-INSERT INTO incidents(start_time, end_time, object_id, video_id) VALUES (11, 16, 2, 1);
-INSERT INTO incidents(start_time, end_time, object_id, video_id) VALUES (3, 5, 2, 1);
-INSERT INTO incidents(start_time, end_time, object_id, video_id) VALUES (7, 10, 2, 3);
-INSERT INTO incidents(start_time, end_time, object_id, video_id) VALUES (9, 20, 3, 2);
-INSERT INTO incidents(start_time, end_time, object_id, video_id) VALUES (12, 19, 3, 2);

@@ -49,7 +49,6 @@ class PanoptesFlaskApp(Flask):
 # DETECTED BY AWS ELASTIC BEANSTALK
 application = PanoptesFlaskApp(__name__, static_url_path='')
 cors = CORS(application)
-application.config['CORS_HEADERS'] = 'Content-Type'
 
 if __name__ == '__main__':
     host = "127.0.0.1"

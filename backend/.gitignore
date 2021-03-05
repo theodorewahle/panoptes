@@ -1,2 +1,5 @@
 /venv/
 localconfig.py
+incidents.txt
+populate_test_database.sql
+yolov5s.pt

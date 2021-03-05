@@ -37,7 +37,12 @@ def convert_video(relative_file_path):
 def fetch_todays_incidents(dbhelper):
     with pysftp.Connection(host=myHostname, username=myUsername, password=myPassword, cnopts=cnopts) as sftp:
         print ("Connection succesfully stablished ... ")
-        with sftp.cd(today_as_string+ "/record"):
+
+        if today_as_string not in sftp.listdir("."):
+            print("No incidents from today...")
+            return 
+            
+        with sftp.cd(today_as_string + "/record"):
             all_files = [(attr.filename, attr.st_atime) for attr in sftp.listdir_attr()]
 
             for file_name, file_timestamp in all_files:
