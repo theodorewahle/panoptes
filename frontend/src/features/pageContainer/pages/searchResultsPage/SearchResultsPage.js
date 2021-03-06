@@ -1,12 +1,16 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   selectMainDataModel,
   selectSearchResults,
   selectStatusSearch,
   selectSearchFilter,
+  setSearchFilter,
+  setStatusSearch,
 } from '../../../video/videoSlice';
+import { selectSearchCurrent } from '../../pageContainerSlice';
+import { processSearch } from './processSearch';
 
 import {
   CircularProgress,
@@ -14,7 +18,6 @@ import {
   FormControl,
   FormGroup,
   FormControlLabel,
-  FormHelperText,
   Checkbox,
 } from '@material-ui/core';
 import VideoThumbnails from '../../../video/VideoThumbnails';
@@ -22,11 +25,57 @@ import VideoThumbnails from '../../../video/VideoThumbnails';
 import styles from './SearchResultsPage.module.scss';
 import ENV from '../../../../env';
 
+const getFilters = ({
+  searchFilter,
+  mainDataModel,
+  searchCurrent,
+  dispatch,
+}) => {
+  const tempFilterArr = [];
+  Object.keys(searchFilter).forEach((filter) => {
+    tempFilterArr.push({ name: filter, value: searchFilter[filter] });
+  });
+  let key = 0;
+  return tempFilterArr.map((filter) => {
+    key++;
+    return (
+      <FormControlLabel
+        key={key}
+        control={
+          <Checkbox
+            checked={filter.value}
+            onChange={(e) => {
+              dispatch(
+                setSearchFilter({
+                  name: e.target.name,
+                  value: e.target.checked,
+                })
+              );
+              // dispatch(setStatusSearch(ENV.STATUS_WAITING))
+              let filter = { ...searchFilter };
+              filter[e.target.name] = e.target.checked;
+              processSearch({
+                mainDataModel,
+                searchCurrent,
+                searchFilter: filter,
+              });
+            }}
+            name={filter.name}
+          />
+        }
+        label={filter.name}
+      />
+    );
+  });
+};
+
 const SearchResultsPage = () => {
+  const dispatch = useDispatch();
   const mainDataModel = useSelector(selectMainDataModel);
   const searchResults = useSelector(selectSearchResults);
   const statusSearch = useSelector(selectStatusSearch);
   const searchFilter = useSelector(selectSearchFilter);
+  const searchCurrent = useSelector(selectSearchCurrent);
   const { status, message } = statusSearch;
   // Cases:
   //  (1) No results - object NOT in set
@@ -64,28 +113,12 @@ const SearchResultsPage = () => {
       </div>
     );
   }
-  const tempFilterArr = [];
-  Object.keys(searchFilter).forEach((filter) => {
-    tempFilterArr.push({ name: filter, value: searchFilter[filter] });
+  const filters = getFilters({
+    searchFilter,
+    mainDataModel,
+    searchCurrent,
+    dispatch,
   });
-  let key = 0;
-  const filters = tempFilterArr.map((filter) => {
-    key++;
-    return (
-      <FormControlLabel
-        key={key}
-        control={
-          <Checkbox
-            checked={filter.value}
-            onChange={() => console.log('TODO')}
-            name={filter.name}
-          />
-        }
-        label={filter.name}
-      />
-    );
-  });
-
   const filterForm = (
     <FormControl component="fieldset">
       <FormLabel component="legend">Filter by Camera</FormLabel>

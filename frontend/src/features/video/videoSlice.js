@@ -46,7 +46,7 @@ export const videoSlice = createSlice({
       let cameras = {};
       for (let i = 0; i < action.payload.length; i++) {
         const title = action.payload[i].title;
-        cameras[title] = false;
+        cameras[title] = true;
       }
       state.searchFilter = cameras;
     },
@@ -100,7 +100,8 @@ export const videoSlice = createSlice({
       state.searchResults = action.payload;
     },
     setSearchFilter: (state, action) => {
-      state.searchFilter = action.payload;
+      const { name, value } = action.payload;
+      state.searchFilter[name] = value;
     },
     setStatusSearch: (state, action) => {
       const { status, message } = action.payload;
