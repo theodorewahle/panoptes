@@ -18,15 +18,35 @@ CREATE SCHEMA IF NOT EXISTS `panoptes` DEFAULT CHARACTER SET utf8 ;
 USE `panoptes` ;
 
 -- -----------------------------------------------------
+-- Table `panoptes`.`users`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `panoptes`.`users` (
+  `user_id` INT NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(100) NOT NULL,
+  `salt` CHAR(128) NOT NULL,
+  `hash` CHAR(128) NOT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `panoptes`.`cameras`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `panoptes`.`cameras` (
   `camera_id` INT NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(100) NULL,
   `url` VARCHAR(100) NULL,
+  `user_id` INT NOT NULL,
   PRIMARY KEY (`camera_id`),
   UNIQUE INDEX `camera_url_UNIQUE` (`url` ASC),
-  UNIQUE INDEX `title_UNIQUE` (`title` ASC))
+  UNIQUE INDEX `title_UNIQUE` (`title` ASC),
+  INDEX `cameras_users_fk_idx` (`user_id` ASC),
+  CONSTRAINT `cameras_users_fk`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `panoptes`.`users` (`user_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -108,4 +128,3 @@ SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
--- insert values
