@@ -58,6 +58,7 @@ const LiveStreamPage = (props) => {
       <div className={styles.leftPanel}>
         <div>
           <h1>Incident</h1>
+          <DataRow title={'Time Stamp'} data={curIncident.timeStamp} />
           <DataRow title={'Start Time'} data={curIncident.startTime} />
           <DataRow title={'End Time'} data={curIncident.endTime} />
           <DataRow

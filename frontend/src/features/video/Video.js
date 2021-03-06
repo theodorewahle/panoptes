@@ -59,7 +59,6 @@ const Video = (props) => {
         url={url}
         width={width}
         height={height}
-        controls={true}
         onReady={() => setLoadStatus(ENV.STATUS_DONE)}
         onError={() => setLoadStatus(ENV.STATUS_ERROR)}
       />
