@@ -10,11 +10,16 @@ from utils.utils import *
 from database.database import DatabaseHelper
 from flask_httpauth import HTTPTokenAuth
 
-
 # globals used by main server for this blueprint
 db_helper = DatabaseHelper()
 api = Blueprint('api', __name__)
 
+@api.after_request
+def after_request(response):
+    header = response.headers
+    header['Access-Control-Allow-Origin'] = '*'
+    header['Access-Control-Allow-Headers'] = '*'
+    return response
 
 # Token authorization vars and function
 auth = HTTPTokenAuth(scheme='Bearer')

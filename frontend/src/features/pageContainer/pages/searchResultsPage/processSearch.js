@@ -24,7 +24,7 @@ export const processSearch = ({ mainDataModel, searchCurrent }) => {
         objIdentified2 === search2
       ) {
         const tempIncident = { ...incident };
-        tempIncident['title'] = incident.cameraTitle;
+        tempIncident['title'] = incident.timeStamp;
         results.push(tempIncident);
       }
     }

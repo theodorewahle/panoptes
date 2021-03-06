@@ -8,7 +8,8 @@ import axios from 'axios';
 import ENV from '../env';
 
 axios.defaults.headers.common = {
-  'Access-Control-Allow_origin': '*',
+  'Access-Control-Allow_Origin': '*',
+  'Access-Control-Request-Headers': '*',
   Authorization: `Bearer ${ENV.SECRET_TOKEN_STORED_IN_A_NOT_SO_SECRET_LOCATION}`,
 };
 
@@ -71,6 +72,7 @@ export const fetchAndProcessDataModel = () => {
                 'Video Not Found',
               startTime: incident[0]?.start_time || 'No Start Time',
               endTime: incident[0]?.end_time || 'No End Time',
+              timeStamp: incident[0]?.timestamp || 'No Time Stamp',
               objectIdentified: incident[1]?.name || 'No Object Identified',
               object_id: incident[1]?.object_id || 'No object_id',
               object_set_id: incident[1]?.object_set_id || 'No object_set_id',

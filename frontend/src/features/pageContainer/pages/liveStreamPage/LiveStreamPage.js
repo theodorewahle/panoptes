@@ -58,6 +58,7 @@ const LiveStreamPage = (props) => {
       <div className={styles.leftPanel}>
         <div>
           <h1>Incident</h1>
+          <DataRow title={'Time Stamp'} data={curIncident.timeStamp} />
           <DataRow title={'Start Time'} data={curIncident.startTime} />
           <DataRow title={'End Time'} data={curIncident.endTime} />
           <DataRow
@@ -97,7 +98,7 @@ const LiveStreamPage = (props) => {
           videos={incidents}
           width={ENV.VIDEO_THUMBNAIL_WIDTH}
           height={ENV.VIDEO_THUMBNAIL_HEIGHT}
-          isThumbnail={false}
+          isThumbnail={true}
           pageLink={ENV.PAGE_INCIDENT_VIEWER}
           videoType={ENV.VIDEO_TYPE_INCIDENT}
         />
