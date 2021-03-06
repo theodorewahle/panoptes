@@ -9,12 +9,14 @@ import { Alert, AlertTitle } from '@material-ui/lab';
 import styles from './LandingPage.module.scss';
 import ENV from '../../../../env';
 
-// TODO: CSS
 const Loading = () => {
-  return <CircularProgress />;
+  return (
+    <div className={styles.loading}>
+      <CircularProgress color={'inherit'} size={100} />
+    </div>
+  );
 };
 
-// TODO: CSS
 const Error = (props) => {
   const { type } = props;
   let message;
@@ -24,7 +26,7 @@ const Error = (props) => {
     message = 'Error Fetching and Processing Data';
   }
   return (
-    <div className={styles.errorContainer}>
+    <div className={styles.statusContainer}>
       <Alert variant="outlined" severity="error">
         <AlertTitle>{message}</AlertTitle>
         Please try reloading the page

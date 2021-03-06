@@ -18,8 +18,15 @@
   padding: 32px;
 }
 
-.errorContainer {
+.statusContainer {
   padding-left: 100px;
   padding-right: 100px;
   padding-top: 50px;
+}
+
+.loading {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding-top: 100px;
 }
