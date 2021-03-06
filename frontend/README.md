@@ -15,16 +15,13 @@
 - High Priority
   - Bugs
     - update camera name -> search for incident -> incidents don't display updated camera name
-  - Videos reload on LandingPage in what seems to be UI thread... [react-player](https://www.npmjs.com/package/react-player) is not handling this automatically
-  - [Lazy load](https://reactjs.org/docs/code-splitting.html#reactlazy) videos
   - Test different browsers / versions
-  - When an incident is clicked: animate scroll back to top of page
-  - Add `timeStamp` to `mainDataModel` + necessary componenets
 - Misc
   - Clean up and sort imports in all files
   - Add timeouts to API calls
   - CSS work (low priority)
   - Make sure every page collapses cleanly all the way to mobile version
+  - [Lazy load](https://reactjs.org/docs/code-splitting.html#reactlazy) videos
   - If not handled on backend, incidents need to be trimmed
     - [react-video-trimmer](https://www.npmjs.com/package/react-video-trimmer)
     - Implement something similar to above in conjunction with [react-player](https://www.npmjs.com/package/react-player)

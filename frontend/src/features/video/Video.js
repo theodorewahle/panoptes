@@ -57,18 +57,11 @@ const Video = (props) => {
     display = (
       <ReactPlayer
         url={url}
-        // config={{
-        //   file: {
-        //     attributes: {
-        //       poster: loadingPoster,
-        //     },
-        //   },
-        // }}
         width={width}
         height={height}
+        controls={true}
         onReady={() => setLoadStatus(ENV.STATUS_DONE)}
         onError={() => setLoadStatus(ENV.STATUS_ERROR)}
-        // style={{opacity: }}
       />
     );
   }
