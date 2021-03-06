@@ -7,9 +7,11 @@
 .topRow {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .resultsMessage {
+  padding-bottom: 20px;
 }
 
 .filters {
@@ -28,6 +30,7 @@
 
 .resultsContainer {
   padding-top: 25px;
+  padding-bottom: 50px;
 }
 
 .loading {

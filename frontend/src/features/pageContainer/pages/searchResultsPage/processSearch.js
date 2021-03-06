@@ -35,10 +35,10 @@ export const processSearch = ({
         const objIdentified = incident.objectIdentified.toLowerCase();
         const objIdentified2 = objIdentified.replace(/\W/g, '');
         if (
-          objIdentified === search ||
-          objIdentified === search2 ||
-          objIdentified2 === search ||
-          objIdentified2 === search2
+          search.includes(objIdentified) ||
+          search2.includes(objIdentified) ||
+          search.includes(objIdentified2) ||
+          search2.includes(objIdentified2)
         ) {
           const tempIncident = { ...incident };
           tempIncident['title'] = incident.timeStamp;
