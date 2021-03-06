@@ -5,6 +5,7 @@ import { setPage } from '../pageContainer/pageContainerSlice';
 import { setCurCameraIndex, setCurIncidentIndex } from './videoSlice';
 
 import ReactPlayer from 'react-player';
+import { animateScroll as scroll } from 'react-scroll';
 import { CircularProgress } from '@material-ui/core';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
@@ -38,6 +39,7 @@ const Video = (props) => {
   console.log(`videoType: ${videoType}`);
   const onSelect = () => {
     console.log(`url: ${url}`);
+    scroll.scrollToTop();
     if (videoType === ENV.VIDEO_TYPE_CAMERA) {
       dispatch(setCurCameraIndex(cameraIndex));
     } else if (videoType === ENV.VIDEO_TYPE_INCIDENT) {
