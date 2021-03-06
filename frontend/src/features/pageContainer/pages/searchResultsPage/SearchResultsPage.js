@@ -7,12 +7,12 @@ import {
   selectStatusSearch,
   selectSearchFilter,
   setSearchFilter,
-  setStatusSearch,
 } from '../../../video/videoSlice';
 import { selectSearchCurrent } from '../../pageContainerSlice';
 import { processSearch } from './processSearch';
 
 import {
+  Button,
   CircularProgress,
   FormLabel,
   FormControl,
@@ -20,6 +20,9 @@ import {
   FormControlLabel,
   Checkbox,
 } from '@material-ui/core';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+
 import VideoThumbnails from '../../../video/VideoThumbnails';
 
 import styles from './SearchResultsPage.module.scss';
@@ -51,7 +54,6 @@ const getFilters = ({
                   value: e.target.checked,
                 })
               );
-              // dispatch(setStatusSearch(ENV.STATUS_WAITING))
               let filter = { ...searchFilter };
               filter[e.target.name] = e.target.checked;
               processSearch({
@@ -71,12 +73,27 @@ const getFilters = ({
 
 const SearchResultsPage = () => {
   const dispatch = useDispatch();
+  const [sortByMostRecent, setSortByMostRecent] = useState(true);
   const mainDataModel = useSelector(selectMainDataModel);
   const searchResults = useSelector(selectSearchResults);
   const statusSearch = useSelector(selectStatusSearch);
   const searchFilter = useSelector(selectSearchFilter);
   const searchCurrent = useSelector(selectSearchCurrent);
   const { status, message } = statusSearch;
+
+  console.log(`sortByMostRecent: ${sortByMostRecent}`);
+  let sortedSearchResults = [...searchResults];
+  sortedSearchResults.sort((a, b) => {
+    try {
+      if (sortByMostRecent) {
+        return new Date(a.timeStamp) - new Date(b.timeStamp);
+      }
+      return -1 * (new Date(a.timeStamp) - new Date(b.timeStamp));
+    } catch {
+      return 0;
+    }
+  });
+
   // Cases:
   //  (1) No results - object NOT in set
   //  (2) No results - object in set
@@ -93,10 +110,10 @@ const SearchResultsPage = () => {
         <CircularProgress />
       </div>
     );
-  } else if (status === ENV.STATUS_DONE && searchResults != null) {
+  } else if (status === ENV.STATUS_DONE && sortedSearchResults != null) {
     display = (
       <VideoThumbnails
-        videos={searchResults}
+        videos={sortedSearchResults}
         width={ENV.VIDEO_THUMBNAIL_WIDTH}
         height={ENV.VIDEO_THUMBNAIL_HEIGHT}
         isThumbnail={true}
@@ -130,7 +147,20 @@ const SearchResultsPage = () => {
     <div className={styles.container}>
       <div className={styles.topRow}>
         <div className={styles.resultsMessage}>{message}</div>
-        <div className={styles.filterForm}>{filterForm}</div>
+        <div className={styles.filters}>
+          <div className={styles.filterForm}>{filterForm}</div>
+          <div className={styles.sortButton}>
+            <Button
+              onClick={() => setSortByMostRecent(!sortByMostRecent)}
+              color="inherit"
+              startIcon={
+                sortByMostRecent ? <ArrowDownwardIcon /> : <ArrowUpwardIcon />
+              }
+            >
+              Sort by Date
+            </Button>
+          </div>
+        </div>
       </div>
       <div className={styles.resultsContainer}>{display}</div>
     </div>

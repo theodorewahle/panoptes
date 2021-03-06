@@ -12,7 +12,18 @@
 .resultsMessage {
 }
 
+.filters {
+  display: flex;
+  flex-direction: column;
+}
+
 .filterForm {
+}
+
+.sortButton {
+  padding-top: 10px;
+  height: 30px;
+  width: 150px;
 }
 
 .resultsContainer {
