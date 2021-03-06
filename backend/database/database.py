@@ -10,6 +10,8 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.schema import CreateSchema
 from sqlalchemy import create_engine
 from sqlalchemy.exc import SQLAlchemyError
+from os import urandom
+from hashlib import pbkdf2_hmac
 
 
 class DatabaseHelper:
@@ -32,17 +34,19 @@ class DatabaseHelper:
 
     # CRUD database helper methods called by server endpoints (Camera, Video, Incident, Object, Object Set)
     # Camera CRUD:
-    def get_camera(self, camera_id=None, title=None, url=None):
+    def get_camera(self, camera_id=None, title=None, url=None, user_id=None):
         if camera_id is not None:
             return self.db.session.query(models.Camera).filter(models.Camera.camera_id == camera_id).order_by(models.Camera.camera_id.asc()).all()
         elif url is not None:
             return self.db.session.query(models.Camera).filter(models.Camera.url == url).order_by(models.Camera.camera_id.asc()).all()
         elif title is not None:
             return self.db.session.query(models.Camera).filter(models.Camera.title == title).order_by(models.Camera.camera_id.asc()).all()
+        elif user_id is not None:
+            return self.db.session.query(models.Camera).filter(models.Camera.user_id == user_id).order_by(models.Camera.camera_id.asc()).all()
         return self.db.session.query(models.Camera).order_by(models.Camera.camera_id.asc()).all()
 
-    def add_camera(self, title, url):
-        camera = models.Camera(title=title, url=url)
+    def add_camera(self, title, url, user_id):
+        camera = models.Camera(title=title, url=url, user_id=user_id)
         try:
             self.db.session.add(camera)
             self.db.session.commit()
@@ -51,7 +55,7 @@ class DatabaseHelper:
             self.db.session.rollback()
             return e
 
-    def update_camera(self, camera_id, title=None, url=None):
+    def update_camera(self, camera_id, title=None, url=None, user_id=None):
         camera = self.db.session.query(models.Camera).filter(
             models.Camera.camera_id == camera_id).first()
 
@@ -63,13 +67,15 @@ class DatabaseHelper:
                 camera.title = title
             if url is not None:
                 camera.url = url
+            if user_id is not None:
+                camera.user_id = user_id
             self.db.session.commit()
             return camera
         except SQLAlchemyError as e:
             self.db.session.rollback()
             return e
 
-    def delete_camera(self, camera_id=None, title=None, url=None):
+    def delete_camera(self, camera_id=None, title=None, url=None, user_id=None):
         if camera_id is not None:
             self.db.session.query(models.Camera).filter(
                 models.Camera.camera_id == camera_id).delete()
@@ -79,6 +85,9 @@ class DatabaseHelper:
         elif url is not None:
             self.db.session.query(models.Camera).filter(
                 models.Camera.url == url).delete()
+        elif user_id is not None:
+            self.db.session.query(models.Camera).filter(
+                models.Camera.user_id == user_id).delete()
         self.db.session.commit()
 
     # Video CRUD:
@@ -342,3 +351,59 @@ class DatabaseHelper:
             self.db.session.query(models.ObjectSet).filter(
                 models.ObjectSet.name == name).delete()
         self.db.session.commit()
+
+    # Users CRUD:
+    def get_user(self, user_id=None, username=None):
+        if user_id is not None:
+            return self.db.session.query(models.User).filter(models.User.user_id == user_id).order_by(models.User.user_id.asc()).all()
+        elif username is not None:
+            return self.db.session.query(models.User).filter(models.User.username == username).order_by(models.User.username.asc()).all()
+        return self.db.session.query(models.User).order_by(models.User.user_id.asc()).all()
+
+    def add_user(self, username, password):
+
+        # need to salt the password and store the salt and hash
+        salt, hash = self.create_hash(password)
+
+        user = models.User(username=username, salt=salt, hash=hash)
+        try:
+            self.db.session.add(user)
+            self.db.session.commit()
+            return user
+        except SQLAlchemyError as e:
+            self.db.session.rollback()
+            return e
+
+    def update_user(self, user_id, username=None, password=None):
+        user = self.db.session.query(models.User).filter(
+            models.User.user_id == user_id).first()
+
+        if user is None:
+            return user
+
+        try:
+            if username is not None:
+                user.username = username
+            if password is not None:
+                salt, hash = self.create_hash(password)
+                user.salt = salt
+                user.hash = hash
+            self.db.session.commit()
+            return user
+        except SQLAlchemyError as e:
+            self.db.session.rollback()
+            return e
+
+    def delete_user(self, user_id=None, username=None):
+        if user_id is not None:
+            self.db.session.query(models.User).filter(
+                models.User.user_id == user_id).delete()
+        elif username is not None:
+            self.db.session.query(models.User).filter(
+                models.User.username == username).delete()
+        self.db.session.commit()
+
+    def create_hash(password):
+        salt = urandom(64)
+        hash = pbkdf2_hmac('sha512', password.encode(), salt.encode(), 100000)
+        return salt, hash
