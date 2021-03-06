@@ -19,6 +19,7 @@ export const videoSlice = createSlice({
     curIncidentIndex: 0,
     curCameraIndex: 1,
     searchResults: [],
+    searchFilter: {},
     statusSearch: {
       status: ENV.STATUS_IDLE,
       message: '',
@@ -42,6 +43,12 @@ export const videoSlice = createSlice({
     },
     setMainDataModel: (state, action) => {
       state.mainDataModel = action.payload;
+      let cameras = {};
+      for (let i = 0; i < action.payload.length; i++) {
+        const title = action.payload[i].title;
+        cameras[title] = false;
+      }
+      state.searchFilter = cameras;
     },
     insertCameraToDataModel: (state, action) => {
       const { update, data } = action.payload;
@@ -92,6 +99,9 @@ export const videoSlice = createSlice({
     setSearchResults: (state, action) => {
       state.searchResults = action.payload;
     },
+    setSearchFilter: (state, action) => {
+      state.searchFilter = action.payload;
+    },
     setStatusSearch: (state, action) => {
       const { status, message } = action.payload;
       let messageTemp = '';
@@ -115,6 +125,7 @@ export const {
   setCurIncidentIndex,
   setCurCameraIndex,
   setSearchResults,
+  setSearchFilter,
   setStatusSearch,
 } = videoSlice.actions;
 
@@ -126,6 +137,7 @@ export const selectStatusCameras = (state) => state.video.statusCameras;
 export const selectStatusObjectSets = (state) => state.video.statusObjectSets;
 export const selectStatusMainDataModel = (state) =>
   state.video.statusMainDataModel;
+export const selectSearchFilter = (state) => state.video.searchFilter;
 
 export const selectObjectSet = (state) => state.video.objectSet;
 export const selectCurIncidentIndex = (state) => state.video.curIncidentIndex;

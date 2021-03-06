@@ -1,20 +1,32 @@
-import React from 'react';
+/* eslint-disable no-unused-vars */
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
+  selectMainDataModel,
   selectSearchResults,
   selectStatusSearch,
+  selectSearchFilter,
 } from '../../../video/videoSlice';
 
-import { CircularProgress } from '@material-ui/core';
+import {
+  CircularProgress,
+  FormLabel,
+  FormControl,
+  FormGroup,
+  FormControlLabel,
+  FormHelperText,
+  Checkbox,
+} from '@material-ui/core';
 import VideoThumbnails from '../../../video/VideoThumbnails';
 
 import styles from './SearchResultsPage.module.scss';
 import ENV from '../../../../env';
 
 const SearchResultsPage = () => {
-  // const searchCurrent = useSelector(selectSearchCurrent);
+  const mainDataModel = useSelector(selectMainDataModel);
   const searchResults = useSelector(selectSearchResults);
   const statusSearch = useSelector(selectStatusSearch);
+  const searchFilter = useSelector(selectSearchFilter);
   const { status, message } = statusSearch;
   // Cases:
   //  (1) No results - object NOT in set
@@ -52,10 +64,41 @@ const SearchResultsPage = () => {
       </div>
     );
   }
+  const tempFilterArr = [];
+  Object.keys(searchFilter).forEach((filter) => {
+    tempFilterArr.push({ name: filter, value: searchFilter[filter] });
+  });
+  let key = 0;
+  const filters = tempFilterArr.map((filter) => {
+    key++;
+    return (
+      <FormControlLabel
+        key={key}
+        control={
+          <Checkbox
+            checked={filter.value}
+            onChange={() => console.log('TODO')}
+            name={filter.name}
+          />
+        }
+        label={filter.name}
+      />
+    );
+  });
+
+  const filterForm = (
+    <FormControl component="fieldset">
+      <FormLabel component="legend">Filter by Camera</FormLabel>
+      <FormGroup>{filters}</FormGroup>
+    </FormControl>
+  );
 
   return (
     <div className={styles.container}>
-      <div className={styles.resultsMessage}>{message}</div>
+      <div className={styles.topRow}>
+        <div className={styles.resultsMessage}>{message}</div>
+        <div className={styles.filterForm}>{filterForm}</div>
+      </div>
       <div className={styles.resultsContainer}>{display}</div>
     </div>
   );

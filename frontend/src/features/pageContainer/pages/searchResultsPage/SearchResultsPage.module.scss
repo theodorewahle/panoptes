@@ -4,7 +4,15 @@
   padding-right: 100px;
 }
 
+.topRow {
+  display: flex;
+  justify-content: space-between;
+}
+
 .resultsMessage {
+}
+
+.filterForm {
 }
 
 .resultsContainer {

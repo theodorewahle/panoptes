@@ -28,7 +28,6 @@ const PageHeader = (props) => {
   const { mainDataModel } = props;
   const searchInput = useSelector(selectSearchInput);
   const page = useSelector(selectPage);
-  console.log(`searchInput: ${searchInput}`);
 
   let editCameraButtonText;
   if (page === ENV.PAGE_EDIT_CAMERAS) {
