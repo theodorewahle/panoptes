@@ -4,6 +4,7 @@ import { selectStatusMainDataModel } from '../../../video/videoSlice';
 
 import VideoThumbnails from '../../../video/VideoThumbnails';
 import { CircularProgress } from '@material-ui/core';
+import { Alert, AlertTitle } from '@material-ui/lab';
 
 import styles from './LandingPage.module.scss';
 import ENV from '../../../../env';
@@ -23,9 +24,11 @@ const Error = (props) => {
     message = 'Error Fetching and Processing Data';
   }
   return (
-    <div>
-      <div>TODO: CSS</div>
-      <div>{message}</div>
+    <div className={styles.errorContainer}>
+      <Alert variant="outlined" severity="error">
+        <AlertTitle>{message}</AlertTitle>
+        Please try reloading the page
+      </Alert>
     </div>
   );
 };
