@@ -1,7 +1,7 @@
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.sql.sqltypes import DateTime
+from sqlalchemy.sql.sqltypes import DateTime, CHAR
 
 # this file represents all the tables in the database and is used by SQL Alchemy
 
@@ -16,10 +16,17 @@ class Camera(Base):
     title = Column(String(100), unique=True)
     url = Column(String(100), unique=True)
 
+    user_id = Column(ForeignKey('users.user_id', ondelete='CASCADE',
+                                  onupdate='CASCADE'), nullable=False, index=True)
+
+    user = relationship(
+        'User', primaryjoin='Camera.user_id == User.user_id', backref='cameras')
+
     def serialize(self):
         return {'camera_id': self.camera_id,
         'title': self.title, 
-        'url': self.url}
+        'url': self.url,
+        'user_id': self.user_id}
 
 
 class Incident(Base):
@@ -94,3 +101,17 @@ class Video(Base):
         'file_path': self.file_path,
         'timestamp': self.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
         'camera_id': self.camera_id}
+
+
+class User(Base):
+    __tablename__ = 'users'
+
+    user_id = Column(Integer, primary_key=True,
+                      nullable=False, autoincrement=True)
+    username = Column(String(100), nullable=False, unique=True)
+    salt = Column(CHAR(128), nullable=False)
+    hash = Column(CHAR(128), nullable=False)
+
+    def serialize(self):
+        return {'user_id': self.user_id,
+        'username': self.username}
