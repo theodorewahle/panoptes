@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setPage } from '../pageContainer/pageContainerSlice';
@@ -7,6 +8,7 @@ import ReactPlayer from 'react-player';
 import { CircularProgress } from '@material-ui/core';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
+import { getImage } from './tempThumbnails/getThumbnail';
 import ENV from '../../env';
 import styles from './Video.module.scss';
 // import { Link } from 'react-router-dom';
@@ -20,7 +22,7 @@ const Video = (props) => {
     height,
     title,
     url,
-    // isThumbnail,
+    isThumbnail,
     videoType,
     pageLink,
     incidentIndex,
@@ -35,6 +37,7 @@ const Video = (props) => {
   }
   console.log(`videoType: ${videoType}`);
   const onSelect = () => {
+    console.log(`url: ${url}`);
     if (videoType === ENV.VIDEO_TYPE_CAMERA) {
       dispatch(setCurCameraIndex(cameraIndex));
     } else if (videoType === ENV.VIDEO_TYPE_INCIDENT) {
@@ -45,25 +48,36 @@ const Video = (props) => {
       dispatch(setPage(pageLink));
     }
   };
-
-  let display;
-  if (loadStatus === ENV.STATUS_DONE) {
+  let display, statusDisplay;
+  if (isThumbnail) {
+    display = <img src={getImage(url)} alt="" width={width} height={height} />;
+  } else {
     display = (
       <ReactPlayer
         url={url}
+        // config={{
+        //   file: {
+        //     attributes: {
+        //       poster: loadingPoster,
+        //     },
+        //   },
+        // }}
         width={width}
         height={height}
         onReady={() => setLoadStatus(ENV.STATUS_DONE)}
         onError={() => setLoadStatus(ENV.STATUS_ERROR)}
+        // style={{opacity: }}
       />
     );
-  } else if (loadStatus === ENV.STATUS_WAITING) {
-    display = <CircularProgress />;
-  } else if (loadStatus === ENV.STATUS_ERROR) {
-    display = <ErrorOutlineIcon />;
   }
 
-  // const isThumbnail = url.includes('.jpg');
+  // if (loadStatus === ENV.STATUS_DONE) {
+  //   statusDisplay = null;
+  // } else if (loadStatus === ENV.STATUS_WAITING) {
+  //   statusDisplay = <CircularProgress />;
+  // } else if (loadStatus === ENV.STATUS_ERROR) {
+  //   statusDisplay = <ErrorOutlineIcon />;
+  // }
 
   return (
     <div
@@ -71,6 +85,7 @@ const Video = (props) => {
       className={styles.video}
       style={{ width, height }}
     >
+      <div className={styles.status}>{statusDisplay}</div>
       {display}
       <div className={styles.title}>{displayTitle}</div>
     </div>

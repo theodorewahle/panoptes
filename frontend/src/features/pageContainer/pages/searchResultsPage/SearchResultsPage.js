@@ -38,7 +38,7 @@ const SearchResultsPage = () => {
         videos={searchResults}
         width={ENV.VIDEO_THUMBNAIL_WIDTH}
         height={ENV.VIDEO_THUMBNAIL_HEIGHT}
-        isThumbnail={false}
+        isThumbnail={true}
         pageLink={ENV.PAGE_INCIDENT_VIEWER}
         videoType={ENV.VIDEO_TYPE_INCIDENT}
       />
