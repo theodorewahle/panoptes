@@ -52,6 +52,7 @@ const Video = (props) => {
       dispatch(setPage(pageLink));
     }
   };
+  // TODO: statusDisplay will be used when thumbnails are served from API
   let display, statusDisplay;
   if (isThumbnail) {
     display = <img src={getImage(url)} alt="" width={width} height={height} />;
@@ -76,14 +77,16 @@ const Video = (props) => {
   // }
 
   return (
-    <div
-      onClick={() => onSelect()}
-      className={styles.video}
-      style={{ width, height }}
-    >
-      <div className={styles.status}>{statusDisplay}</div>
-      {display}
-      <div className={styles.title}>{displayTitle}</div>
+    <div className={styles.videoContainer}>
+      <div
+        className={styles.video}
+        style={{ width, height }}
+        onClick={() => onSelect()}
+      >
+        <div className={styles.status}>{statusDisplay}</div>
+        {display}
+        <div className={styles.title}>{displayTitle}</div>
+      </div>
     </div>
   );
 };
