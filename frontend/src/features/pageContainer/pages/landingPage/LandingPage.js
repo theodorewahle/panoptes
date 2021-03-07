@@ -77,7 +77,7 @@ const LandingPage = (props) => {
         />
       </div>
       <div className={styles.containerRecentIncidents}>
-        <div className={styles.titleRecentIncidents}>Recent Incidents</div>
+        <div className={styles.titleRecentIncidents}>All Recent Incidents</div>
         <VideoThumbnails
           videos={incidents}
           width={ENV.VIDEO_THUMBNAIL_WIDTH}

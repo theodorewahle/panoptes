@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable one-var */
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   selectCurIncidentIndex,
@@ -8,7 +9,8 @@ import { setPage, selectPage } from '../../pageContainerSlice';
 
 import VideoThumbnails from '../../../video/VideoThumbnails';
 import ReactPlayer from 'react-player';
-import { Button } from '@material-ui/core';
+import { Button, CircularProgress } from '@material-ui/core';
+import { Alert, AlertTitle } from '@material-ui/lab';
 
 import ENV from '../../../../env';
 import styles from './LiveStreamPage.module.scss';
@@ -26,6 +28,8 @@ const DataRow = (props) => {
 
 const LiveStreamPage = (props) => {
   const dispatch = useDispatch();
+  const [isErrorLoadingStream, setIsErrorLoadingStream] = useState(false);
+  const [isReadyLoadingStream, setIsReadyLoadingStream] = useState(false);
   const { mainDataModel } = props;
   const curIncidentIndex = useSelector(selectCurIncidentIndex);
   const curCameraIndex = useSelector(selectCurCameraIndex);
@@ -46,7 +50,8 @@ const LiveStreamPage = (props) => {
     const recentIncidentsText = `Recent Incidents: ${incidents.length}`;
     display = (
       <div>
-        <h1>Live Stream: {curCamera.title}</h1>
+        <h1>Live Stream:</h1>
+        <h2>{curCamera.title}</h2>
         <h3>
           {incidents.length === 0 ? 'No Recent Incidents' : recentIncidentsText}
         </h3>
@@ -70,7 +75,11 @@ const LiveStreamPage = (props) => {
           <Button
             size="large"
             variant="outlined"
-            onClick={() => dispatch(setPage(ENV.PAGE_LIVE_STREAM))}
+            onClick={() => {
+              dispatch(setPage(ENV.PAGE_LIVE_STREAM));
+              setIsReadyLoadingStream(false);
+              setIsErrorLoadingStream(false);
+            }}
           >
             View Live Feed
           </Button>
@@ -81,6 +90,19 @@ const LiveStreamPage = (props) => {
     console.error('pageContainerSlice.page is not wired correctly');
   }
 
+  const errorLoadingStream = (
+    <Alert variant="outlined" severity="error">
+      <AlertTitle>Error Loading Stream</AlertTitle>
+      Please try reloading the page
+    </Alert>
+  );
+  let loadingStream;
+  if (isReadyLoadingStream || isErrorLoadingStream) {
+    loadingStream = null;
+  } else if (!isErrorLoadingStream && !isReadyLoadingStream) {
+    loadingStream = <CircularProgress color={'inherit'} size={100} />;
+  }
+
   // TODO: display objects being tracked
   // TODO: add object set button/form/modal
   return (
@@ -88,12 +110,32 @@ const LiveStreamPage = (props) => {
       <div className={styles.containerLiveStream}>
         <div className={styles.containerStreamData}>{display}</div>
         <div>
-          <ReactPlayer url={url} width={720} height={405} playing loop={true} />
+          {isErrorLoadingStream ? errorLoadingStream : null}
+          {loadingStream}
+          <ReactPlayer
+            url={url}
+            width={720}
+            height={405}
+            playing
+            loop={true}
+            onReady={() => {
+              console.log('ReactPlayer onReady');
+              setIsReadyLoadingStream(true);
+              setIsErrorLoadingStream(false);
+            }}
+            onError={() => {
+              console.log('ReactPlayer onError');
+              setIsErrorLoadingStream(true);
+              setIsReadyLoadingStream(false);
+            }}
+          />
         </div>
       </div>
 
       <div className={styles.containerRecentIncidents}>
-        <div className={styles.titleRecentIncidents}>Recent Incidents</div>
+        <div className={styles.titleRecentIncidents}>
+          <b>Recent Incidents for Camera:</b> {curCamera.title}
+        </div>
         <VideoThumbnails
           videos={incidents}
           width={ENV.VIDEO_THUMBNAIL_WIDTH}

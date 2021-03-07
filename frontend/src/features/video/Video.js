@@ -38,9 +38,7 @@ const Video = (props) => {
   if (displayTitle == null) {
     displayTitle = 'No Title';
   }
-  console.log(`videoType: ${videoType}`);
   const onSelect = () => {
-    console.log(`url: ${url}`);
     scroll.scrollToTop();
     if (videoType === ENV.VIDEO_TYPE_CAMERA) {
       dispatch(setCurCameraIndex(cameraIndex));
