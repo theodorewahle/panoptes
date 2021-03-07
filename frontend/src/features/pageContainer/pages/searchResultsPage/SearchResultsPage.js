@@ -218,27 +218,27 @@ const SearchResultsPage = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.topRow}>
+      <div className={styles.results}>
         <div className={styles.resultsMessage}>{message}</div>
-        <div className={styles.filters}>
-          <div className={styles.filterForm}>{filterFormObjects}</div>
-          <div className={styles.filterForm}>
-            {filterFormCameras}
-            <div className={styles.sortButton}>
-              <Button
-                onClick={() => setSortByMostRecent(!sortByMostRecent)}
-                color="inherit"
-                startIcon={
-                  sortByMostRecent ? <ArrowDownwardIcon /> : <ArrowUpwardIcon />
-                }
-              >
-                Sort by Date
-              </Button>
-            </div>
-          </div>
-        </div>
+        <div className={styles.resultsContainer}>{display}</div>
       </div>
-      <div className={styles.resultsContainer}>{display}</div>
+      <div className={styles.sideBar}>
+        <div className={styles.filterForm}>
+          <div className={styles.sortButton}>
+            <Button
+              onClick={() => setSortByMostRecent(!sortByMostRecent)}
+              color="inherit"
+              startIcon={
+                sortByMostRecent ? <ArrowDownwardIcon /> : <ArrowUpwardIcon />
+              }
+            >
+              Sort by Date
+            </Button>
+          </div>
+          {filterFormCameras}
+        </div>
+        <div className={styles.filterForm}>{filterFormObjects}</div>
+      </div>
     </div>
   );
 };

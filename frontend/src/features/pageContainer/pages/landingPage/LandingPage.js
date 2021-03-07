@@ -75,7 +75,7 @@ const LandingPage = (props) => {
   });
 
   return (
-    <div>
+    <div className={styles.container}>
       <div className={styles.containerVideoStreams}>
         <div className={styles.titleVideoStreams}>Video Streams</div>
         <VideoThumbnails

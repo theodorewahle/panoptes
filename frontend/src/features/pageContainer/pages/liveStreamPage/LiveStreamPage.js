@@ -118,7 +118,7 @@ const LiveStreamPage = (props) => {
   // TODO: display objects being tracked
   // TODO: add object set button/form/modal
   return (
-    <div>
+    <div className={styles.container}>
       <div className={styles.containerLiveStream}>
         <div className={styles.containerStreamData}>
           {display}
