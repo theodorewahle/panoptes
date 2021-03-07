@@ -93,7 +93,7 @@ const LiveStreamPage = (props) => {
   const errorLoadingStream = (
     <Alert variant="outlined" severity="error">
       <AlertTitle>Error Loading Stream</AlertTitle>
-      Please try reloading the page
+      Try confirming the camera URL and reload the page.
     </Alert>
   );
   let loadingStream;
@@ -108,10 +108,12 @@ const LiveStreamPage = (props) => {
   return (
     <div>
       <div className={styles.containerLiveStream}>
-        <div className={styles.containerStreamData}>{display}</div>
+        <div className={styles.containerStreamData}>
+          {display}
+          {loadingStream}
+        </div>
         <div>
           {isErrorLoadingStream ? errorLoadingStream : null}
-          {loadingStream}
           <ReactPlayer
             url={url}
             width={720}
