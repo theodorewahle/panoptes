@@ -18,6 +18,7 @@ export const videoSlice = createSlice({
     statusMainDataModel: ENV.STATUS_IDLE,
     curIncidentIndex: 0,
     curCameraIndex: 1,
+    searchAllObjects: '',
     searchResults: [],
     searchFilterCameras: {},
     searchFilterObjects: {},
@@ -45,10 +46,18 @@ export const videoSlice = createSlice({
     setMainDataModel: (state, action) => {
       state.mainDataModel = action.payload;
       let cameras = {};
+      const objects = [];
       for (let i = 0; i < action.payload.length; i++) {
         const title = action.payload[i].title;
         cameras[title] = true;
+        for (let j = 0; j < action.payload[i].incidents.length; j++) {
+          const object = action.payload[i].incidents[j].objectIdentified;
+          if (!objects.includes(object)) {
+            objects.push(object);
+          }
+        }
       }
+      state.searchAllObjects = objects.join(' ');
       state.searchFilterCameras = cameras;
     },
     insertCameraToDataModel: (state, action) => {
@@ -163,5 +172,6 @@ export const selectCurIncidentIndex = (state) => state.video.curIncidentIndex;
 export const selectCurCameraIndex = (state) => state.video.curCameraIndex;
 export const selectSearchResults = (state) => state.video.searchResults;
 export const selectStatusSearch = (state) => state.video.statusSearch;
+export const selectSearchAllObjects = (state) => state.video.searchAllObjects;
 
 export default videoSlice.reducer;

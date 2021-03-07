@@ -50,7 +50,7 @@ const LiveStreamPage = (props) => {
     const recentIncidentsText = `Recent Incidents: ${incidents.length}`;
     display = (
       <div>
-        <h1>Live Stream:</h1>
+        <h1>Live Stream</h1>
         <h2>{curCamera.title}</h2>
         <h3>
           {incidents.length === 0 ? 'No Recent Incidents' : recentIncidentsText}

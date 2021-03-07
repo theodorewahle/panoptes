@@ -1,10 +1,18 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { selectStatusMainDataModel } from '../../../video/videoSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  selectSearchAllObjects,
+  selectSearchFilterCameras,
+  selectStatusMainDataModel,
+  setStatusSearch,
+} from '../../../video/videoSlice';
+import { setSearchCurrent, setPage } from '../../pageContainerSlice';
+import { processSearch } from '../searchResultsPage/processSearch';
 
 import VideoThumbnails from '../../../video/VideoThumbnails';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, Button } from '@material-ui/core';
 import { Alert, AlertTitle } from '@material-ui/lab';
+import FilterListIcon from '@material-ui/icons/FilterList';
 
 import styles from './LandingPage.module.scss';
 import ENV from '../../../../env';
@@ -37,7 +45,10 @@ const Error = (props) => {
 
 const LandingPage = (props) => {
   const { mainDataModel } = props;
+  const dispatch = useDispatch();
   const statusMainDataModel = useSelector(selectStatusMainDataModel);
+  const searchFilterCameras = useSelector(selectSearchFilterCameras);
+  const searchAllObjects = useSelector(selectSearchAllObjects);
   if (
     statusMainDataModel === ENV.STATUS_IDLE ||
     statusMainDataModel === ENV.STATUS_WAITING
@@ -77,7 +88,29 @@ const LandingPage = (props) => {
         />
       </div>
       <div className={styles.containerRecentIncidents}>
-        <div className={styles.titleRecentIncidents}>All Recent Incidents</div>
+        <div className={styles.recentIncidentsRow}>
+          <div className={styles.titleRecentIncidents}>
+            All Recent Incidents
+          </div>
+          <Button
+            startIcon={<FilterListIcon />}
+            onClick={() => {
+              dispatch(setSearchCurrent(searchAllObjects));
+              dispatch(setStatusSearch(ENV.STATUS_WAITING));
+              dispatch(setPage(ENV.PAGE_SEARCH_RESULTS));
+              processSearch({
+                mainDataModel,
+                searchCurrent: searchAllObjects,
+                searchFilterCameras,
+                searchFilterObjects: {},
+                isNewSearch: true,
+              });
+            }}
+          >
+            Filter All Incidents
+          </Button>
+        </div>
+
         <VideoThumbnails
           videos={incidents}
           width={ENV.VIDEO_THUMBNAIL_WIDTH}
