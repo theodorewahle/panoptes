@@ -1,10 +1,14 @@
 import store from '../../../../app/store';
-import { setSearchResults, setStatusSearch } from '../../../video/videoSlice';
+import {
+  setSearchResults,
+  setStatusSearch,
+  setSearchFilterObjects,
+} from '../../../video/videoSlice';
 import ENV from '../../../../env';
 
-const isFiltered = ({ cameraTitle, searchFilter }) => {
+const isFiltered = ({ title, searchFilter }) => {
   for (let filter of Object.keys(searchFilter)) {
-    if (cameraTitle === filter && searchFilter[filter]) {
+    if (title === filter && searchFilter[filter]) {
       return true;
     }
   }
@@ -19,14 +23,25 @@ const isFiltered = ({ cameraTitle, searchFilter }) => {
 export const processSearch = ({
   mainDataModel,
   searchCurrent,
-  searchFilter,
+  searchFilterCameras,
+  searchFilterObjects,
+  isNewSearch,
 }) => {
   const results = [];
+  let objects;
+  if (isNewSearch) {
+    objects = {};
+  } else {
+    objects = { ...searchFilterObjects };
+  }
   const search = searchCurrent.toLowerCase().trim();
   const search2 = search.replace(/\W/g, '');
   for (let i = 0; i < mainDataModel.length; i++) {
     if (
-      isFiltered({ cameraTitle: mainDataModel[i].title, searchFilter }) === true
+      isFiltered({
+        title: mainDataModel[i].title,
+        searchFilter: searchFilterCameras,
+      })
     ) {
       console.log('entered here');
       const incidentsArr = mainDataModel[i].incidents;
@@ -40,13 +55,28 @@ export const processSearch = ({
           search.includes(objIdentified2) ||
           search2.includes(objIdentified2)
         ) {
-          const tempIncident = { ...incident };
-          tempIncident['title'] = incident.timeStamp;
-          results.push(tempIncident);
+          const addIncident = () => {
+            const tempIncident = { ...incident };
+            tempIncident['title'] = incident.timeStamp;
+            results.push(tempIncident);
+          };
+          if (isNewSearch) {
+            objects[incident.objectIdentified] = true;
+            addIncident();
+          } else if (
+            isFiltered({
+              title: incident.objectIdentified,
+              searchFilter: searchFilterObjects,
+            })
+          ) {
+            addIncident();
+          }
         }
       }
     }
   }
+  console.log(`objects: ${JSON.stringify(objects)}`);
+  store.dispatch(setSearchFilterObjects(objects));
   store.dispatch(setSearchResults(results));
   if (results.length === 0) {
     store.dispatch(

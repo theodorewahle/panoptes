@@ -19,7 +19,8 @@ export const videoSlice = createSlice({
     curIncidentIndex: 0,
     curCameraIndex: 1,
     searchResults: [],
-    searchFilter: {},
+    searchFilterCameras: {},
+    searchFilterObjects: {},
     statusSearch: {
       status: ENV.STATUS_IDLE,
       message: '',
@@ -48,7 +49,7 @@ export const videoSlice = createSlice({
         const title = action.payload[i].title;
         cameras[title] = true;
       }
-      state.searchFilter = cameras;
+      state.searchFilterCameras = cameras;
     },
     insertCameraToDataModel: (state, action) => {
       const { update, data } = action.payload;
@@ -99,9 +100,16 @@ export const videoSlice = createSlice({
     setSearchResults: (state, action) => {
       state.searchResults = action.payload;
     },
-    setSearchFilter: (state, action) => {
+    setSearchFilterCameras: (state, action) => {
       const { name, value } = action.payload;
-      state.searchFilter[name] = value;
+      state.searchFilterCameras[name] = value;
+    },
+    setSearchFilterObjects: (state, action) => {
+      const { name, value } = action.payload;
+      if (name == null || value == null) {
+        state.searchFilterObjects = action.payload;
+      }
+      state.searchFilterObjects[name] = value;
     },
     setStatusSearch: (state, action) => {
       const { status, message } = action.payload;
@@ -126,7 +134,8 @@ export const {
   setCurIncidentIndex,
   setCurCameraIndex,
   setSearchResults,
-  setSearchFilter,
+  setSearchFilterCameras,
+  setSearchFilterObjects,
   setStatusSearch,
 } = videoSlice.actions;
 
@@ -138,7 +147,10 @@ export const selectStatusCameras = (state) => state.video.statusCameras;
 export const selectStatusObjectSets = (state) => state.video.statusObjectSets;
 export const selectStatusMainDataModel = (state) =>
   state.video.statusMainDataModel;
-export const selectSearchFilter = (state) => state.video.searchFilter;
+export const selectSearchFilterCameras = (state) =>
+  state.video.searchFilterCameras;
+export const selectSearchFilterObjects = (state) =>
+  state.video.searchFilterObjects;
 
 export const selectObjectSet = (state) => state.video.objectSet;
 export const selectCurIncidentIndex = (state) => state.video.curIncidentIndex;

@@ -5,8 +5,10 @@ import {
   selectMainDataModel,
   selectSearchResults,
   selectStatusSearch,
-  selectSearchFilter,
-  setSearchFilter,
+  selectSearchFilterCameras,
+  setSearchFilterCameras,
+  selectSearchFilterObjects,
+  setSearchFilterObjects,
 } from '../../../video/videoSlice';
 import { selectSearchCurrent } from '../../pageContainerSlice';
 import { processSearch } from './processSearch';
@@ -28,15 +30,16 @@ import VideoThumbnails from '../../../video/VideoThumbnails';
 import styles from './SearchResultsPage.module.scss';
 import ENV from '../../../../env';
 
-const getFilters = ({
-  searchFilter,
+const getCameraFilters = ({
+  searchFilterCameras,
+  searchFilterObjects,
   mainDataModel,
   searchCurrent,
   dispatch,
 }) => {
   const tempFilterArr = [];
-  Object.keys(searchFilter).forEach((filter) => {
-    tempFilterArr.push({ name: filter, value: searchFilter[filter] });
+  Object.keys(searchFilterCameras).forEach((filter) => {
+    tempFilterArr.push({ name: filter, value: searchFilterCameras[filter] });
   });
   let key = 0;
   return tempFilterArr.map((filter) => {
@@ -49,17 +52,67 @@ const getFilters = ({
             checked={filter.value}
             onChange={(e) => {
               dispatch(
-                setSearchFilter({
+                setSearchFilterCameras({
                   name: e.target.name,
                   value: e.target.checked,
                 })
               );
-              let filter = { ...searchFilter };
+              let filter = { ...searchFilterCameras };
               filter[e.target.name] = e.target.checked;
               processSearch({
                 mainDataModel,
                 searchCurrent,
-                searchFilter: filter,
+                searchFilterObjects,
+                searchFilterCameras: filter,
+                isNewSearch: false,
+              });
+            }}
+            name={filter.name}
+          />
+        }
+        label={filter.name}
+      />
+    );
+  });
+};
+
+const getObjectFilters = ({
+  searchFilterCameras,
+  searchFilterObjects,
+  mainDataModel,
+  searchCurrent,
+  dispatch,
+}) => {
+  const tempFilterArr = [];
+  Object.keys(searchFilterObjects).forEach((filter) => {
+    if (filter != null && searchFilterObjects[filter] != null) {
+      tempFilterArr.push({ name: filter, value: searchFilterObjects[filter] });
+    }
+  });
+  let key = -1;
+  return tempFilterArr.map((filter) => {
+    key--;
+    return (
+      <FormControlLabel
+        key={key}
+        control={
+          <Checkbox
+            checked={filter.value}
+            onChange={(e) => {
+              dispatch(
+                setSearchFilterObjects({
+                  name: e.target.name,
+                  value: e.target.checked,
+                })
+              );
+              let filter = { ...searchFilterObjects };
+              filter[e.target.name] = e.target.checked;
+              processSearch({
+                mainDataModel,
+                searchCurrent,
+                searchFilterCameras,
+                searchFilterObjects: filter,
+                isNewSearch: false,
               });
             }}
             name={filter.name}
@@ -77,11 +130,12 @@ const SearchResultsPage = () => {
   const mainDataModel = useSelector(selectMainDataModel);
   const searchResults = useSelector(selectSearchResults);
   const statusSearch = useSelector(selectStatusSearch);
-  const searchFilter = useSelector(selectSearchFilter);
+  const searchFilterCameras = useSelector(selectSearchFilterCameras);
+  const searchFilterObjects = useSelector(selectSearchFilterObjects);
   const searchCurrent = useSelector(selectSearchCurrent);
   const { status, message } = statusSearch;
+  console.log(`searchFilterObjects: ${JSON.stringify(searchFilterObjects)}`);
 
-  console.log(`sortByMostRecent: ${sortByMostRecent}`);
   let sortedSearchResults = [...searchResults];
   sortedSearchResults.sort((a, b) => {
     try {
@@ -130,16 +184,31 @@ const SearchResultsPage = () => {
       </div>
     );
   }
-  const filters = getFilters({
-    searchFilter,
+  const filtersObjects = getObjectFilters({
+    searchFilterObjects,
+    searchFilterCameras,
     mainDataModel,
     searchCurrent,
     dispatch,
   });
-  const filterForm = (
+  const filterFormObjects = (
+    <FormControl component="fieldset">
+      <FormLabel component="legend">Filter by Objects</FormLabel>
+      <FormGroup>{filtersObjects}</FormGroup>
+    </FormControl>
+  );
+
+  const filtersCameras = getCameraFilters({
+    searchFilterCameras,
+    searchFilterObjects,
+    mainDataModel,
+    searchCurrent,
+    dispatch,
+  });
+  const filterFormCameras = (
     <FormControl component="fieldset">
       <FormLabel component="legend">Filter by Camera</FormLabel>
-      <FormGroup>{filters}</FormGroup>
+      <FormGroup>{filtersCameras}</FormGroup>
     </FormControl>
   );
 
@@ -148,17 +217,20 @@ const SearchResultsPage = () => {
       <div className={styles.topRow}>
         <div className={styles.resultsMessage}>{message}</div>
         <div className={styles.filters}>
-          <div className={styles.filterForm}>{filterForm}</div>
-          <div className={styles.sortButton}>
-            <Button
-              onClick={() => setSortByMostRecent(!sortByMostRecent)}
-              color="inherit"
-              startIcon={
-                sortByMostRecent ? <ArrowDownwardIcon /> : <ArrowUpwardIcon />
-              }
-            >
-              Sort by Date
-            </Button>
+          <div className={styles.filterForm}>{filterFormObjects}</div>
+          <div className={styles.filterForm}>
+            {filterFormCameras}
+            <div className={styles.sortButton}>
+              <Button
+                onClick={() => setSortByMostRecent(!sortByMostRecent)}
+                color="inherit"
+                startIcon={
+                  sortByMostRecent ? <ArrowDownwardIcon /> : <ArrowUpwardIcon />
+                }
+              >
+                Sort by Date
+              </Button>
+            </div>
           </div>
         </div>
       </div>

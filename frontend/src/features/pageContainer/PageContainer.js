@@ -10,7 +10,7 @@ import {
 import {
   selectMainDataModel,
   setStatusSearch,
-  selectSearchFilter,
+  selectSearchFilterCameras,
 } from '../video/videoSlice';
 import { fetchAndProcessDataModel } from '../../api/processData';
 import { processSearch } from './pages/searchResultsPage/processSearch';
@@ -29,7 +29,7 @@ const PageHeader = (props) => {
   const dispatch = useDispatch();
   const { mainDataModel } = props;
   const searchInput = useSelector(selectSearchInput);
-  const searchFilter = useSelector(selectSearchFilter);
+  const searchFilterCameras = useSelector(selectSearchFilterCameras);
   const page = useSelector(selectPage);
 
   let editCameraButtonText;
@@ -48,7 +48,9 @@ const PageHeader = (props) => {
     processSearch({
       mainDataModel,
       searchCurrent: trimmedSearch,
-      searchFilter,
+      searchFilterCameras,
+      searchFilterObjects: {},
+      isNewSearch: true,
     });
   };
   const onEditCameras = () => {

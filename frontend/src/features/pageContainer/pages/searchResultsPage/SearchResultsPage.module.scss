@@ -16,10 +16,13 @@
 
 .filters {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 
 .filterForm {
+  display: flex;
+  flex-direction: column;
+  padding-left: 50px;
 }
 
 .sortButton {
