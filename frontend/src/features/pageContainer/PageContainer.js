@@ -128,9 +128,9 @@ const PageContainer = () => {
   }
 
   return (
-    <div className={styles.PageContainer}>
+    <div>
       <PageHeader mainDataModel={mainDataModel} />
-      {display}
+      <div className={styles.pageContainer}>{display}</div>
     </div>
   );
 };
