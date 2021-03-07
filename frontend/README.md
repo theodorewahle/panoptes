@@ -16,10 +16,9 @@
   - Bugs
     - update camera name -> search for incident -> incidents don't display updated camera name
   - Test different browsers / versions
-  - `seekTo` button for startTime
+  - Customize video player
 - Misc
   - Combine `camera` and `object` filters into one component that can be reused
-  - Filter Incidents options (`timeStamp`, `camera`, `object`) in `LiveStreamPage`, & `LandingPage`
   - Clean up and sort imports in all files
   - Add timeouts to API calls
   - CSS work
