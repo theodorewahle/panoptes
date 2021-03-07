@@ -4,13 +4,23 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   selectCurIncidentIndex,
   selectCurCameraIndex,
+  selectSearchAllObjects,
+  selectSearchFilterCameras,
+  setStatusSearch,
+  // setSearchFilterCameras,
 } from '../../../video/videoSlice';
-import { setPage, selectPage } from '../../pageContainerSlice';
+import {
+  setPage,
+  selectPage,
+  setSearchCurrent,
+} from '../../pageContainerSlice';
+import { processSearch } from '../searchResultsPage/processSearch';
 
 import VideoThumbnails from '../../../video/VideoThumbnails';
 import ReactPlayer from 'react-player';
 import { Button, CircularProgress } from '@material-ui/core';
 import { Alert, AlertTitle } from '@material-ui/lab';
+import FilterListIcon from '@material-ui/icons/FilterList';
 
 import ENV from '../../../../env';
 import styles from './LiveStreamPage.module.scss';
@@ -33,6 +43,8 @@ const LiveStreamPage = (props) => {
   const { mainDataModel } = props;
   const curIncidentIndex = useSelector(selectCurIncidentIndex);
   const curCameraIndex = useSelector(selectCurCameraIndex);
+  const searchFilterCameras = useSelector(selectSearchFilterCameras);
+  const searchAllObjects = useSelector(selectSearchAllObjects);
   const page = useSelector(selectPage);
 
   const curCamera = mainDataModel[curCameraIndex];
@@ -135,8 +147,28 @@ const LiveStreamPage = (props) => {
       </div>
 
       <div className={styles.containerRecentIncidents}>
-        <div className={styles.titleRecentIncidents}>
-          <b>Recent Incidents for Camera:</b> {curCamera.title}
+        <div className={styles.recentIncidentsRow}>
+          <div className={styles.titleRecentIncidents}>
+            <b>Recent Incidents for Camera:</b> {curCamera.title}
+          </div>
+          <Button
+            startIcon={<FilterListIcon />}
+            onClick={() => {
+              // TODO: set camera filter to current page
+              dispatch(setSearchCurrent(searchAllObjects));
+              dispatch(setStatusSearch(ENV.STATUS_WAITING));
+              dispatch(setPage(ENV.PAGE_SEARCH_RESULTS));
+              processSearch({
+                mainDataModel,
+                searchCurrent: searchAllObjects,
+                searchFilterCameras,
+                searchFilterObjects: {},
+                isNewSearch: true,
+              });
+            }}
+          >
+            Filter All Incidents
+          </Button>
         </div>
         <VideoThumbnails
           videos={incidents}
