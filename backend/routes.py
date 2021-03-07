@@ -56,4 +56,4 @@ def send_thumbnail(incident_id):
     if len(result) != 1:
         abort(404)
     else:
-        return send_file(result[0].file_path)
+        return send_file(result[0].thumbnail_file_path)
