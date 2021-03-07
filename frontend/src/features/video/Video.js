@@ -19,6 +19,8 @@ const Video = (props) => {
   const dispatch = useDispatch();
   const [loadStatus, setLoadStatus] = useState(ENV.STATUS_WAITING);
   const {
+    startTime,
+    endTime,
     width,
     height,
     title,

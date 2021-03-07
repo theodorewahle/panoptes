@@ -88,7 +88,7 @@ const LiveStreamPage = (props) => {
       <div className={styles.containerLiveStream}>
         <div className={styles.containerStreamData}>{display}</div>
         <div>
-          <ReactPlayer url={url} width={720} height={405} playing />
+          <ReactPlayer url={url} width={720} height={405} playing loop={true} />
         </div>
       </div>
 

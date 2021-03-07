@@ -20,6 +20,8 @@ const VideoThumbnails = (props) => {
     return (
       <div key={i}>
         <Video
+          startTime={video.startTime}
+          endTime={video.endTime}
           title={video.title}
           url={video.url}
           width={width}

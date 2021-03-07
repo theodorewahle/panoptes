@@ -77,31 +77,31 @@ export const processSearch = ({
       }
     }
   }
+  // TODO: display secondary message for numResults from filters
+  console.log(`numResults: ${numResults}`);
+  let messageFilter = '';
+  if (results.length === 0) {
+    store.dispatch(
+      setStatusSearch({
+        status: ENV.STATUS_NO_RESULTS,
+        message: `No results for "${searchCurrent}"`,
+      })
+    );
+  } else {
+    let message = '';
+    if (results.length === 1) {
+      message = `1 result matches your search for "${searchCurrent}"`;
+    } else {
+      message = `${results.length} results match your search for "${searchCurrent}"`;
+    }
+    store.dispatch(
+      setStatusSearch({
+        status: ENV.STATUS_DONE,
+        message,
+        messageFilter,
+      })
+    );
+  }
   store.dispatch(setSearchFilterObjects(objects));
   store.dispatch(setSearchResults(results));
-  // TODO: display secondary message for numResults from filters
-  let messageFilter = '';
-  if (numResults)
-    if (results.length === 0) {
-      store.dispatch(
-        setStatusSearch({
-          status: ENV.STATUS_NO_RESULTS,
-          message: `No results for "${searchCurrent}"`,
-        })
-      );
-    } else {
-      let message = '';
-      if (results.length === 1) {
-        message = `1 result matches your search for "${searchCurrent}"`;
-      } else {
-        message = `${results.length} results match your search for "${searchCurrent}"`;
-      }
-      store.dispatch(
-        setStatusSearch({
-          status: ENV.STATUS_DONE,
-          message,
-          messageFilter,
-        })
-      );
-    }
 };

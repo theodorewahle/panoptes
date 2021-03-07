@@ -24,13 +24,14 @@ import {
 } from '@material-ui/core';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import { Alert, AlertTitle } from '@material-ui/lab';
 
 import VideoThumbnails from '../../../video/VideoThumbnails';
 
 import styles from './SearchResultsPage.module.scss';
 import ENV from '../../../../env';
 
-// TODO: combine filters into one component
+// TODO: combine filters into one component + put component in new file
 const getCameraFilters = ({
   searchFilterCameras,
   searchFilterObjects,
@@ -180,7 +181,10 @@ const SearchResultsPage = () => {
   } else {
     display = (
       <div className={styles.error}>
-        Internal Server Error - Please try loading the page again.
+        <Alert variant="outlined" severity="error">
+          <AlertTitle>Internal Server Error</AlertTitle>
+          Please try reloading the page
+        </Alert>
       </div>
     );
   }
