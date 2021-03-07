@@ -112,7 +112,11 @@ const LiveStreamPage = (props) => {
   if (isReadyLoadingStream || isErrorLoadingStream) {
     loadingStream = null;
   } else if (!isErrorLoadingStream && !isReadyLoadingStream) {
-    loadingStream = <CircularProgress color={'inherit'} size={100} />;
+    loadingStream = (
+      <div style={{ paddingLeft: 80, paddingTop: 50 }}>
+        <CircularProgress color={'inherit'} size={100} />
+      </div>
+    );
   }
 
   // TODO: display objects being tracked
