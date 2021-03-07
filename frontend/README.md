@@ -17,11 +17,12 @@
     - update camera name -> search for incident -> incidents don't display updated camera name
   - Test different browsers / versions
   - `seekTo` button for startTime
-  - Filter Incidents options (`timeStamp`, `camera`, `object`) in `SearchResultsPage`, `LiveStreamPage`, & `LandingPage`
 - Misc
+  - Combine `camera` and `object` filters into one component that can be reused
+  - Filter Incidents options (`timeStamp`, `camera`, `object`) in `LiveStreamPage`, & `LandingPage`
   - Clean up and sort imports in all files
   - Add timeouts to API calls
-  - CSS work (low priority)
+  - CSS work
   - Make sure every page collapses cleanly all the way to mobile version
   - [Lazy load](https://reactjs.org/docs/code-splitting.html#reactlazy) videos
   - If not handled on backend, incidents need to be trimmed

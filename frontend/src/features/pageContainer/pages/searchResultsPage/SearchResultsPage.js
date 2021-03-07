@@ -30,6 +30,7 @@ import VideoThumbnails from '../../../video/VideoThumbnails';
 import styles from './SearchResultsPage.module.scss';
 import ENV from '../../../../env';
 
+// TODO: combine filters into one component
 const getCameraFilters = ({
   searchFilterCameras,
   searchFilterObjects,
@@ -134,7 +135,6 @@ const SearchResultsPage = () => {
   const searchFilterObjects = useSelector(selectSearchFilterObjects);
   const searchCurrent = useSelector(selectSearchCurrent);
   const { status, message } = statusSearch;
-  console.log(`searchFilterObjects: ${JSON.stringify(searchFilterObjects)}`);
 
   let sortedSearchResults = [...searchResults];
   sortedSearchResults.sort((a, b) => {

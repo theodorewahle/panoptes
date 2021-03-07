@@ -112,10 +112,16 @@ export const videoSlice = createSlice({
       state.searchFilterObjects[name] = value;
     },
     setStatusSearch: (state, action) => {
-      const { status, message } = action.payload;
+      const { status, message, messageFilter } = action.payload;
       let messageTemp = '';
+      let messageFilterTemp = '';
       if (message != null) messageTemp = message;
-      state.statusSearch = { status, message: messageTemp };
+      if (messageFilter != null) messageFilterTemp = messageFilter;
+      state.statusSearch = {
+        status,
+        message: messageTemp,
+        messageFilter: messageFilterTemp,
+      };
     },
   },
 });

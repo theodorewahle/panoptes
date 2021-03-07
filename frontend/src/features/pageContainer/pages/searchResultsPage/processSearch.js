@@ -27,6 +27,7 @@ export const processSearch = ({
   searchFilterObjects,
   isNewSearch,
 }) => {
+  let numResults = 0;
   const results = [];
   let objects;
   if (isNewSearch) {
@@ -55,6 +56,7 @@ export const processSearch = ({
           search.includes(objIdentified2) ||
           search2.includes(objIdentified2)
         ) {
+          numResults++;
           const addIncident = () => {
             const tempIncident = { ...incident };
             tempIncident['title'] = incident.timeStamp;
@@ -75,28 +77,31 @@ export const processSearch = ({
       }
     }
   }
-  console.log(`objects: ${JSON.stringify(objects)}`);
   store.dispatch(setSearchFilterObjects(objects));
   store.dispatch(setSearchResults(results));
-  if (results.length === 0) {
-    store.dispatch(
-      setStatusSearch({
-        status: ENV.STATUS_NO_RESULTS,
-        message: `No results for "${searchCurrent}"`,
-      })
-    );
-  } else {
-    let message = '';
-    if (results.length === 1) {
-      message = `1 result matches your search for "${searchCurrent}"`;
+  // TODO: display secondary message for numResults from filters
+  let messageFilter = '';
+  if (numResults)
+    if (results.length === 0) {
+      store.dispatch(
+        setStatusSearch({
+          status: ENV.STATUS_NO_RESULTS,
+          message: `No results for "${searchCurrent}"`,
+        })
+      );
     } else {
-      message = `${results.length} results match your search for "${searchCurrent}"`;
+      let message = '';
+      if (results.length === 1) {
+        message = `1 result matches your search for "${searchCurrent}"`;
+      } else {
+        message = `${results.length} results match your search for "${searchCurrent}"`;
+      }
+      store.dispatch(
+        setStatusSearch({
+          status: ENV.STATUS_DONE,
+          message,
+          messageFilter,
+        })
+      );
     }
-    store.dispatch(
-      setStatusSearch({
-        status: ENV.STATUS_DONE,
-        message,
-      })
-    );
-  }
 };
