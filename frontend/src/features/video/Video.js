@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setPage } from '../pageContainer/pageContainerSlice';
@@ -13,11 +14,11 @@ import ENV from '../../env';
 import styles from './Video.module.scss';
 // import { Link } from 'react-router-dom';
 
-// TODO: CSS mouse over --> display light box around or something
 const Video = (props) => {
   const dispatch = useDispatch();
   const [loadStatus, setLoadStatus] = useState(ENV.STATUS_WAITING);
   const {
+    incidentId,
     startTime,
     endTime,
     width,
@@ -44,7 +45,9 @@ const Video = (props) => {
     displayTimeStamp = '';
   }
   const onSelect = () => {
+    console.log(`incidentId: ${incidentId}`);
     scroll.scrollToTop();
+    console.log(`url: ${url}`);
     if (videoType === ENV.VIDEO_TYPE_CAMERA) {
       dispatch(setCurCameraIndex(cameraIndex));
     } else if (videoType === ENV.VIDEO_TYPE_INCIDENT) {
@@ -58,7 +61,16 @@ const Video = (props) => {
   // TODO: statusDisplay will be used when thumbnails are served from API
   let display, statusDisplay, titleDisplay;
   if (isThumbnail) {
-    display = <img src={getImage(url)} alt="" width={width} height={height} />;
+    // TODO: this is temporary for demo - there is no status on image
+    //       fetching / loading
+    display = (
+      <img
+        src={`http://127.0.0.1:8000/incident/${incidentId}`}
+        alt=""
+        width={width}
+        height={height}
+      />
+    );
     titleDisplay = (
       <div className={styles.titleContainer}>
         <div className={styles.timeStamp}>{displayTimeStamp}</div>
