@@ -34,7 +34,7 @@ def convert_video(relative_file_path):
     cleanup_command = "rm incidents/converted/" + today_as_string + "/*.264"
     os.system(cleanup_command)
 
-def fetch_todays_incidents():
+def fetch_todays_incidents(dbhelper):
     with pysftp.Connection(host=myHostname, username=myUsername, password=myPassword, cnopts=cnopts) as sftp:
         print ("Connection succesfully stablished ... ")
 
@@ -51,3 +51,4 @@ def fetch_todays_incidents():
                 if not os.path.exists(full_file_path):
                     sftp.get(file_name, full_file_path)
                     convert_video(today_as_string + "/" + file_name)
+                    dbhelper.add_video(os.getcwd() + "/" + full_file_path, 1)

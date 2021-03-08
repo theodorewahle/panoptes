@@ -37,7 +37,7 @@ class PanoptesFlaskApp(Flask):
             self.register_blueprint(routes)
 
             # Fetch the latest incidents from the camera's FTP server
-            FlaskThread(target=fetch_todays_incidents).start()
+            FlaskThread(target=fetch_todays_incidents, args=(db_helper,)).start()
             FlaskThread(target=streamer.launch_proxy_stream).start()
 
         super(PanoptesFlaskApp, self).run(host=host, port=port,
