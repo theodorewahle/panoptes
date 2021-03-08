@@ -16,7 +16,7 @@ import {
 } from '../../pageContainerSlice';
 import { processSearch } from '../searchResultsPage/processSearch';
 
-import VideoThumbnails from '../../../video/VideoThumbnails';
+import VideoGroup from '../../../video/VideoGroup';
 import ReactPlayer from 'react-player';
 import { Button, CircularProgress } from '@material-ui/core';
 import { Alert, AlertTitle } from '@material-ui/lab';
@@ -174,7 +174,7 @@ const LiveStreamPage = (props) => {
             Filter All Incidents
           </Button>
         </div>
-        <VideoThumbnails
+        <VideoGroup
           videos={incidents}
           width={ENV.VIDEO_THUMBNAIL_WIDTH}
           height={ENV.VIDEO_THUMBNAIL_HEIGHT}

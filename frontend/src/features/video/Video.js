@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setPage } from '../pageContainer/pageContainerSlice';
@@ -62,9 +61,6 @@ const Video = (props) => {
     display = <img src={getImage(url)} alt="" width={width} height={height} />;
     titleDisplay = (
       <div className={styles.titleContainer}>
-        <div className={styles.objectIdentified}>
-          <b>{displayObjectIdentified}</b>
-        </div>
         <div className={styles.timeStamp}>{displayTimeStamp}</div>
       </div>
     );

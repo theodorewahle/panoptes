@@ -10,6 +10,9 @@ import { setSearchCurrent, setPage } from '../../pageContainerSlice';
 import { processSearch } from '../searchResultsPage/processSearch';
 
 import VideoThumbnails from '../../../video/VideoThumbnails';
+import VideoGroup from '../../../video/VideoGroup';
+
+
 import { CircularProgress, Button } from '@material-ui/core';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import FilterListIcon from '@material-ui/icons/FilterList';
@@ -111,7 +114,7 @@ const LandingPage = (props) => {
           </Button>
         </div>
 
-        <VideoThumbnails
+        <VideoGroup
           videos={incidents}
           width={ENV.VIDEO_THUMBNAIL_WIDTH}
           height={ENV.VIDEO_THUMBNAIL_HEIGHT}
