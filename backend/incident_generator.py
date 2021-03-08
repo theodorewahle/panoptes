@@ -70,21 +70,86 @@ class IncidentGenerator():
         
         # returns the classes at each second and the length of the video in seconds
         return classes_by_second, second
-        
+
     # as text incidents are generated in different ways, helps keep track
-    def text_incidents_helper(self, start, end, obj, video_path):
-        return str(start)+" "+str(end)+" "+obj+" "+video_path+"\n"
+    def text_incidents_helper(self, start, end, obj, video_path, thumb_path):
+        return str(start)+" "+str(end)+" "+obj+" "+video_path+" "+thumb_path+"\n"
+    
+    # helper function to get and create thumbnail directories if they do not exist
+    def gen_thumbnail_dir(self, path):
+        split_path = path.split("/")
+        date = split_path[-2]
+        video = split_path[-1][:-4]
+        DIR_PATH = ""
+
+        for dir_name in split_path[:-3]:
+            DIR_PATH += dir_name + "/"
+        DIR_PATH += "thumbnails/"
+
+        if not os.path.exists(DIR_PATH):
+            os.mkdir(DIR_PATH)
+
+        DIR_PATH = os.path.join(DIR_PATH, date)
+
+        if not os.path.exists(DIR_PATH):
+            os.mkdir(DIR_PATH)
+
+        DIR_PATH = os.path.join(DIR_PATH, video)
+
+        if not os.path.exists(DIR_PATH):
+            os.mkdir(DIR_PATH)
+        return DIR_PATH
+
+    # create thumbnails and generate text incidents to be written to db
+    def gen_thumbnails(self, video_path, incidents):
+        # initialize video and various helper variables
+        text_incidents = []
+        cv_video = cv2.VideoCapture(video_path)
+        TOTAL_FRAMES = int(cv_video.get(cv2.CAP_PROP_FRAME_COUNT))
+        FPS = int(cv_video.get(cv2.CAP_PROP_FPS))
+        DIR_PATH = self.gen_thumbnail_dir(video_path)
+        counter = 1
+
+        # loop through the incidents and generate thumbnails and text versions of the incidents
+        for incident in incidents:
+            start = incident[0]
+            end = incident[1]
+            obj = incident[2]
+
+            # grab middle thumbnail
+            mid = (start + end)/2
+            mid_frame = int(FPS*mid)
+
+            # if this index is too far, then decrement index
+            frame = None
+            while frame is None:
+                print(incident, TOTAL_FRAMES, FPS, mid_frame)
+                cv_video.set(1, mid_frame)
+                ret, frame = cv_video.read()
+                TOTAL_FRAMES -= 1
+                mid_frame = TOTAL_FRAMES
+
+            # get thumnail path
+            thumb_path = os.path.join(DIR_PATH, str(counter) + ".png")
+            while os.path.exists(thumb_path):
+                counter+=1
+                thumb_path = os.path.join(DIR_PATH, str(counter) + ".png")
+
+            cv2.imwrite(thumb_path, frame)
+            text_incidents.append(self.text_incidents_helper(start, end, obj, video_path, thumb_path))    
+        return text_incidents
+
 
     # creates an incidents.txt file containing the params for the incidents of the videos that the program was aimed at
-    def gen_incidents(self, DATE="*", VIDEO_FNAME="*"):
+    def gen_incidents(self, DATES="*", VIDEO_FNAME="*"):
         # variables to generate text output
-        text_incidents = []
+        vidpath_incidents = dict()
 
         # get all date directories or select a single one
-        if DATE == "*":
+        if DATES == "*":
             DIR_PATHS = [os.path.join(self.PATH, d) for d in os.listdir(self.PATH) if os.path.isdir(os.path.join(self.PATH, d))]
         else:
-            DIR_PATHS = [os.path.join(self.PATH, DATE)]
+            DIR_PATHS = [os.path.join(self.PATH, d) for d in DATES if os.path.isdir(os.path.join(self.PATH, d))]
 
         # loop through all directory paths
         for DIR_PATH in DIR_PATHS:
@@ -136,9 +201,10 @@ class IncidentGenerator():
                             # if this quantity is less than before, generate an incident with this as the end time
                             if obj_quant < prev_obj_quant:
                                 for i in range(prev_obj_quant-obj_quant):
-                                    # text_incidents.append(str(incident_starts[obj].pop())+" "+str(second)+" "+obj+" "+DIR_PATH+"/"+video)
-                                    text_incidents.append(self.text_incidents_helper(incident_starts[obj].pop(), second, obj, video_path))
-                            
+                                    if video_path in vidpath_incidents:
+                                        vidpath_incidents[video_path].append((incident_starts[obj].pop(), second, obj))
+                                    else:
+                                        vidpath_incidents[video_path] = [(incident_starts[obj].pop(), second, obj)]
                             # otherwise, add this start time to the stack
                             elif obj_quant > prev_obj_quant:
                                 for i in range(obj_quant-prev_obj_quant):
@@ -148,21 +214,26 @@ class IncidentGenerator():
                 # at the end of the video, generate incidents with the remaining start values
                 for obj in incident_starts:
                     while incident_starts[obj]:
-                        # text_incidents.append(str(incident_starts[obj].pop())+" "+str(second)+" "+obj+" "+DIR_PATH+"/"+video)
-                        text_incidents.append(self.text_incidents_helper(incident_starts[obj].pop(), second, obj, video_path))
+                        if video_path in vidpath_incidents:
+                            vidpath_incidents[video_path].append((incident_starts[obj].pop(), second, obj))
+                        else:
+                            vidpath_incidents[video_path] = [(incident_starts[obj].pop(), second, obj)]
 
+        # generate the text incidents and thumbnails
+        text_incidents = []
+        for video_path in vidpath_incidents.keys():
+            text_incidents.extend(self.gen_thumbnails(video_path, vidpath_incidents[video_path]))
         return text_incidents
             
-        # def add_incident(self, start_time, end_time, object_id, video_id)
 
 date_videos = { "20210225":["1.mp4","2.mp4","3.mp4","4.mp4","5.mp4","6.mp4"],
                 "20210226":["7.mp4","8.mp4","9.mp4","10.mp4","11.mp4","12.mp4"]}
 
 ig = IncidentGenerator()
 
-incidents = ig.gen_incidents()
-# incidents = ig.gen_incidents("20210225", "3.mp4")
-
+incidents = ig.gen_incidents(DATES=date_videos.keys())
+# incidents = ig.gen_incidents(["20210225"], "4.mp4")
+# incidents = ig.gen_thumbnails(  "/Users/dwhang/Desktop/21W/panoptes/backend/incidents/converted/20210226/12.mp4", [(0, 17, 'person'), (17, 17, 'bed'), (15, 17, 'bed'), (9, 17, 'bed'), (0, 17, 'bed')])
 f = open("incidents.txt", "w")
 for incident in incidents:
     f.write(incident)
