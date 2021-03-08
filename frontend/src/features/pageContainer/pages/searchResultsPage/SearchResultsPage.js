@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -26,7 +25,7 @@ import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import { Alert, AlertTitle } from '@material-ui/lab';
 
-import VideoThumbnails from '../../../video/VideoThumbnails';
+import VideoGroup from '../../../video/VideoGroup';
 
 import styles from './SearchResultsPage.module.scss';
 import ENV from '../../../../env';
@@ -167,7 +166,7 @@ const SearchResultsPage = () => {
     );
   } else if (status === ENV.STATUS_DONE && sortedSearchResults != null) {
     display = (
-      <VideoThumbnails
+      <VideoGroup
         videos={sortedSearchResults}
         width={ENV.VIDEO_THUMBNAIL_WIDTH}
         height={ENV.VIDEO_THUMBNAIL_HEIGHT}

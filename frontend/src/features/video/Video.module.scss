@@ -10,7 +10,6 @@
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
-  padding-top: 25px;
 }
 
 .videoContainer {
@@ -52,5 +51,36 @@
   white-space: nowrap;
 }
 
-.status {
+.column {
+  display: flex;
+  flex-direction: column;
 }
+
+.expandableRow {
+  display: flex;
+  flex-direction: column;
+  background-color: green;
+  background: white;
+  padding: 16px;
+  padding-top: 0px;
+  border: 3px solid black;
+  border-radius: 8px;
+  margin-bottom: 32px;
+  margin-right: 128px;
+  min-height: 320px;
+  min-width: 256px;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  margin-left: 10px;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  margin-left: 10px;
+  margin-top: 16px;
+}
+
