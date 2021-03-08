@@ -4,3 +4,6 @@ env/*
 .DS_Store
 frontend/.eslintcache
 backend/localconfig.py
+
+backend/incidents/converted/2021*
+backend/incidents/raw/2021*
