@@ -7,7 +7,11 @@ import {
   setSearchCurrent,
   setPage,
 } from './pageContainerSlice';
-import { selectMainDataModel, setStatusSearch } from '../video/videoSlice';
+import {
+  selectMainDataModel,
+  setStatusSearch,
+  selectSearchFilterCameras,
+} from '../video/videoSlice';
 import { fetchAndProcessDataModel } from '../../api/processData';
 import { processSearch } from './pages/searchResultsPage/processSearch';
 
@@ -21,14 +25,12 @@ import SearchResultsPage from './pages/searchResultsPage/SearchResultsPage';
 import ENV from '../../env';
 import styles from './PageContainer.module.scss';
 
-// import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-
 const PageHeader = (props) => {
   const dispatch = useDispatch();
   const { mainDataModel } = props;
   const searchInput = useSelector(selectSearchInput);
+  const searchFilterCameras = useSelector(selectSearchFilterCameras);
   const page = useSelector(selectPage);
-  console.log(`searchInput: ${searchInput}`);
 
   let editCameraButtonText;
   if (page === ENV.PAGE_EDIT_CAMERAS) {
@@ -43,8 +45,13 @@ const PageHeader = (props) => {
     dispatch(setSearchCurrent(trimmedSearch));
     dispatch(setStatusSearch(ENV.STATUS_WAITING));
     dispatch(setPage(ENV.PAGE_SEARCH_RESULTS));
-    processSearch({ mainDataModel, searchCurrent: trimmedSearch });
-    dispatch(setSearchInput(''));
+    processSearch({
+      mainDataModel,
+      searchCurrent: trimmedSearch,
+      searchFilterCameras,
+      searchFilterObjects: {},
+      isNewSearch: true,
+    });
   };
   const onEditCameras = () => {
     if (page === ENV.PAGE_EDIT_CAMERAS) {
@@ -121,24 +128,11 @@ const PageContainer = () => {
   }
 
   return (
-    <div className={styles.PageContainer}>
+    <div>
       <PageHeader mainDataModel={mainDataModel} />
-      {display}
+      <div className={styles.pageContainer}>{display}</div>
     </div>
   );
 };
 
 export default PageContainer;
-
-// {/* <Router>
-// <div>
-//   <Switch>
-//     <Route path="/">
-//       <LandingPage mainDataModel={mainDataModel} />
-//     </Route>
-//     <Route path="/cameras/alpha_chi_parking_lot">
-//       <LiveStreamPage mainDataModel={mainDataModel} />
-//     </Route>
-//   </Switch>
-// </div>
-// </Router> */}

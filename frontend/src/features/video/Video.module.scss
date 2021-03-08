@@ -10,16 +10,46 @@
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
+  padding-top: 25px;
+}
+
+.videoContainer {
+  padding: 10px;
 }
 
 .video {
-  padding: 20px;
-  cursor: pointer;
+  background: lightgrey;
+  padding-top: 15px;
+  padding-right: 15px;
+  padding-left: 15px;
+  padding-bottom: 60px;
+  border: 3px solid darkorange;
+  border-radius: 8px;
 }
 
-.title {
+.video:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.cameraTitle {
   padding-top: 5px;
-  text-align: center;
+  font-size: 20px;
+}
+
+.titleContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.objectIdentified {
+  padding-top: 5px;
+  white-space: nowrap;
+}
+
+.timeStamp {
+  padding-top: 5px;
+  white-space: nowrap;
 }
 
 .status {

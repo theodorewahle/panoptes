@@ -19,9 +19,13 @@ const Video = (props) => {
   const dispatch = useDispatch();
   const [loadStatus, setLoadStatus] = useState(ENV.STATUS_WAITING);
   const {
+    startTime,
+    endTime,
     width,
     height,
     title,
+    objectIdentified,
+    timeStamp,
     url,
     isThumbnail,
     videoType,
@@ -32,13 +36,15 @@ const Video = (props) => {
   if (width == null || height == null || url == null) {
     return null;
   }
-  let displayTitle = title;
-  if (displayTitle == null) {
-    displayTitle = 'No Title';
+  let displayObjectIdentified = objectIdentified;
+  let displayTimeStamp = timeStamp;
+  if (displayObjectIdentified == null) {
+    displayObjectIdentified = 'No Title';
   }
-  console.log(`videoType: ${videoType}`);
+  if (displayTimeStamp == null) {
+    displayTimeStamp = '';
+  }
   const onSelect = () => {
-    console.log(`url: ${url}`);
     scroll.scrollToTop();
     if (videoType === ENV.VIDEO_TYPE_CAMERA) {
       dispatch(setCurCameraIndex(cameraIndex));
@@ -50,9 +56,18 @@ const Video = (props) => {
       dispatch(setPage(pageLink));
     }
   };
-  let display, statusDisplay;
+  // TODO: statusDisplay will be used when thumbnails are served from API
+  let display, statusDisplay, titleDisplay;
   if (isThumbnail) {
     display = <img src={getImage(url)} alt="" width={width} height={height} />;
+    titleDisplay = (
+      <div className={styles.titleContainer}>
+        <div className={styles.objectIdentified}>
+          <b>{displayObjectIdentified}</b>
+        </div>
+        <div className={styles.timeStamp}>{displayTimeStamp}</div>
+      </div>
+    );
   } else {
     display = (
       <ReactPlayer
@@ -63,6 +78,7 @@ const Video = (props) => {
         onError={() => setLoadStatus(ENV.STATUS_ERROR)}
       />
     );
+    titleDisplay = <div className={styles.cameraTitle}>{title}</div>;
   }
 
   // if (loadStatus === ENV.STATUS_DONE) {
@@ -74,14 +90,16 @@ const Video = (props) => {
   // }
 
   return (
-    <div
-      onClick={() => onSelect()}
-      className={styles.video}
-      style={{ width, height }}
-    >
-      <div className={styles.status}>{statusDisplay}</div>
-      {display}
-      <div className={styles.title}>{displayTitle}</div>
+    <div className={styles.videoContainer}>
+      <div
+        className={styles.video}
+        style={{ width, height }}
+        onClick={() => onSelect()}
+      >
+        <div className={styles.status}>{statusDisplay}</div>
+        {display}
+        {titleDisplay}
+      </div>
     </div>
   );
 };
