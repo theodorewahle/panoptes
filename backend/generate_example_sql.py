@@ -78,14 +78,13 @@ def write_sql_commands():
                         incident = incident.split(" ")
                         start_time = str(incident[0])
                         end_time = str(incident[1])
-                        obj_id =  str(object_id[" ".join(incident[2:-1])])
-                        vid_name = incident[-1][:-1]
+                        obj_id =  str(object_id[" ".join(incident[2:-2])])
+                        vid_name = incident[-2]
+                        thumb_path = str(incident[-1][:-1])
                         if vid_name in video_id:
                                 vid_id = str(video_id[vid_name])
-                                print(vid_name)
-                                print(video_time[vid_name])
                                 timestamp = video_time[vid_name] + datetime.timedelta(seconds=int(start_time))
-                                f.write("INSERT INTO incidents(start_time, end_time, timestamp, object_id, video_id) VALUES ("+start_time+", "+end_time+", \""+str(timestamp)+"\", "+obj_id+", "+vid_id+");\n")
+                                f.write("INSERT INTO incidents(start_time, end_time, timestamp, object_id, video_id, thumbnail_file_path) VALUES ("+start_time+", "+end_time+", \""+str(timestamp)+"\", "+obj_id+", "+vid_id+", \""+thumb_path+"\");\n")
         except:
                 print("ERROR: Incidents cannot be generate. Issue with the incidents.txt file. (Make sure to run incident_generator.py first)")
 

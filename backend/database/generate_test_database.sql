@@ -1,6 +1,3 @@
--- drop if exists
-DROP DATABASE panoptes;
-
 -- MySQL Workbench Forward Engineering
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
@@ -86,11 +83,13 @@ CREATE TABLE IF NOT EXISTS `panoptes`.`incidents` (
   `start_time` INT NOT NULL,
   `end_time` INT NOT NULL,
   `timestamp` DATETIME NULL,
+  `thumbnail_file_path` VARCHAR(100) NOT NULL,
   `object_id` INT NULL,
   `video_id` INT NULL,
   INDEX `fk_objects_idx` (`object_id` ASC),
   INDEX `incidents_videos_fk_idx` (`video_id` ASC),
   PRIMARY KEY (`incident_id`),
+  UNIQUE INDEX `thumbnail_file_path_UNIQUE` (`thumbnail_file_path` ASC),
   CONSTRAINT `incidents_objects_fk`
     FOREIGN KEY (`object_id`)
     REFERENCES `panoptes`.`objects` (`object_id`)
