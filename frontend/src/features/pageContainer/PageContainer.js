@@ -80,7 +80,7 @@ const PageHeader = (props) => {
           <form className={styles.searchBar} onSubmit={(e) => onSearch(e)}>
             <TextField
               id="outlined-basic"
-              label="Search Today's Incidents..."
+              label="Search Incidents..."
               variant="outlined"
               value={searchInput}
               fullWidth={true}
