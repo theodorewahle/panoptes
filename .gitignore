@@ -4,6 +4,7 @@ env/*
 .DS_Store
 frontend/.eslintcache
 backend/localconfig.py
+ffmpeg-4.3.2/
 
 backend/incidents/converted/2021*
 backend/incidents/raw/2021*
