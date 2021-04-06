@@ -128,7 +128,7 @@ class User(Base):
             }
             return jwt.encode(
                 payload,
-                application.config.get('SECRET_KEY'),
+                application.session_key,
                 algorithm='HS256'
             )
         except Exception as e:
@@ -142,7 +142,7 @@ class User(Base):
         :return: integer|string
         """
         try:
-            payload = jwt.decode(auth_token, application.config.get('SECRET_KEY'))
+            payload = jwt.decode(auth_token, application.session_key)
             return payload['sub']
         except jwt.ExpiredSignatureError:
             return 'Signature expired. Please log in again.'
