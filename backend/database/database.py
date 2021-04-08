@@ -32,6 +32,10 @@ class DatabaseHelper:
         with app.app_context():
             self.db.create_all()
 
+    def teardown(self):
+        self.db.session.remove()
+        self.db.drop_all()
+
     # CRUD database helper methods called by server endpoints (Camera, Video, Incident, Object, Object Set)
     # Camera CRUD:
     def get_camera(self, camera_id=None, title=None, url=None, user_id=None):
