@@ -3,7 +3,7 @@ import unittest
 from flask import current_app
 from flask_testing import TestCase
 
-from ..server import application
+from backend.run import application
 
 class TestConfig(TestCase):
     def create_app(self):

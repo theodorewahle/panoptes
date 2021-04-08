@@ -1,13 +1,13 @@
 """
 api.py
 
-Blueprint for api for backend connection to db, actualized by flask server in server.py
+Blueprint for api for backend connection to db, actualized by flask server in run.py
 Contains CRUD endpoints for all database tables in models.py
 """
 from flask import Blueprint, request, abort, current_app, make_response
 from datetime import datetime
-from utils.utils import *
-from database.database import DatabaseHelper
+from app.utils.utils import *
+from app.database.database import DatabaseHelper
 from flask_httpauth import HTTPTokenAuth
 
 # globals used by main server for this blueprint

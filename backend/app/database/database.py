@@ -40,13 +40,17 @@ class DatabaseHelper:
     # Camera CRUD:
     def get_camera(self, camera_id=None, title=None, url=None, user_id=None):
         if camera_id is not None:
-            return self.db.session.query(models.Camera).filter(models.Camera.camera_id == camera_id).order_by(models.Camera.camera_id.asc()).all()
+            return self.db.session.query(models.Camera).filter(models.Camera.camera_id == camera_id).order_by(
+                models.Camera.camera_id.asc()).all()
         elif url is not None:
-            return self.db.session.query(models.Camera).filter(models.Camera.url == url).order_by(models.Camera.camera_id.asc()).all()
+            return self.db.session.query(models.Camera).filter(models.Camera.url == url).order_by(
+                models.Camera.camera_id.asc()).all()
         elif title is not None:
-            return self.db.session.query(models.Camera).filter(models.Camera.title == title).order_by(models.Camera.camera_id.asc()).all()
+            return self.db.session.query(models.Camera).filter(models.Camera.title == title).order_by(
+                models.Camera.camera_id.asc()).all()
         elif user_id is not None:
-            return self.db.session.query(models.Camera).filter(models.Camera.user_id == user_id).order_by(models.Camera.camera_id.asc()).all()
+            return self.db.session.query(models.Camera).filter(models.Camera.user_id == user_id).order_by(
+                models.Camera.camera_id.asc()).all()
         return self.db.session.query(models.Camera).order_by(models.Camera.camera_id.asc()).all()
 
     def add_camera(self, title, url, user_id):
@@ -97,11 +101,14 @@ class DatabaseHelper:
     # Video CRUD:
     def get_video(self, video_id=None, file_path=None, camera_id=None):
         if video_id is not None:
-            return self.db.session.query(models.Video).filter(models.Video.video_id == video_id).order_by(models.Video.video_id.asc()).all()
+            return self.db.session.query(models.Video).filter(models.Video.video_id == video_id).order_by(
+                models.Video.video_id.asc()).all()
         elif file_path is not None:
-            return self.db.session.query(models.Video).filter(models.Video.file_path == file_path).order_by(models.Video.video_id.asc()).all()
+            return self.db.session.query(models.Video).filter(models.Video.file_path == file_path).order_by(
+                models.Video.video_id.asc()).all()
         elif camera_id is not None:
-            return self.db.session.query(models.Video).filter(models.Video.camera_id == camera_id).order_by(models.Video.video_id.asc()).all()
+            return self.db.session.query(models.Video).filter(models.Video.camera_id == camera_id).order_by(
+                models.Video.video_id.asc()).all()
         return self.db.session.query(models.Video).order_by(models.Video.video_id.asc()).all()
 
     def add_video(self, file_path, camera_id, timestamp=None):
@@ -155,30 +162,39 @@ class DatabaseHelper:
             return self.db.session.query(models.Incident) \
                 .filter(models.Incident.incident_id == incident_id).order_by(models.Incident.incident_id.asc()).all()
         if timestamp is not None:
-            return self.db.session.query(models.Incident).filter(models.Incident.timestamp == timestamp).order_by(models.Incident.incident_id.asc()).all()
+            return self.db.session.query(models.Incident).filter(models.Incident.timestamp == timestamp).order_by(
+                models.Incident.incident_id.asc()).all()
         elif object_id is not None and video_id is not None:
             return self.db.session.query(models.Incident) \
-                .filter(models.Incident.object_id == object_id, models.Incident.video_id == video_id).order_by(models.Incident.incident_id.asc()).all()
+                .filter(models.Incident.object_id == object_id, models.Incident.video_id == video_id).order_by(
+                models.Incident.incident_id.asc()).all()
         elif object_id is not None:
-            return self.db.session.query(models.Incident).filter(models.Incident.object_id == object_id).order_by(models.Incident.incident_id.asc()).all()
+            return self.db.session.query(models.Incident).filter(models.Incident.object_id == object_id).order_by(
+                models.Incident.incident_id.asc()).all()
         elif video_id is not None:
-            return self.db.session.query(models.Incident).filter(models.Incident.video_id == video_id).order_by(models.Incident.incident_id.asc()).all()
+            return self.db.session.query(models.Incident).filter(models.Incident.video_id == video_id).order_by(
+                models.Incident.incident_id.asc()).all()
         return self.db.session.query(models.Incident).order_by(models.Incident.incident_id.asc()).all()
 
     def get_incident_with_object(self, incident_id=None, object_id=None, video_id=None):
         if incident_id is not None:
             return self.db.session.query(models.Incident, models.Object) \
-                .join(models.Object).filter(models.Incident.incident_id == incident_id).order_by(models.Incident.incident_id.asc()).all()
+                .join(models.Object).filter(models.Incident.incident_id == incident_id).order_by(
+                models.Incident.incident_id.asc()).all()
         if object_id is not None and video_id is not None:
             return self.db.session.query(models.Incident, models.Object) \
-                .join(models.Object).filter(models.Incident.object_id == object_id, models.Incident.video_id == video_id).order_by(models.Incident.incident_id.asc()).all()
+                .join(models.Object).filter(models.Incident.object_id == object_id, models.Incident.video_id == video_id).order_by(
+                models.Incident.incident_id.asc()).all()
         elif object_id is not None:
             return self.db.session.query(models.Incident, models.Object) \
-                .join(models.Object).filter(models.Incident.object_id == object_id).order_by(models.Incident.incident_id.asc()).all()
+                .join(models.Object).filter(models.Incident.object_id == object_id).order_by(
+                models.Incident.incident_id.asc()).all()
         elif video_id is not None:
             return self.db.session.query(models.Incident, models.Object) \
-                .join(models.Object).filter(models.Incident.video_id == video_id).order_by(models.Incident.incident_id.asc()).all()
-        return self.db.session.query(models.Incident, models.Object).join(models.Object).order_by(models.Incident.incident_id.asc()).all()
+                .join(models.Object).filter(models.Incident.video_id == video_id).order_by(
+                models.Incident.incident_id.asc()).all()
+        return self.db.session.query(models.Incident, models.Object).join(models.Object).order_by(
+            models.Incident.incident_id.asc()).all()
 
     def get_incidents_by_camera_id(self, camera_id):
         return self.db.session.query(models.Incident, models.Object) \
@@ -264,11 +280,14 @@ class DatabaseHelper:
     # Object CRUD:
     def get_object(self, object_id=None, name=None, object_set_id=None):
         if object_id is not None:
-            return self.db.session.query(models.Object).filter(models.Object.object_id == object_id).order_by(models.Object.object_id.asc()).all()
+            return self.db.session.query(models.Object).filter(models.Object.object_id == object_id).order_by(
+                models.Object.object_id.asc()).all()
         elif name is not None:
-            return self.db.session.query(models.Object).filter(models.Object.name == name).order_by(models.Object.object_id.asc()).all()
+            return self.db.session.query(models.Object).filter(models.Object.name == name).order_by(
+                models.Object.object_id.asc()).all()
         elif object_set_id is not None:
-            return self.db.session.query(models.Object).filter(models.Object.object_set_id == object_set_id).order_by(models.Object.object_id.asc()).all()
+            return self.db.session.query(models.Object).filter(models.Object.object_set_id == object_set_id).order_by(
+                models.Object.object_id.asc()).all()
         return self.db.session.query(models.Object).order_by(models.Object.object_id.asc()).all()
 
     def add_object(self, name, object_set_id):
@@ -314,13 +333,16 @@ class DatabaseHelper:
     # Object set CRUD:
     def get_object_set(self, object_set_id=None, name=None):
         if object_set_id is not None:
-            return self.db.session.query(models.ObjectSet).filter(models.ObjectSet.object_set_id == object_set_id).order_by(models.ObjectSet.object_set_id.asc()).all()
+            return self.db.session.query(models.ObjectSet).filter(models.ObjectSet.object_set_id == object_set_id).order_by(
+                models.ObjectSet.object_set_id.asc()).all()
         elif name is not None:
-            return self.db.session.query(models.ObjectSet).filter(models.ObjectSet.name == name).order_by(models.ObjectSet.object_set_id.asc()).all()
+            return self.db.session.query(models.ObjectSet).filter(models.ObjectSet.name == name).order_by(
+                models.ObjectSet.object_set_id.asc()).all()
         return self.db.session.query(models.ObjectSet).order_by(models.ObjectSet.object_set_id.asc()).all()
 
     def get_object_sets_and_objects(self):
-        return self.db.session.query(models.ObjectSet, models.Object).join(models.Object).order_by(models.ObjectSet.object_set_id.asc()).all()
+        return self.db.session.query(models.ObjectSet, models.Object).join(models.Object).order_by(
+            models.ObjectSet.object_set_id.asc()).all()
 
     def add_object_set(self, name):
         object_set = models.ObjectSet(name=name)
@@ -359,9 +381,11 @@ class DatabaseHelper:
     # Users CRUD:
     def get_user(self, user_id=None, username=None):
         if user_id is not None:
-            return self.db.session.query(models.User).filter(models.User.user_id == user_id).order_by(models.User.user_id.asc()).all()
+            return self.db.session.query(models.User).filter(models.User.user_id == user_id).order_by(
+                models.User.user_id.asc()).all()
         elif username is not None:
-            return self.db.session.query(models.User).filter(models.User.username == username).order_by(models.User.username.asc()).all()
+            return self.db.session.query(models.User).filter(models.User.username == username).order_by(
+                models.User.username.asc()).all()
         return self.db.session.query(models.User).order_by(models.User.user_id.asc()).all()
 
     def add_user(self, username, password):
