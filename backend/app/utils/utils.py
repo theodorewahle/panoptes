@@ -11,6 +11,7 @@ Contains definitions for utils functions:
 from flask import jsonify
 from sqlalchemy.exc import SQLAlchemyError
 from werkzeug.exceptions import abort
+import jwt
 
 # jsonify_result(results)
 # takes row data in list (or as single row) from database and returns flask Response
@@ -107,3 +108,19 @@ def unwrap_db_result(result):
     elif isinstance(result, SQLAlchemyError):
         abort(400, result)
     return jsonify_result(result)
+
+
+@staticmethod
+def decode_auth_token(auth_token, secret_key):
+    """
+    Decodes the auth token
+    :param auth_token:
+    :return: integer|string
+    """
+    try:
+        payload = jwt.decode(auth_token, secret_key)
+        return payload['sub']
+    except jwt.ExpiredSignatureError:
+        return 'Signature expired. Please log in again.'
+    except jwt.InvalidTokenError:
+        return 'Invalid token. Please log in again.'
