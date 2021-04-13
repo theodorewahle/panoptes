@@ -1,7 +1,7 @@
 from flask_testing import TestCase
 
 from server import application, db
-from database.database import DatabaseHelper
+from ..database.database import DatabaseHelper
 
 class BaseTestCase(TestCase):
     """ Base Tests """
