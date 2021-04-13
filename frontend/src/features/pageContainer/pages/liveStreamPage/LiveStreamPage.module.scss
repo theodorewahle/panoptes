@@ -1,5 +1,9 @@
 // TODO: clean these containers up
 
+.container {
+  padding-right: 100px;
+}
+
 .titleVideoStreams {
   padding-left: 64px;
   font-weight: bold;
@@ -7,8 +11,6 @@
 }
 
 .titleRecentIncidents {
-  padding-left: 64px;
-  font-weight: bold;
   font-size: 16px;
 }
 
@@ -18,7 +20,7 @@
 }
 
 .containerRecentIncidents {
-  padding: 32px;
+  padding-top: 50px;
 }
 
 .leftPanel {
@@ -47,19 +49,20 @@
 
 .containerLiveStream {
   display: flex;
-  padding: 32px;
-  margin: 64px;
-  margin-bottom: 16px;
-  margin-top: 0px;
   flex-direction: row;
   justify-content: space-between;
 }
 
 .containerStreamData {
-  padding: 16px;
-  padding-top: 0;
-  margin-right: 32px;
   height: 405px;
   width: 100%;
   max-width: 400px;
+}
+
+.recentIncidentsRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 64px;
+  padding-right: 64px;
 }

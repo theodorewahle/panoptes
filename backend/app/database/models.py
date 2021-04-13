@@ -38,6 +38,7 @@ class Incident(Base):
     start_time = Column(Integer, nullable=False)
     end_time = Column(Integer, nullable=False)
     timestamp = Column(DateTime)
+    thumbnail_file_path = Column(String(100), nullable=False, unique=True)
     object_id = Column(ForeignKey('objects.object_id', ondelete='CASCADE',
                                   onupdate='CASCADE'), nullable=False, index=True)
     video_id = Column(ForeignKey('videos.video_id', ondelete='CASCADE',

@@ -16,19 +16,20 @@
   - Bugs
     - update camera name -> search for incident -> incidents don't display updated camera name
   - Test different browsers / versions
-  - `seekTo` button for startTime
-  - Filter Incidents options (`timeStamp`, `camera`, `object`) in `SearchResultsPage`, `LiveStreamPage`, & `LandingPage`
+  - Customize video player
 - Misc
+  - Key moments from video [interface](https://www.google.com/search?q=chess+openings+dutch+defense&oq=chess+openings+dutch+defense&aqs=chrome..69i57.3449j0j1&sourceid=chrome&ie=UTF-8)
+  - Combine `camera` and `object` filters into one component that can be reused
   - Clean up and sort imports in all files
   - Add timeouts to API calls
-  - CSS work (low priority)
+  - Lots of CSS work
   - Make sure every page collapses cleanly all the way to mobile version
   - [Lazy load](https://reactjs.org/docs/code-splitting.html#reactlazy) videos
   - If not handled on backend, incidents need to be trimmed
     - [react-video-trimmer](https://www.npmjs.com/package/react-video-trimmer)
     - Implement something similar to above in conjunction with [react-player](https://www.npmjs.com/package/react-player)
 - Warnings
-  - The YouTube player is not attached to the DOM. API calls should be made after the onReady event. See more: https://developers.google.com/youtube/iframe_api_reference#Events
+  - The YouTube player is not attached to the DOM. API calls should be made after the onReady event. See [this](https://developers.google.com/youtube/iframe_api_reference#Events)
 - Build a video player? Some libraries...
   - [react-player](https://www.npmjs.com/package/react-player) (currently using this)
   - [video-react](https://video-react.js.org/)

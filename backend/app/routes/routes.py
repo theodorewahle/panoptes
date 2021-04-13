@@ -4,7 +4,6 @@ routes.py
 Blueprint for routes for backend, actualized by flask server in run.py
 """
 from flask import Blueprint
-from flask.globals import request
 from app.utils.utils import *
 from flask import Response, render_template, send_file
 from app.computer_vision.hog_detection import HOGDetectionModel
@@ -48,3 +47,13 @@ def send_static_file(video_id):
         abort(404)
     else:
         return send_file(result[0].file_path)
+
+
+@routes.route('/incident/<incident_id>')
+def send_thumbnail(incident_id):
+    result = db_helper.get_incident(incident_id=incident_id)
+
+    if len(result) != 1:
+        abort(404)
+    else:
+        return send_file(result[0].thumbnail_file_path)
