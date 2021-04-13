@@ -114,3 +114,6 @@ class User(Base):
     salt = Column(CHAR(128), nullable=False)
     hash = Column(CHAR(128), nullable=False)
 
+    def serialize(self):
+        return {'user_id': self.user_id,
+        'username': self.username}
