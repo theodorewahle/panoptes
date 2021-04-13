@@ -1,16 +1,16 @@
 """
-server.py
+run.py
 
 Backend flask server
 """
 from threading import Thread
 from flask import Flask, current_app
 from flask_cors import CORS, cross_origin
-from streaming.rtsp import RTSPStreamer
-from incidents.ftp import fetch_todays_incidents
-from api import api, db_helper
-from routes import routes
-
+from app.streaming.rtsp import RTSPStreamer
+from app.incidents.ftp import fetch_todays_incidents
+from app.api.api import api, db_helper
+from app.routes.routes import routes
+import os
 
 class FlaskThread(Thread):
     def __init__(self, *args, **kwargs):
@@ -25,8 +25,11 @@ class FlaskThread(Thread):
 # PanoptesFlaskApp
 # Custom Flask application
 class PanoptesFlaskApp(Flask):
+    session_key = None
+
     def run(self, host=None, port=None, debug=None, load_dotenv=True, **options):
         with self.app_context():
+            #self.session_key = os.urandom(24)
             self.config.from_object('config')  # configure flask server
             db_helper.initialize(self)
 

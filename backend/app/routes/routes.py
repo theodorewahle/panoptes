@@ -1,15 +1,15 @@
 """
 routes.py
 
-Blueprint for routes for backend, actualized by flask server in server.py
+Blueprint for routes for backend, actualized by flask server in run.py
 """
 from flask import Blueprint
-from utils.utils import *
+from app.utils.utils import *
 from flask import Response, render_template, send_file
-from computer_vision.hog_detection import HOGDetectionModel
-from streaming.live_streaming import generate
-from streaming.static import generate_static
-from api import db_helper
+from app.computer_vision.hog_detection import HOGDetectionModel
+from app.streaming.live_streaming import generate
+from app.streaming.static import generate_static
+from app.api.api import db_helper
 
 routes = Blueprint('routes', __name__)
 
