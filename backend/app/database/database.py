@@ -220,9 +220,9 @@ class DatabaseHelper:
                     .filter(models.Object.name.like(search)) \
                         .all()
 
-    def add_incident(self, start_time, end_time, object_id, video_id, timestamp=None):
+    def add_incident(self, start_time, end_time, object_id, video_id, thumbnail_file_path, timestamp=None):
         incident = models.Incident(
-            start_time=start_time, end_time=end_time, timestamp=timestamp, object_id=object_id, video_id=video_id)
+            start_time=start_time, end_time=end_time, timestamp=timestamp, thumbnail_file_path=thumbnail_file_path, object_id=object_id, video_id=video_id)
         try:
             self.db.session.add(incident)
             self.db.session.commit()
@@ -231,7 +231,7 @@ class DatabaseHelper:
             self.db.session.rollback()
             return e
 
-    def update_incident(self, incident_id, object_id=None, video_id=None, start_time=None, end_time=None, timestamp=None):
+    def update_incident(self, incident_id, object_id=None, video_id=None, start_time=None, end_time=None, timestamp=None, thumbnail_file_path=None):
         incident = self.db.session.query(models.Incident).filter(
             models.Incident.incident_id == incident_id).first()
 
@@ -249,19 +249,24 @@ class DatabaseHelper:
                 incident.end_time = end_time
             if timestamp is not None:
                 incident.timestamp = timestamp
+            if thumbnail_file_path is not None:
+                incident.thumbnail_file_path = thumbnail_file_path
             self.db.session.commit()
             return incident
         except SQLAlchemyError as e:
             self.db.session.rollback()
             return e
 
-    def delete_incident(self, incident_id=None, timestamp=None, object_id=None, video_id=None):
+    def delete_incident(self, incident_id=None, timestamp=None, object_id=None, video_id=None, thumbnail_file_path=None):
         if incident_id is not None:
             self.db.session.query(models.Incident) \
                 .filter(models.Incident.incident_id == incident_id).delete()
         if timestamp is not None:
             self.db.session.query(models.Incident) \
                 .filter(models.Incident.timestamp == timestamp).delete()
+        elif thumbnail_file_path is not None:
+            self.db.session.query(models.Incident) \
+                .filter(models.Incident.thumbnail_file_path == thumbnail_file_path).delete()
         elif object_id is not None and video_id is not None:
             self.db.session.query(models.Incident) \
                 .filter(models.Incident.object_id == object_id,

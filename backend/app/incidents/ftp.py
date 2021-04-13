@@ -28,13 +28,19 @@ def convert_video(relative_file_path):
     shell_command_template = "ffmpeg -framerate 24 -i {} {}"
     shell_command = shell_command_template.format(full_input_filepath, full_output_filepath)
 
+    # (out, err) = ffmpeg.input(full_input_filepath).output(full_output_filepath, framerate=24).overwrite_output().run()
+
     if os.system(shell_command) != 0:
         print("conversion error: " + relative_file_path)
-    
-    cleanup_command = "rm incidents/converted/" + today_as_string + "/*.264"
-    os.system(cleanup_command)
 
-def fetch_todays_incidents():
+    dir_name = "incidents/converted/" + today_as_string
+    files = os.listdir(dir_name)
+
+    for filename in files:
+        if filename.endswith(".264"):
+            os.remove(os.path.join(dir_name, filename))
+
+def fetch_todays_incidents(dbhelper):
     with pysftp.Connection(host=myHostname, username=myUsername, password=myPassword, cnopts=cnopts) as sftp:
         print ("Connection succesfully stablished ... ")
 
@@ -51,3 +57,4 @@ def fetch_todays_incidents():
                 if not os.path.exists(full_file_path):
                     sftp.get(file_name, full_file_path)
                     convert_video(today_as_string + "/" + file_name)
+                    dbhelper.add_video(os.getcwd() + "/" + full_file_path, 1)

@@ -12,15 +12,75 @@
   flex-wrap: wrap;
 }
 
+.videoContainer {
+  padding: 10px;
+}
+
 .video {
-  padding: 20px;
+  background: lightgrey;
+  padding-top: 15px;
+  padding-right: 15px;
+  padding-left: 15px;
+  padding-bottom: 60px;
+  border: 3px solid darkorange;
+  border-radius: 8px;
+}
+
+.video:hover {
   cursor: pointer;
+  opacity: 0.8;
 }
 
-.title {
+.cameraTitle {
   padding-top: 5px;
-  text-align: center;
+  font-size: 20px;
 }
 
-.status {
+.titleContainer {
+  display: flex;
+  flex-direction: column;
 }
+
+.objectIdentified {
+  padding-top: 5px;
+  white-space: nowrap;
+}
+
+.timeStamp {
+  padding-top: 5px;
+  white-space: nowrap;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.expandableRow {
+  display: flex;
+  flex-direction: column;
+  background-color: green;
+  background: white;
+  padding: 16px;
+  padding-top: 0px;
+  border: 3px solid black;
+  border-radius: 8px;
+  margin-bottom: 32px;
+  margin-right: 128px;
+  min-height: 320px;
+  min-width: 256px;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  margin-left: 10px;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  margin-left: 10px;
+  margin-top: 16px;
+}
+

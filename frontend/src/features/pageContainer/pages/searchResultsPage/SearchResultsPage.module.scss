@@ -1,14 +1,49 @@
 .container {
-  padding-top: 50px;
-  padding-left: 100px;
-  padding-right: 100px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+}
+
+.results {
+}
+
+.sideBar {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+}
+
+.topRow {
+  display: flex;
+  justify-content: space-between;
 }
 
 .resultsMessage {
+  padding-bottom: 20px;
+  max-width: 50vw;
+}
+
+.filters {
+  display: flex;
+  flex-direction: row;
+}
+
+.filterForm {
+  display: flex;
+  flex-direction: column;
+  padding-left: 50px;
+  padding-bottom: 30px;
+}
+
+.sortButton {
+  height: 30px;
+  width: 150px;
+  padding-bottom: 30px;
 }
 
 .resultsContainer {
   padding-top: 25px;
+  padding-bottom: 50px;
 }
 
 .loading {
@@ -19,4 +54,5 @@
 .error {
   display: flex;
   justify-content: center;
+  width: 100%;
 }

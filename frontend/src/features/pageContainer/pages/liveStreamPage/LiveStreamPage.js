@@ -1,14 +1,26 @@
-import React from 'react';
+/* eslint-disable one-var */
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   selectCurIncidentIndex,
   selectCurCameraIndex,
+  selectSearchAllObjects,
+  selectSearchFilterCameras,
+  setStatusSearch,
+  // setSearchFilterCameras,
 } from '../../../video/videoSlice';
-import { setPage, selectPage } from '../../pageContainerSlice';
+import {
+  setPage,
+  selectPage,
+  setSearchCurrent,
+} from '../../pageContainerSlice';
+import { processSearch } from '../searchResultsPage/processSearch';
 
-import VideoThumbnails from '../../../video/VideoThumbnails';
+import VideoGroup from '../../../video/VideoGroup';
 import ReactPlayer from 'react-player';
-import { Button } from '@material-ui/core';
+import { Button, CircularProgress } from '@material-ui/core';
+import { Alert, AlertTitle } from '@material-ui/lab';
+import FilterListIcon from '@material-ui/icons/FilterList';
 
 import ENV from '../../../../env';
 import styles from './LiveStreamPage.module.scss';
@@ -26,9 +38,13 @@ const DataRow = (props) => {
 
 const LiveStreamPage = (props) => {
   const dispatch = useDispatch();
+  const [isErrorLoadingStream, setIsErrorLoadingStream] = useState(false);
+  const [isReadyLoadingStream, setIsReadyLoadingStream] = useState(false);
   const { mainDataModel } = props;
   const curIncidentIndex = useSelector(selectCurIncidentIndex);
   const curCameraIndex = useSelector(selectCurCameraIndex);
+  const searchFilterCameras = useSelector(selectSearchFilterCameras);
+  const searchAllObjects = useSelector(selectSearchAllObjects);
   const page = useSelector(selectPage);
 
   const curCamera = mainDataModel[curCameraIndex];
@@ -46,7 +62,8 @@ const LiveStreamPage = (props) => {
     const recentIncidentsText = `Recent Incidents: ${incidents.length}`;
     display = (
       <div>
-        <h1>Live Stream: {curCamera.title}</h1>
+        <h1>Live Stream</h1>
+        <h2>{curCamera.title}</h2>
         <h3>
           {incidents.length === 0 ? 'No Recent Incidents' : recentIncidentsText}
         </h3>
@@ -59,8 +76,11 @@ const LiveStreamPage = (props) => {
         <div>
           <h1>Incident</h1>
           <DataRow title={'Time Stamp'} data={curIncident.timeStamp} />
-          <DataRow title={'Start Time'} data={curIncident.startTime} />
-          <DataRow title={'End Time'} data={curIncident.endTime} />
+          <DataRow
+            title={'Start Time'}
+            data={`${curIncident.startTime} seconds`}
+          />
+          <DataRow title={'End Time'} data={`${curIncident.endTime} seconds`} />
           <DataRow
             title={'Object Identified'}
             data={curIncident.objectIdentified}
@@ -70,7 +90,11 @@ const LiveStreamPage = (props) => {
           <Button
             size="large"
             variant="outlined"
-            onClick={() => dispatch(setPage(ENV.PAGE_LIVE_STREAM))}
+            onClick={() => {
+              dispatch(setPage(ENV.PAGE_LIVE_STREAM));
+              setIsReadyLoadingStream(false);
+              setIsErrorLoadingStream(false);
+            }}
           >
             View Live Feed
           </Button>
@@ -81,20 +105,79 @@ const LiveStreamPage = (props) => {
     console.error('pageContainerSlice.page is not wired correctly');
   }
 
+  const errorLoadingStream = (
+    <Alert variant="outlined" severity="error">
+      <AlertTitle>Error Loading Stream</AlertTitle>
+      Try confirming the camera URL and reload the page.
+    </Alert>
+  );
+  let loadingStream;
+  if (isReadyLoadingStream || isErrorLoadingStream) {
+    loadingStream = null;
+  } else if (!isErrorLoadingStream && !isReadyLoadingStream) {
+    loadingStream = (
+      <div style={{ paddingLeft: 80, paddingTop: 50 }}>
+        <CircularProgress color={'inherit'} size={100} />
+      </div>
+    );
+  }
+
   // TODO: display objects being tracked
   // TODO: add object set button/form/modal
   return (
-    <div>
+    <div className={styles.container}>
       <div className={styles.containerLiveStream}>
-        <div className={styles.containerStreamData}>{display}</div>
+        <div className={styles.containerStreamData}>
+          {display}
+          {loadingStream}
+        </div>
         <div>
-          <ReactPlayer url={url} width={720} height={405} playing />
+          {isErrorLoadingStream ? errorLoadingStream : null}
+          <ReactPlayer
+            url={url}
+            width={720}
+            height={405}
+            playing
+            loop={true}
+            onReady={() => {
+              console.log('ReactPlayer onReady');
+              setIsReadyLoadingStream(true);
+              setIsErrorLoadingStream(false);
+            }}
+            onError={() => {
+              console.log('ReactPlayer onError');
+              setIsErrorLoadingStream(true);
+              setIsReadyLoadingStream(false);
+            }}
+          />
         </div>
       </div>
 
       <div className={styles.containerRecentIncidents}>
-        <div className={styles.titleRecentIncidents}>Recent Incidents</div>
-        <VideoThumbnails
+        <div className={styles.recentIncidentsRow}>
+          <div className={styles.titleRecentIncidents}>
+            <b>Recent Incidents for Camera:</b> {curCamera.title}
+          </div>
+          <Button
+            startIcon={<FilterListIcon />}
+            onClick={() => {
+              // TODO: set camera filter to current page
+              dispatch(setSearchCurrent(searchAllObjects));
+              dispatch(setStatusSearch(ENV.STATUS_WAITING));
+              dispatch(setPage(ENV.PAGE_SEARCH_RESULTS));
+              processSearch({
+                mainDataModel,
+                searchCurrent: searchAllObjects,
+                searchFilterCameras,
+                searchFilterObjects: {},
+                isNewSearch: true,
+              });
+            }}
+          >
+            Filter All Incidents
+          </Button>
+        </div>
+        <VideoGroup
           videos={incidents}
           width={ENV.VIDEO_THUMBNAIL_WIDTH}
           height={ENV.VIDEO_THUMBNAIL_HEIGHT}

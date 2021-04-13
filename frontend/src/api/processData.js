@@ -70,9 +70,10 @@ export const fetchAndProcessDataModel = () => {
               url:
                 `${ENV.API_FILE_SERVER}/${incident[0]?.video_id}.mp4` ||
                 'Video Not Found',
-              startTime: incident[0]?.start_time || 'No Start Time',
-              endTime: incident[0]?.end_time || 'No End Time',
+              startTime: incident[0]?.start_time || '0',
+              endTime: incident[0]?.end_time || '0',
               timeStamp: incident[0]?.timestamp || 'No Time Stamp',
+              incidentId: incident[0]?.incident_id || 1, // TODO: display 404 of some kind
               objectIdentified: incident[1]?.name || 'No Object Identified',
               object_id: incident[1]?.object_id || 'No object_id',
               object_set_id: incident[1]?.object_set_id || 'No object_set_id',

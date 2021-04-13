@@ -18,7 +18,10 @@ export const videoSlice = createSlice({
     statusMainDataModel: ENV.STATUS_IDLE,
     curIncidentIndex: 0,
     curCameraIndex: 1,
+    searchAllObjects: '',
     searchResults: [],
+    searchFilterCameras: {},
+    searchFilterObjects: {},
     statusSearch: {
       status: ENV.STATUS_IDLE,
       message: '',
@@ -42,6 +45,20 @@ export const videoSlice = createSlice({
     },
     setMainDataModel: (state, action) => {
       state.mainDataModel = action.payload;
+      let cameras = {};
+      const objects = [];
+      for (let i = 0; i < action.payload.length; i++) {
+        const title = action.payload[i].title;
+        cameras[title] = true;
+        for (let j = 0; j < action.payload[i].incidents.length; j++) {
+          const object = action.payload[i].incidents[j].objectIdentified;
+          if (!objects.includes(object)) {
+            objects.push(object);
+          }
+        }
+      }
+      state.searchAllObjects = objects.join(' ');
+      state.searchFilterCameras = cameras;
     },
     insertCameraToDataModel: (state, action) => {
       const { update, data } = action.payload;
@@ -92,11 +109,28 @@ export const videoSlice = createSlice({
     setSearchResults: (state, action) => {
       state.searchResults = action.payload;
     },
+    setSearchFilterCameras: (state, action) => {
+      const { name, value } = action.payload;
+      state.searchFilterCameras[name] = value;
+    },
+    setSearchFilterObjects: (state, action) => {
+      const { name, value } = action.payload;
+      if (name == null || value == null) {
+        state.searchFilterObjects = action.payload;
+      }
+      state.searchFilterObjects[name] = value;
+    },
     setStatusSearch: (state, action) => {
-      const { status, message } = action.payload;
+      const { status, message, messageFilter } = action.payload;
       let messageTemp = '';
+      let messageFilterTemp = '';
       if (message != null) messageTemp = message;
-      state.statusSearch = { status, message: messageTemp };
+      if (messageFilter != null) messageFilterTemp = messageFilter;
+      state.statusSearch = {
+        status,
+        message: messageTemp,
+        messageFilter: messageFilterTemp,
+      };
     },
   },
 });
@@ -115,6 +149,8 @@ export const {
   setCurIncidentIndex,
   setCurCameraIndex,
   setSearchResults,
+  setSearchFilterCameras,
+  setSearchFilterObjects,
   setStatusSearch,
 } = videoSlice.actions;
 
@@ -126,11 +162,16 @@ export const selectStatusCameras = (state) => state.video.statusCameras;
 export const selectStatusObjectSets = (state) => state.video.statusObjectSets;
 export const selectStatusMainDataModel = (state) =>
   state.video.statusMainDataModel;
+export const selectSearchFilterCameras = (state) =>
+  state.video.searchFilterCameras;
+export const selectSearchFilterObjects = (state) =>
+  state.video.searchFilterObjects;
 
 export const selectObjectSet = (state) => state.video.objectSet;
 export const selectCurIncidentIndex = (state) => state.video.curIncidentIndex;
 export const selectCurCameraIndex = (state) => state.video.curCameraIndex;
 export const selectSearchResults = (state) => state.video.searchResults;
 export const selectStatusSearch = (state) => state.video.statusSearch;
+export const selectSearchAllObjects = (state) => state.video.searchAllObjects;
 
 export default videoSlice.reducer;
