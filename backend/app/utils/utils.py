@@ -12,6 +12,7 @@ from flask import jsonify
 from sqlalchemy.exc import SQLAlchemyError
 from werkzeug.exceptions import abort
 import jwt
+import datetime
 
 # jsonify_result(results)
 # takes row data in list (or as single row) from database and returns flask Response
@@ -110,7 +111,25 @@ def unwrap_db_result(result):
     return jsonify_result(result)
 
 
-@staticmethod
+def encode_auth_token(user_id, secret_key):
+    """
+    Generates the Auth Token
+    :return: string
+    """
+    try:
+        payload = {
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=15),
+            'iat': datetime.datetime.utcnow(),
+            'sub': user_id
+        }
+        return jwt.encode(
+            payload,
+            secret_key,
+            algorithm='HS256'
+        )
+    except Exception as e:
+        return e
+
 def decode_auth_token(auth_token, secret_key):
     """
     Decodes the auth token
