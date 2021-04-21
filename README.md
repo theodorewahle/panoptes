@@ -13,7 +13,7 @@ With your group, please agree on the following:
 
 1. **Who is going to look at which platforms, get a rough task distribution**
 
-- Teddy --> Streaming (HTTP Live Streaming (HLS))
+- Teddy --> Infrastructure (Docker), Streaming (HTTP Live Streaming (HLS))
 - James --> Computer Vision (OpenCV)
 - Charles --> Backend (Flask, PostgreSQL)
 - Jack -->. Frontend (React)
