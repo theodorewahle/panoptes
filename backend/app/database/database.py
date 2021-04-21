@@ -436,7 +436,7 @@ class DatabaseHelper:
                 models.User.username == username).delete()
         self.db.session.commit()
 
-    def create_hash(password):
+    def create_hash(self, password):
         salt = urandom(64)
-        hash = pbkdf2_hmac('sha512', password.encode(), salt.encode(), 100000)
+        hash = pbkdf2_hmac('sha512', password.encode(), salt, 100000)
         return salt, hash
