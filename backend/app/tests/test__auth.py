@@ -7,7 +7,6 @@ from app.utils.utils import encode_auth_token, decode_auth_token
 class TestUserModel(BaseTestCase):
 
     def test_decode_auth_token(self):
-        self.dbhelper.delete_user(username='test@test.com')
         user = self.dbhelper.add_user('test@test.com', 'test')
         self.assertFalse(isinstance(user, SQLAlchemyError))
         auth_token = encode_auth_token(user.user_id, self.app.config['SESSION_KEY'])

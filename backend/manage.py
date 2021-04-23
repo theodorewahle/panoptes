@@ -23,7 +23,6 @@ manager = Manager(application)
 # migrations
 manager.add_command('db', MigrateCommand)
 
-
 @manager.command
 def test():
     """Runs the unit tests without test coverage."""
@@ -51,7 +50,6 @@ def cov():
         COV.erase()
         return 0
     return 1
-
 
 if __name__ == '__main__':
     manager.run()

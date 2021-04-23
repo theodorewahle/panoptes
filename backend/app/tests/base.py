@@ -11,5 +11,5 @@ class BaseTestCase(TestCase):
         self.dbhelper.initialize(application)
         return application
 
-    def teardown(self):
+    def tearDown(self):
         self.dbhelper.teardown()

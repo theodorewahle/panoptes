@@ -31,6 +31,7 @@ class DatabaseHelper:
         self.db.init_app(app)
         with app.app_context():
             self.db.create_all()
+            self.db.session.commit()
 
     def teardown(self):
         self.db.session.remove()
