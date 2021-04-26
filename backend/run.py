@@ -10,6 +10,9 @@ from app.streaming.rtsp import RTSPStreamer
 from app.incidents.ftp import fetch_todays_incidents
 from app.api.api import api, db_helper
 from app.routes.routes import routes
+import sys
+
+app_settings = 'config.ProductionConfig'
 
 class FlaskThread(Thread):
     def __init__(self, *args, **kwargs):
@@ -25,9 +28,9 @@ class FlaskThread(Thread):
 # Custom Flask application
 class PanoptesFlaskApp(Flask):
 
-    def run(self, host=None, port=None, debug=None, load_dotenv=True, **options):
+    def run(self, **options):
         with self.app_context():
-            self.config.from_object('config')  # configure flask server
+            self.config.from_object(app_settings)  # configure flask server
             db_helper.initialize(self)
 
             streamer = RTSPStreamer(self.config['RTSP'])
@@ -40,8 +43,8 @@ class PanoptesFlaskApp(Flask):
             FlaskThread(target=fetch_todays_incidents, args=(db_helper,)).start()
             FlaskThread(target=streamer.launch_proxy_stream).start()
 
-        super(PanoptesFlaskApp, self).run(host=host, port=port,
-                                          debug=debug, load_dotenv=load_dotenv, **options)
+        super(PanoptesFlaskApp, self).run(host=self.config['HOST'], port=self.config['PORT'],
+                                          debug=self.config['DEBUG'], load_dotenv=self.config['LOAD_DOTENV'], **options)
 
 
 # DO NOT CHANGE THIS NAME
@@ -51,8 +54,7 @@ application = PanoptesFlaskApp(__name__, static_url_path='')
 cors = CORS(application)
 
 if __name__ == '__main__':
-    host = "127.0.0.1"
-    port = 8000
-    debug = False
-    options = None
-    application.run(host, port, debug, options)
+    if len(sys.argv) > 1:
+        if sys.argv[1] == 'test':
+            app_settings = 'config.TestingConfig'
+    application.run()
