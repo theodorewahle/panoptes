@@ -6,7 +6,7 @@ from flask_testing import TestCase
 
 class TestConfig(TestCase):
     def create_app(self):
-        application.config.from_object('config')
+        application.config.from_object('config.TestingConfig')
         return application
 
     def test_app_is_testing(self):
