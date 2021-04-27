@@ -1,4 +1,4 @@
-from config import SESSION_KEY
+from config import BaseConfig
 from flask import Blueprint, request, make_response, jsonify
 from flask.views import MethodView
 from sqlalchemy.exc import SQLAlchemyError
@@ -18,7 +18,7 @@ def register():
             abort(400, result)
         response = {
             'status': 'success',
-            'auth_token': encode_auth_token(result.user_id, SESSION_KEY).decode()
+            'auth_token': encode_auth_token(result.user_id, BaseConfig.SESSION_KEY)
         }
         return make_response(jsonify(response), 201)
     abort(400)
