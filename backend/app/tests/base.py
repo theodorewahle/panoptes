@@ -6,7 +6,7 @@ class BaseTestCase(TestCase):
     """ Base Tests """
 
     def create_app(self):
-        application.config.from_object('config')
+        application.config.from_object('config.TestingConfig')
         self.dbhelper = DatabaseHelper()
         self.dbhelper.initialize(application)
         return application
