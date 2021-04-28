@@ -37,6 +37,12 @@ export const processSearch = ({
   }
   const search = searchCurrent.toLowerCase().trim();
   const search2 = search.replace(/\W/g, '');
+
+  // TODO
+  if (mainDataModel == null) {
+    console.log('TODO: handle this on UI');
+    return;
+  }
   for (let i = 0; i < mainDataModel.length; i++) {
     if (
       isFiltered({

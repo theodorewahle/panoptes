@@ -47,18 +47,22 @@ export const videoSlice = createSlice({
       state.mainDataModel = action.payload;
       let cameras = {};
       const objects = [];
-      for (let i = 0; i < action.payload.length; i++) {
-        const title = action.payload[i].title;
-        cameras[title] = true;
-        for (let j = 0; j < action.payload[i].incidents.length; j++) {
-          const object = action.payload[i].incidents[j].objectIdentified;
-          if (!objects.includes(object)) {
-            objects.push(object);
+      if (action.payload == null) {
+        console.log('ERROR: not receiving data from API properly');
+      } else {
+        for (let i = 0; i < action.payload.length; i++) {
+          const title = action.payload[i].title;
+          cameras[title] = true;
+          for (let j = 0; j < action.payload[i].incidents.length; j++) {
+            const object = action.payload[i].incidents[j].objectIdentified;
+            if (!objects.includes(object)) {
+              objects.push(object);
+            }
           }
         }
+        state.searchAllObjects = objects.join(' ');
+        state.searchFilterCameras = cameras;
       }
-      state.searchAllObjects = objects.join(' ');
-      state.searchFilterCameras = cameras;
     },
     insertCameraToDataModel: (state, action) => {
       const { update, data } = action.payload;
