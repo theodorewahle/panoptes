@@ -441,3 +441,14 @@ class DatabaseHelper:
         salt = urandom(64)
         hash = pbkdf2_hmac('sha512', password.encode(), salt, 100000)
         return salt, hash
+
+    def check_login(self, username, password):
+        user = self.get_user(username=username)
+        if len(user) != 1:
+            return None
+        user = user[0]
+        salt = user.salt
+        hash = pbkdf2_hmac('sha512', password.encode(), salt, 100000)
+        if user.hash == hash:
+            return user
+        return None
