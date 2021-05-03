@@ -4,6 +4,7 @@ import {
   // tempDataMainDataModel,
 } from '../video/data';
 import ENV from '../../env';
+// import { act } from 'react-dom/test-utils';
 
 export const videoSlice = createSlice({
   name: 'video',
@@ -44,6 +45,9 @@ export const videoSlice = createSlice({
       });
     },
     setMainDataModel: (state, action) => {
+      if (action.payload === null) {
+        return;
+      }
       state.mainDataModel = action.payload;
       let cameras = {};
       const objects = [];
