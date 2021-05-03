@@ -65,7 +65,7 @@ const Video = (props) => {
     //       fetching / loading
     display = (
       <img
-        src={`http://127.0.0.1:8000/incident/${incidentId}`}
+        src={`http://127.0.0.1:8080/incident/${incidentId}`}
         alt=""
         width={width}
         height={height}

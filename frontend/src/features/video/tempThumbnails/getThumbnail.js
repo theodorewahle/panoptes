@@ -13,29 +13,29 @@ import thumbnail12 from './12.png';
 
 // temporary until thumbnails are provided through API
 export const getImage = (videoUrl) => {
-  if (videoUrl === 'http://127.0.0.1:8000/video/1.mp4') {
+  if (videoUrl === 'http://127.0.0.1:8080/video/1.mp4') {
     return thumbnail1;
-  } else if (videoUrl === 'http://127.0.0.1:8000/video/2.mp4') {
+  } else if (videoUrl === 'http://127.0.0.1:8080/video/2.mp4') {
     return thumbnail2;
-  } else if (videoUrl === 'http://127.0.0.1:8000/video/3.mp4') {
+  } else if (videoUrl === 'http://127.0.0.1:8080/video/3.mp4') {
     return thumbnail3;
-  } else if (videoUrl === 'http://127.0.0.1:8000/video/4.mp4') {
+  } else if (videoUrl === 'http://127.0.0.1:8080/video/4.mp4') {
     return thumbnail4;
-  } else if (videoUrl === 'http://127.0.0.1:8000/video/5.mp4') {
+  } else if (videoUrl === 'http://127.0.0.1:8080/video/5.mp4') {
     return thumbnail5;
-  } else if (videoUrl === 'http://127.0.0.1:8000/video/6.mp4') {
+  } else if (videoUrl === 'http://127.0.0.1:8080/video/6.mp4') {
     return thumbnail6;
-  } else if (videoUrl === 'http://127.0.0.1:8000/video/7.mp4') {
+  } else if (videoUrl === 'http://127.0.0.1:8080/video/7.mp4') {
     return thumbnail7;
-  } else if (videoUrl === 'http://127.0.0.1:8000/video/8.mp4') {
+  } else if (videoUrl === 'http://127.0.0.1:8080/video/8.mp4') {
     return thumbnail8;
-  } else if (videoUrl === 'http://127.0.0.1:8000/video/9.mp4') {
+  } else if (videoUrl === 'http://127.0.0.1:8080/video/9.mp4') {
     return thumbnail9;
-  } else if (videoUrl === 'http://127.0.0.1:8000/video/10.mp4') {
+  } else if (videoUrl === 'http://127.0.0.1:8080/video/10.mp4') {
     return thumbnail10;
-  } else if (videoUrl === 'http://127.0.0.1:8000/video/11.mp4') {
+  } else if (videoUrl === 'http://127.0.0.1:8080/video/11.mp4') {
     return thumbnail11;
-  } else if (videoUrl === 'http://127.0.0.1:8000/video/12.mp4') {
+  } else if (videoUrl === 'http://127.0.0.1:8080/video/12.mp4') {
     return thumbnail12;
   }
 };
