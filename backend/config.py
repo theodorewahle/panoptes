@@ -1,7 +1,7 @@
 """
 config.py
 
-Contains configurations for flask server (see run.py). Expects localconfig.py file, see localconfig-example.py
+Contains configurations for flask server (see run.py).
 """
 from os import path, urandom
 try:

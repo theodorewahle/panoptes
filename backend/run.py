@@ -28,9 +28,9 @@ class FlaskThread(Thread):
 # Custom Flask application
 class PanoptesFlaskApp(Flask):
 
-    def run(self, **options):
+    def run(self, appsettings, **options):
         with self.app_context():
-            self.config.from_object(app_settings)  # configure flask server
+            self.config.from_object(appsettings)  # configure flask server
             db_helper.initialize(self)
 
             streamer = RTSPStreamer(self.config['RTSP'])
@@ -57,4 +57,4 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         if sys.argv[1] == 'test':
             app_settings = 'config.TestingConfig'
-    application.run()
+    application.run(appsettings=app_settings)
