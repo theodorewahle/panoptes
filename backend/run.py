@@ -10,6 +10,7 @@ from app.streaming.rtsp import RTSPStreamer
 from app.incidents.ftp import fetch_todays_incidents
 from app.api.api import api, db_helper
 from app.routes.routes import routes
+from app.routes.auth import auth
 import sys
 
 app_settings = 'config.ProductionConfig'
@@ -38,6 +39,7 @@ class PanoptesFlaskApp(Flask):
             # register blueprint and dbhelper for api
             self.register_blueprint(api, url_prefix='/api')
             self.register_blueprint(routes)
+            self.register_blueprint(auth)
 
             # Fetch the latest incidents from the camera's FTP server
             FlaskThread(target=fetch_todays_incidents, args=(db_helper,)).start()
