@@ -10,6 +10,7 @@ Contains definitions for utils functions:
 
 from flask import jsonify
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.sql.functions import user
 from werkzeug.exceptions import abort
 import jwt
 import datetime
@@ -143,3 +144,34 @@ def decode_auth_token(auth_token, secret_key):
         return 'Signature expired. Please log in again.'
     except jwt.InvalidTokenError:
         return 'Invalid token. Please log in again.'
+
+    
+blacklist = []
+def blacklisted(auth_token, secret_key):
+    for token in blacklist:
+        if auth_token == token:
+            return True
+        try:
+            jwt.decode(auth_token, secret_key, algorithms='HS256')
+        except jwt.ExpiredSignatureError:
+            blacklist.remove(token)
+    return False
+
+def add_to_blacklist(request):
+    blacklist.append(parse_auth(request))
+
+def parse_auth(request):
+    auth_token = request.headers['Authorization'].split()
+    if not isinstance(auth_token, list) or len(auth_token) != 2 or auth_token[0] != 'Bearer':
+        abort("Bearer token missing or malformed", 401)
+    return auth_token
+
+def check_auth(db_helper, request, secret_key):
+    user_id = None
+    auth_token = parse_auth(request)
+    user_id = decode_auth_token(auth_token, secret_key)
+    if isinstance(user_id, jwt.PyJWTError):
+        abort(user_id, 401)
+    if not blacklisted(auth_token, secret_key):
+        return db_helper.get_user(user_id=user_id)
+    abort(401)
