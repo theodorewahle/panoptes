@@ -10,10 +10,10 @@ Contains definitions for utils functions:
 
 from flask import jsonify
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.sql.functions import user
 from werkzeug.exceptions import abort
 import jwt
 import datetime
+
 
 # jsonify_result(results)
 # takes row data in list (or as single row) from database and returns flask Response
@@ -111,12 +111,16 @@ def unwrap_db_result(result):
         abort(400, result)
     return jsonify_result(result)
 
-
+# encode_auth_token(user_id, secret_key)
+# creates a JWT for the given user given a secret key
+#
+# Inputs:
+#   @user_id: the id of the user to create a JWT for
+#   @secret_key: the secret key to encode a token with
+#
+# returns:
+#   token created or exception
 def encode_auth_token(user_id, secret_key):
-    """
-    Generates the Auth Token
-    :return: string
-    """
     try:
         payload = {
             'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=15),
@@ -131,21 +135,35 @@ def encode_auth_token(user_id, secret_key):
     except Exception as e:
         return e
 
+# decode_auth_token(auth_token, secret_key)
+# returns the user id encoded in a JWT
+#
+# Inputs:
+#   @auth_token: the JWT to decode
+#   @secret_key: the secret key to decode the token with
+#
+# returns:
+#   user id encoded in JWT or execption if JWT is invalid
 def decode_auth_token(auth_token, secret_key):
-    """
-    Decodes the auth token
-    :param auth_token:
-    :return: integer|string
-    """
     try:
+        print(auth_token)
         payload = jwt.decode(auth_token, secret_key, algorithms='HS256')
         return payload['sub']
     except jwt.ExpiredSignatureError:
-        return 'Signature expired. Please log in again.'
+        abort(401, 'Signature expired. Please log in again.')
     except jwt.InvalidTokenError:
-        return 'Invalid token. Please log in again.'
+        abort(401, 'Invalid token. Please log in again.')
 
     
+# blacklisted(auth_token, secret_key)
+# checks if the given auth token is blacklisted
+#
+# Inputs:
+#   @auth_token: the JWT to check
+#   @secret_key: the secret key to decode the token with
+#
+# returns:
+#   True if blacklisted, False if not
 blacklist = []
 def blacklisted(auth_token, secret_key):
     for token in blacklist:
@@ -157,21 +175,29 @@ def blacklisted(auth_token, secret_key):
             blacklist.remove(token)
     return False
 
+# add_to_blacklist(request)
+# adds token given in request to blacklist
+#
+# Inputs:
+#   @request: the request containing the auth token to blacklist
 def add_to_blacklist(request):
     blacklist.append(parse_auth(request))
 
 def parse_auth(request):
     auth_token = request.headers['Authorization'].split()
     if not isinstance(auth_token, list) or len(auth_token) != 2 or auth_token[0] != 'Bearer':
-        abort("Bearer token missing or malformed", 401)
-    return auth_token
+        abort(401, "Bearer token missing or malformed")
+    return auth_token[1]
 
-def check_auth(db_helper, request, secret_key):
-    user_id = None
-    auth_token = parse_auth(request)
+def check_auth(db_helper, auth_token, secret_key):
+    auth_token = auth_token.split()
+    if not isinstance(auth_token, list) or len(auth_token) != 2 or auth_token[0] != 'Bearer':
+        abort(401, "Bearer token missing or malformed")
+    auth_token = auth_token[1]
     user_id = decode_auth_token(auth_token, secret_key)
-    if isinstance(user_id, jwt.PyJWTError):
-        abort(user_id, 401)
     if not blacklisted(auth_token, secret_key):
-        return db_helper.get_user(user_id=user_id)
+        user = db_helper.get_user(user_id=user_id)
+        if len(user) != 0:
+            return user[0]
+        abort(401)
     abort(401)

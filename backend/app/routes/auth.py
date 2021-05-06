@@ -1,4 +1,3 @@
-from sqlalchemy.sql.expression import false
 from config import BaseConfig
 from flask import Blueprint, request, make_response
 from sqlalchemy.exc import SQLAlchemyError
@@ -8,6 +7,15 @@ from app.utils.utils import unwrap_body, encode_auth_token, check_auth, add_to_b
 
 auth = Blueprint('auth', __name__)
 
+# REGISTER
+# 
+# POST:
+#   /register
+#       @body: {username:[username]} & {password:[password]}
+#       @success: 201
+#       @error: 400
+#       @returns: no content, bearer token in Authorization header
+#
 @auth.route('/register', methods=['POST'])
 def register():
     body = unwrap_body(request, 'username', 'password')
@@ -20,6 +28,15 @@ def register():
         return response
     abort(400)
 
+# LOGIN
+# 
+# POST:
+#   /login
+#       @body: {username:[username]} & {password:[password]}
+#       @success: 200
+#       @error: 400 if malformed, 404 if user does not exist
+#       @returns: no content, bearer token in Authorization header
+#
 @auth.route('/login', methods=['POST'])
 def login():
     body = unwrap_body(request, 'username', 'password')
@@ -33,10 +50,20 @@ def login():
             abort(404)
     abort(400)
 
+# LOGOUT
+# 
+# POST:
+#   /logout
+#       @body: nothing
+#       @success: 200
+#       @error: 401
+#       @returns: Logout successful if logout is sucessful
+#
 @auth.route('/logout', methods=['POST'])
 def logout():
     user = check_auth(db_helper, request, BaseConfig.SESSION_KEY)
     if user is not None:
         add_to_blacklist(request)
-        return make_response("Logout sucessful", 200)
+        return make_response("Logout successful", 200)
     abort(401)
+    
