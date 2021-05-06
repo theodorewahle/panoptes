@@ -10,7 +10,10 @@ from app.streaming.rtsp import RTSPStreamer
 from app.incidents.ftp import fetch_todays_incidents
 from app.api.api import api, db_helper
 from app.routes.routes import routes
-import os
+from app.routes.auth import auth
+import sys
+
+app_settings = 'config.ProductionConfig'
 
 class FlaskThread(Thread):
     def __init__(self, *args, **kwargs):
@@ -25,12 +28,10 @@ class FlaskThread(Thread):
 # PanoptesFlaskApp
 # Custom Flask app
 class PanoptesFlaskApp(Flask):
-    session_key = None
 
-    def run(self, host=None, port=None, debug=None, load_dotenv=True, **options):
+    def run(self, appsettings, **options):
         with self.app_context():
-            #self.session_key = os.urandom(24)
-            self.config.from_object('config')  # configure flask server
+            self.config.from_object(appsettings)  # configure flask server
             db_helper.initialize(self)
 
             streamer = RTSPStreamer(self.config['RTSP'])
@@ -38,13 +39,14 @@ class PanoptesFlaskApp(Flask):
             # register blueprint and dbhelper for api
             self.register_blueprint(api, url_prefix='/api')
             self.register_blueprint(routes)
+            self.register_blueprint(auth)
 
             # # Fetch the latest incidents from the camera's FTP server
             # FlaskThread(target=fetch_todays_incidents, args=(db_helper,)).start()
             # FlaskThread(target=streamer.launch_proxy_stream).start()
 
-        super(PanoptesFlaskApp, self).run(host=host, port=port,
-                                          debug=debug, load_dotenv=load_dotenv, **options)
+        super(PanoptesFlaskApp, self).run(host=self.config['HOST'], port=self.config['PORT'],
+                                          debug=self.config['DEBUG'], load_dotenv=self.config['LOAD_DOTENV'], **options)
 
 
 # DO NOT CHANGE THIS NAME
@@ -54,8 +56,7 @@ app = PanoptesFlaskApp(__name__, static_url_path='')
 cors = CORS(app)
 
 if __name__ == '__main__':
-    host = "0.0.0.0"
-    port = 8080
-    debug = False
-    options = None
-    app.run(host, port, debug, options)
+    if len(sys.argv) > 1:
+        if sys.argv[1] == 'test':
+            app_settings = 'config.TestingConfig'
+    app.run(appsettings=app_settings)

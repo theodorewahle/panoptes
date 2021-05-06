@@ -4,11 +4,11 @@ api.py
 Blueprint for api for backend connection to db, actualized by flask server in run.py
 Contains CRUD endpoints for all database tables in models.py
 """
-from flask import Blueprint, request, abort, current_app, make_response
-from datetime import datetime
-from app.utils.utils import *
+from flask import Blueprint, request, abort, make_response
+from app.utils.utils import jsonify_result, unwrap_body, unwrap_db_result, check_body, check_auth
 from app.database.database import DatabaseHelper
 from flask_httpauth import HTTPTokenAuth
+from config import BaseConfig
 
 # globals used by main server for this blueprint
 db_helper = DatabaseHelper()
@@ -26,8 +26,8 @@ def after_request(response):
 auth = HTTPTokenAuth(scheme='Bearer')
 @auth.verify_token
 def verify_token(token):
-    if token in current_app.config['TOKENS']:
-        return current_app.config['TOKENS'][token]
+    check_auth(db_helper, token, BaseConfig.SESSION_KEY)
+    return token
 
 
 # CAMERAS

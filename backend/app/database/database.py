@@ -31,6 +31,7 @@ class DatabaseHelper:
         self.db.init_app(app)
         with app.app_context():
             self.db.create_all()
+            self.db.session.commit()
 
     def teardown(self):
         self.db.session.remove()
@@ -436,7 +437,18 @@ class DatabaseHelper:
                 models.User.username == username).delete()
         self.db.session.commit()
 
-    def create_hash(password):
+    def create_hash(self, password):
         salt = urandom(64)
-        hash = pbkdf2_hmac('sha512', password.encode(), salt.encode(), 100000)
+        hash = pbkdf2_hmac('sha512', password.encode(), salt, 100000)
         return salt, hash
+
+    def check_login(self, username, password):
+        user = self.get_user(username=username)
+        if len(user) != 1:
+            return None
+        user = user[0]
+        salt = user.salt
+        hash = pbkdf2_hmac('sha512', password.encode(), salt, 100000)
+        if user.hash == hash:
+            return user
+        return None
