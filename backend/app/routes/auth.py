@@ -2,7 +2,7 @@ from config import BaseConfig
 from flask import Blueprint, request, make_response
 from sqlalchemy.exc import SQLAlchemyError
 from werkzeug.exceptions import abort
-from app.api.api import db_helper
+from app.api.api import db_helper, auth
 from app.utils.utils import unwrap_body, encode_auth_token, check_auth, add_to_blacklist
 
 auth = Blueprint('auth', __name__)
@@ -61,9 +61,6 @@ def login():
 #
 @auth.route('/logout', methods=['POST'])
 def logout():
-    user = check_auth(db_helper, request, BaseConfig.SESSION_KEY)
-    if user is not None:
-        add_to_blacklist(request)
-        return make_response("Logout successful", 200)
-    abort(401)
+    add_to_blacklist(request)
+    return make_response("Logout successful", 200)
     

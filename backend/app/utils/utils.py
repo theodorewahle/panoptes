@@ -167,8 +167,12 @@ def decode_auth_token(auth_token, secret_key):
 blacklist = []
 def blacklisted(auth_token, secret_key):
     for token in blacklist:
+        
+        # check if token is blacklisted
         if auth_token == token:
             return True
+
+        # remove expired tokens
         try:
             jwt.decode(auth_token, secret_key, algorithms='HS256')
         except jwt.ExpiredSignatureError:
@@ -181,21 +185,40 @@ def blacklisted(auth_token, secret_key):
 # Inputs:
 #   @request: the request containing the auth token to blacklist
 def add_to_blacklist(request):
-    blacklist.append(parse_auth(request))
 
-def parse_auth(request):
+    # parse token
     auth_token = request.headers['Authorization'].split()
     if not isinstance(auth_token, list) or len(auth_token) != 2 or auth_token[0] != 'Bearer':
         abort(401, "Bearer token missing or malformed")
-    return auth_token[1]
+    
+    # add token to blacklist
+    blacklist.append(auth_token[1])    
 
+# check_auth(db_helper, auth_token, secret_key)
+# checks if the given auth token is valid
+#
+# Inputs:
+#   @db_helper: db helper reference to check user
+#   @auth_token: the JWT to check
+#   @secret_key: the secret key to decode the token with
+#
+# returns:
+#   user if token is valid
 def check_auth(db_helper, auth_token, secret_key):
+
+    # parse token
     auth_token = auth_token.split()
     if not isinstance(auth_token, list) or len(auth_token) != 2 or auth_token[0] != 'Bearer':
         abort(401, "Bearer token missing or malformed")
     auth_token = auth_token[1]
+
+    # get id
     user_id = decode_auth_token(auth_token, secret_key)
+
+    # check if blacklisted
     if not blacklisted(auth_token, secret_key):
+
+        # return user
         user = db_helper.get_user(user_id=user_id)
         if len(user) != 0:
             return user[0]

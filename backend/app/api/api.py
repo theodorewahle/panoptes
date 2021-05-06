@@ -26,10 +26,8 @@ def after_request(response):
 auth = HTTPTokenAuth(scheme='Bearer')
 @auth.verify_token
 def verify_token(token):
-    result = check_auth(db_helper, token, BaseConfig.SESSION_KEY)
-    print(result)
-    if result is not None:
-        return token
+    check_auth(db_helper, token, BaseConfig.SESSION_KEY)
+    return token
 
 
 # CAMERAS
