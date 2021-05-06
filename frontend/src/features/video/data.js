@@ -29,27 +29,27 @@ export const initRecentIncidents = [
   },
   {
     title: 'Woman Walking With Notebook',
-    url: 'http://127.0.0.1:8000/incident/20210218/A210218_003304_003318.mp4',
+    url: 'http://127.0.0.1:8080/incident/20210218/A210218_003304_003318.mp4',
     type: 'video/mp4',
   },
   {
     title: 'Garbage Truck',
-    url: 'http://127.0.0.1:8000/incident/20210219/A210219_234913_234927.mp4',
+    url: 'http://127.0.0.1:8080/incident/20210219/A210219_234913_234927.mp4',
     type: 'video/mp4',
   },
   {
     title: 'Woman With Suspicious Dog',
-    url: 'http://127.0.0.1:8000/incident/20210218/A210218_020152_020207.mp4',
+    url: 'http://127.0.0.1:8080/incident/20210218/A210218_020152_020207.mp4',
     type: 'video/mp4',
   },
   {
     title: 'Inividual Removes Suspicious Envelope From Vehicle',
-    url: 'http://127.0.0.1:8000/incident/20210218/A210218_032104_032118.mp4',
+    url: 'http://127.0.0.1:8080/incident/20210218/A210218_032104_032118.mp4',
     type: 'video/mp4',
   },
   {
     title: 'Suspicious Trio Enters Vehicle, Camera Disturbance',
-    url: 'http://127.0.0.1:8000/incident/20210219/A210219_122703_122717.mp4',
+    url: 'http://127.0.0.1:8080/incident/20210219/A210219_122703_122717.mp4',
     type: 'video/mp4',
   },
 ];
@@ -69,31 +69,31 @@ export const tempDataMainDataModel = [
     camera_id: '1',
     incidents: [
       {
-        url: 'http://127.0.0.1:8000/video/1.mp4',
+        url: 'http://127.0.0.1:8080/video/1.mp4',
         startTime: '8:01PM',
         endTime: '8:02PM',
         objectIdentified: 'JT',
       },
       {
-        url: 'http://127.0.0.1:8000/video/2.mp4',
+        url: 'http://127.0.0.1:8080/video/2.mp4',
         startTime: '9:01PM',
         endTime: '9:02PM',
         objectIdentified: 'Computer',
       },
       {
-        url: 'http://127.0.0.1:8000/video/3.mp4',
+        url: 'http://127.0.0.1:8080/video/3.mp4',
         startTime: '10:35PM',
         endTime: '10:36PM',
         objectIdentified: 'Fan',
       },
       {
-        url: 'http://127.0.0.1:8000/video/4.mp4',
+        url: 'http://127.0.0.1:8080/video/4.mp4',
         startTime: '12:42PM',
         endTime: '12:43PM',
         objectIdentified: 'Light',
       },
       {
-        url: 'http://127.0.0.1:8000/video/5.mp4',
+        url: 'http://127.0.0.1:8080/video/5.mp4',
         startTime: '1:52am',
         endTime: '1:52am',
         objectIdentified: 'Fan',

@@ -26,7 +26,7 @@ class FlaskThread(Thread):
 
 
 # PanoptesFlaskApp
-# Custom Flask application
+# Custom Flask app
 class PanoptesFlaskApp(Flask):
 
     def run(self, appsettings, **options):
@@ -41,22 +41,22 @@ class PanoptesFlaskApp(Flask):
             self.register_blueprint(routes)
             self.register_blueprint(auth)
 
-            # Fetch the latest incidents from the camera's FTP server
-            FlaskThread(target=fetch_todays_incidents, args=(db_helper,)).start()
-            FlaskThread(target=streamer.launch_proxy_stream).start()
+            # # Fetch the latest incidents from the camera's FTP server
+            # FlaskThread(target=fetch_todays_incidents, args=(db_helper,)).start()
+            # FlaskThread(target=streamer.launch_proxy_stream).start()
 
         super(PanoptesFlaskApp, self).run(host=self.config['HOST'], port=self.config['PORT'],
                                           debug=self.config['DEBUG'], load_dotenv=self.config['LOAD_DOTENV'], **options)
 
 
 # DO NOT CHANGE THIS NAME
-# IT MUST BE NAMED "application" IN ORDER TO BE
+# IT MUST BE NAMED "app" IN ORDER TO BE
 # DETECTED BY AWS ELASTIC BEANSTALK
-application = PanoptesFlaskApp(__name__, static_url_path='')
-cors = CORS(application)
+app = PanoptesFlaskApp(__name__, static_url_path='')
+cors = CORS(app)
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         if sys.argv[1] == 'test':
             app_settings = 'config.TestingConfig'
-    application.run(appsettings=app_settings)
+    app.run(appsettings=app_settings)

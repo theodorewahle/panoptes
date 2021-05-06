@@ -60,7 +60,7 @@ def verify_token(token):
 #       @returns: {nothing}
 #
 @api.route('/cameras', methods=['GET', 'POST'])
-@auth.login_required
+# # @auth.login_required
 def cameras():
     if request.method == 'GET':
         return jsonify_result(db_helper.get_camera())
@@ -74,7 +74,7 @@ def cameras():
 
 
 @api.route('/cameras/<camera_id>', methods=['GET', 'PUT', 'DELETE'])
-@auth.login_required
+# @auth.login_required
 def cameras_id(camera_id):
     if request.method == 'GET':
         return jsonify_result(db_helper.get_camera(camera_id=camera_id))
@@ -129,7 +129,7 @@ def cameras_id(camera_id):
 #       @returns: {nothing}
 #
 @api.route('/incidents', methods=['GET','POST','DELETE'])
-@auth.login_required
+# @auth.login_required
 def incidents():
     body = unwrap_body(request, 'object_id', 'video_id', 'start_time', 'end_time', 'timestamp')
     if request.method == 'GET':
@@ -158,7 +158,7 @@ def incidents():
 
 
 @api.route('/incidents/<incident_id>', methods=['GET', 'PUT', 'DELETE'])
-@auth.login_required
+# @auth.login_required
 def incidents_id(incident_id):
     body = unwrap_body(request, 'object_id', 'video_id', 'start_time', 'end_time', 'timestamp')
     if request.method == 'GET':
@@ -185,7 +185,7 @@ def incidents_id(incident_id):
 #       @returns: {all incidents and objects with object name like the one provided}
 #
 @api.route('/search', methods=['GET'])
-@auth.login_required
+# @auth.login_required
 def search_indcidents():
     object_name = request.args.get('object_name')
     return jsonify_result(db_helper.search_incident(object_name))
@@ -221,7 +221,7 @@ def search_indcidents():
 #       @returns: {nothing}
 #
 @api.route('/object_sets', methods=['GET', 'POST'])
-@auth.login_required
+# @auth.login_required
 def object_sets():
     if request.method == 'GET':
         return jsonify_result(db_helper.get_object_set())
@@ -235,7 +235,7 @@ def object_sets():
 
 
 @api.route('/object_sets/<object_set_id>', methods=['GET', 'PUT', 'DELETE'])
-@auth.login_required
+# @auth.login_required
 def object_sets_id(object_set_id):
     if request.method == 'GET':
         return jsonify_result(db_helper.get_object_set(object_set_id=object_set_id))
@@ -283,7 +283,7 @@ def object_sets_id(object_set_id):
 #       @returns: {nothing}
 #
 @api.route('/objects', methods=['GET', 'POST'])
-@auth.login_required
+# @auth.login_required
 def objects():
     body = unwrap_body(request, 'name', 'object_set_id')
     if request.method == 'GET':
@@ -301,7 +301,7 @@ def objects():
 
 
 @api.route('/objects/<object_id>', methods=['GET', 'PUT', 'DELETE'])
-@auth.login_required
+# @auth.login_required
 def objects_id(object_id):
     if request.method == 'GET':
         return jsonify_result(db_helper.get_object(object_id=object_id))
@@ -346,7 +346,7 @@ def objects_id(object_id):
 #       @returns: {nothing}
 #
 @api.route('/videos', methods=['GET', 'POST'])
-@auth.login_required
+# @auth.login_required
 def videos():
     if request.method == 'GET':
         return jsonify_result(db_helper.get_video())
@@ -361,7 +361,7 @@ def videos():
 
 
 @api.route('/videos/<video_id>', methods=['GET', 'PUT', 'DELETE'])
-@auth.login_required
+# @auth.login_required
 def videos_id(video_id):
     if request.method == 'GET':
         return jsonify_result(db_helper.get_video(video_id=video_id))
@@ -383,7 +383,7 @@ def videos_id(video_id):
 #       @returns: {all object sets and objects}
 # 
 @api.route('/object_sets_and_objects', methods=['GET', 'POST'])
-@auth.login_required
+# @auth.login_required
 def object_sets_and_objects():
     if request.method == 'GET':
         return jsonify_result(db_helper.get_object_sets_and_objects())

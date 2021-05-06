@@ -9,8 +9,8 @@ const CONSTANTS = {
   STATUS_NO_RESULTS: -10,
 
   // API Endpoint
-  API_ENDPOINT: 'http://127.0.0.1:8000/api',
-  API_FILE_SERVER: 'http://127.0.0.1:8000/video', // X.mp4 needs to be appended
+  API_ENDPOINT: 'http://127.0.0.1:8080/api',
+  API_FILE_SERVER: 'http://127.0.0.1:8080/video', // X.mp4 needs to be appended
   API_CAMERAS: '/cameras',
   API_INCIDENTS: '/incidents',
   API_OBJECT_SETS: '/object_sets',
